@@ -2,7 +2,7 @@
 name = "api"
 version = "0.1.0"
 description = ""
-authors = ["HabitLeague <agilefans@gmail.com>"]
+authors = ["HabitUp <agilefans@gmail.com>"]
 readme = "README.md"
 package-mode = false
 
