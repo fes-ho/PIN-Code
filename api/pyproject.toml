@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "api"
+version = "0.1.0"
+description = ""
+authors = ["HabitLeague <agilefans@gmail.com>"]
+readme = "README.md"
+package-mode = false
+
+[tool.poetry.dependencies]
+python = "^3.10"
+uvicorn = "^0.31.0"
+fastapi = "^0.115.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
