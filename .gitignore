@@ -11,6 +11,9 @@ pubspec.lock
 # If you don't generate documentation locally you can remove this line.
 doc/api/
 
+# Database for local storage
+localDatabase.db
+
 # dotenv environment variables file
 .env*
 
