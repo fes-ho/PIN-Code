@@ -1,13 +1,11 @@
 from fastapi import FastAPI
-from .database import create_db_and_tables
-from contextlib import asynccontextmanager
+from dotenv import load_dotenv
+from services import create_db_and_tables
 
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    create_db_and_tables()
-    yield
+load_dotenv()
+create_db_and_tables()
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
 @app.get("/")
 def read_root():
     return {"message": "Hello, World!"}
