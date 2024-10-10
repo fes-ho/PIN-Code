@@ -15,7 +15,7 @@ doc/api/
 localDatabase.db
 
 # dotenv environment variables file
-.env*
+.env
 
 # Avoid committing generated Javascript files:
 *.dart.js
@@ -28,3 +28,6 @@ localDatabase.db
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Ignore Python bytecode files
+__pycache__/
