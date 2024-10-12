@@ -11,8 +11,11 @@ pubspec.lock
 # If you don't generate documentation locally you can remove this line.
 doc/api/
 
+# Database for local storage
+localDatabase.db
+
 # dotenv environment variables file
-.env*
+.env
 
 # Avoid committing generated Javascript files:
 *.dart.js
@@ -25,3 +28,6 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
+
+# Ignore Python bytecode files
+__pycache__/
