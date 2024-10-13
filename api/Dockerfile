@@ -20,6 +20,8 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 # Set the working directory inside the container
 WORKDIR /app
 
+ENV PYTHONPATH=/app/src
+
 # Copy the poetry files
 COPY pyproject.toml poetry.lock ./
 
