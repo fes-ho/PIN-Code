@@ -31,12 +31,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
 
-      # Build the Docker image
-      - name: Build Docker image
+      # Build and run the Docker container using Docker Compose
+      - name: Run Docker Compose
         run: |
-          docker build -t fastapi-app -f api/Dockerfile .
-
-      # Run the Docker container with a timeout
-      - name: Run Docker container with timeout
-        run: |
-          docker run --rm -p 8000:8000 fastapi-app  # Adjust the timeout duration as needed
+          docker-compose up --build --abort-on-container-exit
