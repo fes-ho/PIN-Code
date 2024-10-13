@@ -29,7 +29,7 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
 
 # Copy the application code
-COPY src ./src
+COPY src ./api/src
 
 # Expose the FastAPI port
 EXPOSE 8000
