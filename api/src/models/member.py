@@ -10,5 +10,5 @@ class Member(SQLModel, table=True):
     password: str
     email: str
 
-    moods: list["Mood"] = Relationship(back_populates="member")
+    moods: List["Mood"] = Relationship(back_populates="member")
     streaks: List["Streak"] = Relationship(back_populates="member")
