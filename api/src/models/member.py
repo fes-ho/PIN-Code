@@ -1,6 +1,5 @@
-
 from .mood import Mood
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING, List
 from uuid import UUID, uuid4
 from sqlmodel import Field, Relationship, SQLModel
 from .streak import Streak
@@ -13,4 +12,3 @@ class Member(SQLModel, table=True):
 
     moods: list["Mood"] = Relationship(back_populates="member")
     streaks: List["Streak"] = Relationship(back_populates="member")
-
