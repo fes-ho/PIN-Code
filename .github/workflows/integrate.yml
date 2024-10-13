@@ -29,11 +29,7 @@ jobs:
       # Set up Docker and Docker Compose
       - name: Build and run Docker Compose services
         run: |
-          docker compose up --build -d
-
-      - name: Wait for services to start
-        run: |
-          sleep 15
+          docker compose up --build
 
       # Shut down the containers
       - name: Shut down Docker Compose
