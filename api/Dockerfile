@@ -20,7 +20,7 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 # Set the working directory inside the container
 WORKDIR /app
 
-ENV PYTHONPATH=/app/src
+ENV PYTHONPATH=/app/api/src
 
 # Copy the poetry files
 COPY pyproject.toml poetry.lock ./
@@ -35,4 +35,4 @@ COPY src ./api/src
 EXPOSE 8000
 
 # Command to run the FastAPI app using Uvicorn
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "api.src.main:app", "--host", "0.0.0.0", "--port", "8000"]
