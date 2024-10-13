@@ -37,7 +37,7 @@ python -m poetry install
 
 4. (If using VSCode) Select interpreter
 
-   - Interpreter is located inside
+   - Interpreter is located inside 
 
-     - Linux: _.venv/bin/python_
-     - Windows: _.venv/Scripts/python_
+     - Linux: _api/.venv/bin/python.exe_
+     - Windows: _api/.venv/Scripts/python.exe_
