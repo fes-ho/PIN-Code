@@ -1,7 +1,4 @@
-from typing import Optional
-from uuid import UUID, uuid4
-from sqlalchemy import table
-from sqlmodel import Field, SQLModel
+from sqlmodel import SQLModel
 
 class Activity(SQLModel):
     icon: str

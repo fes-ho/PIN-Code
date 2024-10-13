@@ -1,5 +1,5 @@
 from datetime import date
-from typing import TYPE_CHECKING, List, Optional
+from typing import TYPE_CHECKING
 from uuid import UUID, uuid4
 from sqlmodel import Field, Relationship, SQLModel
 

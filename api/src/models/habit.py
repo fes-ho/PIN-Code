@@ -1,7 +1,5 @@
-from typing import Optional
 from uuid import UUID, uuid4
-from sqlmodel import Field, Enum, Column
-
+from sqlmodel import Field
 from .activity import Activity
 from .day_time import DayTime
 
