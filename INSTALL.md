@@ -39,5 +39,5 @@ python -m poetry install
 
    - Interpreter is located inside 
 
-     - Linux: _.venv/bin/python_
-     - Windows: _.venv/Scripts/python.exe_
+     - Linux: _api/.venv/bin/python_
+     - Windows: _api/.venv/Scripts/python.exe_
