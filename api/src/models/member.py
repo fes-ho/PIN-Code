@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List
+from typing import List, Optional
 from uuid import UUID, uuid4
 from sqlmodel import Field, Relationship, SQLModel
 from .streak import Streak
@@ -12,7 +12,7 @@ class Member(SQLModel, table=True):
     password: str
     email: str
 
-    moods: List["Mood"] = Relationship(back_populates="member")
-    streaks: List["Streak"] = Relationship(back_populates="member")
-    habits: List["Habit"] = Relationship(back_populates="member")
-    tasks: List["Task"] = Relationship(back_populates="member")
+    moods: Optional[List["Mood"]] = Relationship(back_populates="member")
+    streaks: Optional[List["Streak"]] = Relationship(back_populates="member")
+    habits: Optional[List["Habit"]] = Relationship(back_populates="member")
+    tasks: Optional[List["Task"]] = Relationship(back_populates="member")
