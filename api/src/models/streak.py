@@ -12,5 +12,5 @@ class Streak(SQLModel, table=True):
     last_modified: date
     is_finished: bool
 
-    member_id: int = Field(default=None, foreign_key="member.id")
+    member_id: UUID = Field(foreign_key="member.id")
     member: "Member" = Relationship(back_populates="streak")

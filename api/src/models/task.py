@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 class Task(Activity, table = True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
     date: datetime
-    is_completed: bool
+    is_completed: bool = Field(default=False)
 
-    member_id: int = Field(default=None, foreign_key="member.id")
+    member_id: UUID = Field(default=None, foreign_key="member.id")
     member: "Member" = Relationship(back_populates="tasks")

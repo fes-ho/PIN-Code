@@ -9,6 +9,8 @@ if TYPE_CHECKING:
 
 class Frequency (SQLModel, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
+
+    # This is needed because SQLModel does not support inheritance
     daily: bool = Field(default=False)
     days_of_the_week: Optional[Set[DaysOfTheWeek]] = Field(default_factory=set, sa_column=Column(JSON))
     days_of_the_month: Optional[Set[int]] =  Field(default_factory=set, sa_column=Column(JSON))
