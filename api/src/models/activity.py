@@ -1,8 +1,9 @@
+from typing import Optional
 from sqlmodel import SQLModel
 
 class Activity(SQLModel):
-    icon: str
+    icon: Optional[str]
     name: str
-    description: str
+    description: Optional[str]
     duration: int
-    estimated_duration: int
+    estimated_duration: Optional[int]
