@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from dotenv import load_dotenv
 from services import create_db_and_tables
+from models import *
 
 # Load the environment variables
 load_dotenv()
