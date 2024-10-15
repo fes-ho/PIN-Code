@@ -7,7 +7,7 @@ session_generator = get_session()
 session = next(session_generator)
 
 try:
-    member = Member(name="John Doe", secret_name="John Wick", age=42)
+    member = Member(username="test", password="test", email="test@example.com")
     session.add(member)
     session.commit()
 finally:
