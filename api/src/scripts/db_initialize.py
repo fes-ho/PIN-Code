@@ -1,5 +1,4 @@
 from services import get_session
-from models import Member, Streak
 
 def insert_test_member():
     session_generator = get_session()
