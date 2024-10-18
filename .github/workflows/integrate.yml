@@ -50,14 +50,9 @@ jobs:
             sleep 5
           done
 
-      # Shut down the containers
-      - name: Shut down Docker Compose
-        run: |
-          docker compose down
-
       - name: Run tests
         run:  curl -f http://localhost:8080/health || exit 1
 
       - name: Tear down services
         if: always()
-        run: docker-compose down
+        run: docker compose down
