@@ -1,4 +1,5 @@
 from services import get_session
+from models import Member
 
 def insert_test_member():
     session_generator = get_session()
