@@ -31,6 +31,30 @@ jobs:
         run: |
           docker compose up -d
 
+      - name: Wait for health checks
+        run: |
+          echo "Waiting for services to pass health checks..."
+
+          # Wait for all services to become healthy
+          for i in {1..10}; do
+            STATUS=$(docker-compose ps -q web | xargs docker inspect -f '{{.State.Health.Status}}')
+            if [ "$STATUS" == "healthy" ]; then
+              echo "Web service is healthy!"
+              break
+            fi
+            if [ "$i" -eq 10 ]; then
+              echo "Web service failed to become healthy in time."
+              exit 1
+            fi
+            echo "Web service not healthy yet... retrying in 5 seconds"
+            sleep 5
+          done
+
+      # Shut down the containers
+      - name: Shut down Docker Compose
+        run: |
+          docker compose down
+
       - name: Run tests
         run:  curl -f http://localhost:8080/health || exit 1
 
