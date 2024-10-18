@@ -29,9 +29,11 @@ jobs:
       # Set up Docker and Docker Compose
       - name: Build and run Docker Compose services
         run: |
-          docker compose up --build --abort-on-container-exit
+          docker compose up -d
 
-      # Shut down the containers
-      - name: Shut down Docker Compose
-        run: |
-          docker compose down
+      - name: Run tests
+        run:  curl -f http://localhost:8080/health || exit 1
+
+      - name: Tear down services
+        if: always()
+        run: docker-compose down
