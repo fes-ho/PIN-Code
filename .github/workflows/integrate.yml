@@ -37,7 +37,7 @@ jobs:
 
           # Wait for all services to become healthy
           for i in {1..10}; do
-            STATUS=$(docker-compose ps -q web | xargs docker inspect -f '{{.State.Health.Status}}')
+            STATUS=$(docker compose ps -q web | xargs docker inspect -f '{{.State.Health.Status}}')
             if [ "$STATUS" == "healthy" ]; then
               echo "Web service is healthy!"
               break
