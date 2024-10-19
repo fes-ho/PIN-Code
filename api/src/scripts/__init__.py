@@ -1,5 +1,5 @@
-from .db_initialize import insert_test_member
+from .db_initialize import populate_initial_data
 
 __all__ = [
-    "insert_test_member"
+    "populate_initial_data",
 ]
