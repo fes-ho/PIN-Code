@@ -1,7 +1,6 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends
-
-from api.src.services.database import get_session
+from services import get_session
 
 router = APIRouter(
     tags=["moods"],
