@@ -1,58 +1,59 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   docker:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5  # Extend timeout just in case
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - name: Checkout code
-        uses: actions/checkout@v4
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      # Set up Docker and Docker Compose
-      - name: Build and run Docker Compose services
-        run: |
-          docker compose up -d
+    - name: Build and run Docker Compose services
+      run: docker compose up -d
 
-      - name: Wait for health checks
-        run: |
-          echo "Waiting for services to pass health checks..."
+    - name: Check Docker containers
+      run: docker compose ps  # Debugging step to check if the containers are running
 
-          # Wait for all services to become healthy
-          for i in {1..10}; do
-            STATUS=$(docker compose ps -q api | xargs docker inspect -f '{{.State.Health.Status}}')
-            if [ "$STATUS" == "healthy" ]; then
-              echo "api service is healthy!"
-              break
-            fi
-            if [ "$i" -eq 10 ]; then
-              echo "api service failed to become healthy in time."
-              exit 1
-            fi
-            echo "api service not healthy yet... retrying in 5 seconds"
-            sleep 5
-          done
+    - name: Wait for health checks
+      run: |
+        echo "Waiting for services to pass health checks..."
 
-      - name: Run tests
-        run:  curl -f http://localhost:8080/health || exit 1
+        # Get the container ID or name dynamically
+        CONTAINER_NAME=$(docker compose ps -q api)
 
-      - name: Tear down services
-        if: always()
-        run: docker compose down
+        if [ -z "$CONTAINER_NAME" ]; then
+          echo "Error: Unable to find the container for the api service"
+          exit 1
+        fi
+
+        # Loop to check for health status
+        for i in {1..10}; do
+          STATUS=$(docker inspect -f '{{.State.Health.Status}}' "$CONTAINER_NAME")
+          if [ "$STATUS" == "healthy" ]; then
+            echo "api service is healthy!"
+            break
+          fi
+          
+          if [ "$i" -eq 10 ]; then
+            echo "api service failed to become healthy in time."
+            exit 1
+          fi
+          
+          echo "api service not healthy yet... retrying in 5 seconds"
+          sleep 5
+        done
+
+    - name: Run tests
+      run:  curl -f http://localhost:8000/health || exit 1  # Correct port (8000)
+
+    - name: Tear down services
+      if: always()
+      run: docker compose down
