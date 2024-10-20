@@ -26,7 +26,7 @@ jobs:
       run: |
         echo "Waiting for services to pass health checks..."
         for i in {1..15}; do  # Increased retries to 15
-          CONTAINER_NAME=$(docker compose ps -q api)
+          CONTAINER_NAME=$(docker compose ps -q pin-code-api)
 
           if [ -z "$CONTAINER_NAME" ]; then
             echo "Error: Unable to find the container for the api service"
