@@ -1,5 +1,6 @@
+from sqlite3 import Date
 from services import get_session
-from models import Member, Habit, DayTime
+from models import Member, Habit, DayTime, Quest
 
 def populate_initial_data():
     session_generator = get_session()
@@ -10,7 +11,6 @@ def populate_initial_data():
             username="test", 
             password="test", 
             email="test@example.com")
-
         habit = Habit(
             name="Test Habit",
             description="Test Description",
@@ -21,8 +21,15 @@ def populate_initial_data():
             time=DayTime.MORNING,
             count=1
         )
+        quest = Quest(
+            habit_id=habit.id,
+            date=Date(2024, 3, 3),
+            currentCount=0
+        )
+
         session.add(member)
         session.add(habit)
+        session.add(quest)
         session.commit()
     finally:
         session.close()
