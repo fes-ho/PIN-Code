@@ -10,7 +10,7 @@ on:
 jobs:
   docker:
     runs-on: ubuntu-latest
-    timeout-minutes: 5  # Extend timeout just in case
+    timeout-minutes: 5
 
     steps:
     - name: Checkout code
@@ -25,35 +25,37 @@ jobs:
     - name: Wait for health checks
       run: |
         echo "Waiting for services to pass health checks..."
+        for i in {1..15}; do  # Increased retries to 15
+          CONTAINER_NAME=$(docker compose ps -q api)
 
-        # Get the container ID or name dynamically
-        CONTAINER_NAME=$(docker compose ps -q api)
+          if [ -z "$CONTAINER_NAME" ]; then
+            echo "Error: Unable to find the container for the api service"
+            exit 1
+          fi
 
-        if [ -z "$CONTAINER_NAME" ]; then
-          echo "Error: Unable to find the container for the api service"
-          exit 1
-        fi
-
-        # Loop to check for health status
-        for i in {1..10}; do
           STATUS=$(docker inspect -f '{{.State.Health.Status}}' "$CONTAINER_NAME")
           if [ "$STATUS" == "healthy" ]; then
             echo "api service is healthy!"
             break
           fi
           
-          if [ "$i" -eq 10 ]; then
+          if [ "$i" -eq 15 ]; then
             echo "api service failed to become healthy in time."
+            docker compose logs api  # Capture logs before exiting
             exit 1
           fi
           
-          echo "api service not healthy yet... retrying in 5 seconds"
-          sleep 5
+          echo "api service not healthy yet... retrying in 10 seconds"
+          sleep 10  # Increased retry delay to 10 seconds
         done
 
     - name: Run tests
-      run:  curl -f http://localhost:8000/health || exit 1  # Correct port (8000)
+      run:  curl -f http://localhost:8000/health || exit 1
 
     - name: Tear down services
       if: always()
       run: docker compose down
+
+    - name: Capture API service logs on failure
+      if: failure()
+      run: docker compose logs api  # Capture logs if the job fails
