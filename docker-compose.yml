@@ -10,7 +10,7 @@ services:
       - POETRY_HOME="/opt/poetry"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      interval: 15s  # Increased from 10s to 15s
+      timeout: 10s   # Increased from 5s to 10s
+      retries: 10    # Increased from 5 to 10
 
