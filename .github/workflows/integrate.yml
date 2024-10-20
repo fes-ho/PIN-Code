@@ -20,7 +20,7 @@ jobs:
       run: docker compose up -d
 
     - name: Check Docker containers
-      run: docker compose ps  # Debugging step to check if the containers are running
+      run: docker compose ps  # Check if the containers are up and running
 
     - name: Wait for health checks
       run: |
@@ -41,7 +41,8 @@ jobs:
           
           if [ "$i" -eq 15 ]; then
             echo "api service failed to become healthy in time."
-            docker compose logs api  # Capture logs before exiting
+            echo "Collecting logs for debugging..."
+            docker compose logs api  # Print the logs if health check fails
             exit 1
           fi
           
@@ -58,4 +59,4 @@ jobs:
 
     - name: Capture API service logs on failure
       if: failure()
-      run: docker compose logs api  # Capture logs if the job fails
+      run: docker compose logs api  # Always capture logs on failure
