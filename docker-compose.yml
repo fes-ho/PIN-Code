@@ -9,7 +9,7 @@ services:
       - POETRY_NO_INTERACTION=1
       - POETRY_HOME="/opt/poetry"
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
       interval: 10s
       timeout: 5s
       retries: 5
