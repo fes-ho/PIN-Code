@@ -23,32 +23,7 @@ jobs:
       run: docker compose ps  # Check if the containers are up and running
 
     - name: Wait for health checks
-      run: |
-        echo "Waiting for services to pass health checks..."
-        for i in {1..15}; do  # Increased retries to 15
-          CONTAINER_NAME=$(docker compose ps -q pin-code-api)
-
-          if [ -z "$CONTAINER_NAME" ]; then
-            echo "Error: Unable to find the container for the api service"
-            exit 1
-          fi
-
-          STATUS=$(docker inspect -f '{{.State.Health.Status}}' "$CONTAINER_NAME")
-          if [ "$STATUS" == "healthy" ]; then
-            echo "api service is healthy!"
-            break
-          fi
-          
-          if [ "$i" -eq 15 ]; then
-            echo "api service failed to become healthy in time."
-            echo "Collecting logs for debugging..."
-            docker compose logs api  # Print the logs if health check fails
-            exit 1
-          fi
-          
-          echo "api service not healthy yet... retrying in 10 seconds"
-          sleep 10  # Increased retry delay to 10 seconds
-        done
+      run: sleep 5
 
     - name: Run tests
       run:  curl -f http://localhost:8000/health || exit 1
