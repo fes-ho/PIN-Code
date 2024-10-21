@@ -1,6 +1,7 @@
 from sqlalchemy import text
 from sqlmodel import SQLModel, Session, create_engine 
 from services import get_settings
+from models import *
 
 engine = create_engine(get_settings().connection_string, echo=True)
 
