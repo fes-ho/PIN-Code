@@ -8,7 +8,7 @@ file_handler.setFormatter(logging.Formatter(format))
 file_handler.setLevel(logging.DEBUG)
 
 # This is needed in order to only log into the file when an error occurs
-memory_handler = MemoryHandler(capacity=1000, target=file_handler, flushLevel=logging.ERROR)
+memory_handler = MemoryHandler(capacity=10000000, target=file_handler, flushLevel=logging.ERROR)
 memory_handler.setLevel(logging.DEBUG)
 
 # Configure the logger
