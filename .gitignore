@@ -14,6 +14,9 @@ doc/api/
 # Database for local storage
 localDatabase.db
 
+# Log file
+apiErrors.log
+
 # dotenv environment variables file
 .env
 
