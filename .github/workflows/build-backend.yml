@@ -28,4 +28,4 @@ jobs:
         poetry install # Install project dependencies
 
     - name: Run backend
-      run: timeout 60s PYTHONPATH=api/src uvicorn api.src.main:app --env-file api/.env
+      run: timeout 60s PYTHONPATH=$PWD/api/src uvicorn api.src.main:app --env-file $PWD/api/.env
