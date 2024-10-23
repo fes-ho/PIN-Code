@@ -30,6 +30,7 @@ jobs:
     - name: Run Uvicorn in the background and capture logs
       run: |
         echo "Starting uvicorn server..."
+        cd api
         nohup poetry run uvicorn api.src.main:app --host 0.0.0.0 --port 8000 --env-file ./api/.env > uvicorn.log 2>&1 &
         sleep 5  # Wait for the server to start
 
