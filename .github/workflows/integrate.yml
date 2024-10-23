@@ -15,7 +15,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Build Docker image with a custom name
+    - name: Docker build
       run: docker build -t api-image ./api # Build with custom image name
 
     - name: Run Docker container with a custom name in detached mode
