@@ -10,4 +10,10 @@ router = APIRouter(
 def get_all_members(
     db = Depends(get_session)
 ):
-    return read_members(db) 
+    return read_members(db)
+
+@router.get("/{id}") 
+def get_member_by_id(
+    db = Depends(get_session)
+):
+    return get_member_by_id

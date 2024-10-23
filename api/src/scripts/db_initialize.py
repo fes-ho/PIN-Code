@@ -1,5 +1,6 @@
 from datetime import datetime
 from sqlite3 import Date
+import uuid
 from services import get_session
 from models import *
 
@@ -9,9 +10,9 @@ def populate_initial_data():
 
     try:
         member = Member(
-            username="test", 
-            password="test", 
-            email="test@example.com")
+            id= uuid.UUID ("9993a0cb-7b79-48f1-9a03-3843b2ffa642"),
+            username="test",
+        ) 
         habit = Habit(
             name="Test Habit",
             description="Test Description",
