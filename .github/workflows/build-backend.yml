@@ -43,6 +43,7 @@ jobs:
       if: failure()
       run: |
         echo "Showing Uvicorn logs after failure..."
+        cd api
         cat uvicorn.log
 
     - name: Kill Uvicorn process
