@@ -2,10 +2,13 @@ name: CI
 
 on:
   push:
-    branches: [ "main" ]
+    paths: 
+      - 'api/**'
+      - '.github/workflows/integrate.yml'
   pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
+    paths:
+      - 'api/**'
+      - '.github/workflows/integrate.yml'
 
 jobs:
   docker:
