@@ -21,7 +21,7 @@ jobs:
     - name: Run Docker container in detached mode
       run: |
         echo "Running the Docker container (api-container) in detached mode..."
-        docker run -d --name api-container -p 8000:8000 api-image # Use custom container and image name
+        docker run -d --name api-container -p 8000:8000 api-image
       shell: bash
 
     - name: Wait for container health check
