@@ -24,6 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install poetry
+        cd ./api
         poetry install # Install project dependencies
 
     - name: Run backend
