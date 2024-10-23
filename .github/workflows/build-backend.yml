@@ -31,7 +31,7 @@ jobs:
       run: |
         echo "Starting uvicorn server..."
         cd api
-        nohup poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
+        PYTHONPATH=./src nohup poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
         sleep 5  # Wait for the server to start
 
     - name: Test if Uvicorn is running (health check)
