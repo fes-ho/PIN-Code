@@ -1,0 +1,30 @@
+name: Integrate backend
+
+on:
+  pull_request:
+    branches: [ "main" ]
+    paths:
+      - 'api/**'
+      - '.github/workflows/build-backend.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12.7' # Specify the Python version
+
+    - name: Install dependencies
+      run: |
+        pip install poetry
+        poetry install # Install project dependencies
+
+    - name: Run backend
+      run: timeout 60s PYTHONPATH=./api/src uvicorn api.src.main:app --env-file ./api/.env
