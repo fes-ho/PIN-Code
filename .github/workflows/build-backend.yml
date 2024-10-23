@@ -26,7 +26,25 @@ jobs:
         pip install poetry
         cd ./api
         poetry install # Install project dependencies
-        cd ..
 
-    - name: Run backend
-      run: PYTHONPATH=$PWD/api/src timeout 60s uvicorn api.src.main:app --env-file $PWD/api/.env
+    - name: Run Uvicorn in the background and capture logs
+      run: |
+        echo "Starting uvicorn server..."
+        nohup uvicorn api.src.main:app --host 0.0.0.0 --port 8000 --env-file ./api/.env > uvicorn.log 2>&1 &
+        sleep 5  # Wait for the server to start
+
+    - name: Test if Uvicorn is running (health check)
+      run: |
+        echo "Testing if the API is running..."
+        curl -f http://localhost:8000/health || (echo "API failed to start" && exit 1)
+
+    - name: Display Uvicorn logs on failure
+      if: failure()
+      run: |
+        echo "Showing Uvicorn logs after failure..."
+        cat uvicorn.log
+
+    - name: Kill Uvicorn process
+      run: |
+        echo "Stopping the uvicorn server..."
+        pkill -f uvicorn
