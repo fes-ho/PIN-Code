@@ -24,8 +24,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install poetry
-        cd ./api
-        poetry install # Install project dependencies
+        poetry install --dir ./api # Install project dependencies
 
     - name: Run backend
       run: timeout 60s PYTHONPATH=$PWD/api/src uvicorn api.src.main:app --env-file $PWD/api/.env
