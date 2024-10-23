@@ -18,7 +18,7 @@ jobs:
     - name: Docker build
       run: docker build -t api-image ./api
 
-    - name: Run Docker container with a custom name in detached mode
+    - name: Run Docker container in detached mode
       run: |
         echo "Running the Docker container (api-container) in detached mode..."
         docker run -d --name api-container -p 8000:8000 api-image # Use custom container and image name
