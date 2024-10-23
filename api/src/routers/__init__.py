@@ -7,12 +7,15 @@ from .quests import router as quests_router
 from .tasks import router as tasks_router
 from .health import router as health_router
 
-router = APIRouter(
+router = APIRouter()
+router.include_router(health_router)
+
+member_router = APIRouter(
     prefix="/members",
 )
-router.include_router(habits_router)
-router.include_router(members_router)
-router.include_router(moods_router)
-router.include_router(quests_router)
-router.include_router(tasks_router)
-router.include_router(health_router)
+member_router.include_router(habits_router)
+member_router.include_router(members_router)
+member_router.include_router(moods_router)
+member_router.include_router(quests_router)
+member_router.include_router(tasks_router)
+member_router.include_router(tasks_router)
