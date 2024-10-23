@@ -1,7 +1,7 @@
 import os
 from fastapi import HTTPException, Request
 from jose import ExpiredSignatureError, JWTError, jwt
-from services import get_settings
+from services import get_settings, logger
 
 from .utils.jwt_utils import get_jwt_from_auth_header
 

@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from dotenv import load_dotenv
+from middleware import AuhtorizationMiddleware
 import uvicorn
 from services import create_db_and_tables, drop_all_tables, empty_db_data, logger
 from routers import member_router as member_router, router as health_router
