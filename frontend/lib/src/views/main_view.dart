@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/views/initialpage_view.dart';
 
 class MainView extends StatelessWidget {
   const MainView({super.key});
@@ -14,6 +15,6 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text("Authenticated route");
+    return InitialPageView();
   }
 }
