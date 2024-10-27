@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 class DateDisplayWidget extends StatefulWidget {
@@ -20,6 +21,8 @@ class _DateDisplayWidgetState extends State<DateDisplayWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return InkWell(
       onTap: () async {
         DateTime? pickedDate = await showDatePicker(
@@ -37,28 +40,31 @@ class _DateDisplayWidgetState extends State<DateDisplayWidget> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: const Color(0xFF264E5D), // Slightly lighter blue for the inner container
           borderRadius: BorderRadius.circular(12.0),
+          border: Border.all(
+            color: colorScheme.outline, 
+            width: 2.0,
+          )
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Icon(
+              Icon(
                 Icons.calendar_today,
-                color: Color(0xFFF8F0DF),
+                color: colorScheme.secondary,
                 size: 24.0,
               ),
               Text(
                 DateFormat('dd/MM/yyyy').format(date),
-                style: const TextStyle(
-                  color: Color(0xFFF8F0DF),
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.w500,
+                style: GoogleFonts.quicksand(
+                  color: colorScheme.onSurface,
+                  fontSize: 19,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(width: 8.0),
+              const SizedBox(width: 22.0),
             ],
           ),
         ),

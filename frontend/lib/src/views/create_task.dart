@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/date_display.dart';
+import 'package:frontend/src/components/hour_and_minute_picker.dart';
 import 'package:frontend/src/components/rounded_icon_button.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
@@ -17,164 +19,162 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   int _selectedHour = DateTime.now().hour;
   IconData _selectedIcon = Icons.edit;
   int _selectedMinute = DateTime.now().minute;
-  late FixedExtentScrollController _hourController;
-  late FixedExtentScrollController _minuteController;
-
-  @override
-  void initState() {
-    super.initState();
-    _hourController = FixedExtentScrollController(initialItem: _selectedHour);
-    _minuteController = FixedExtentScrollController(initialItem: _selectedMinute);
-  }
-
-  @override
-  void dispose() {
-    _hourController.dispose();
-    _minuteController.dispose();
-    super.dispose();
-  }
+  final TextEditingController _nameFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
+      backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: const Text('New task'),
-        backgroundColor: Colors.grey,
+        title: Text(
+          'New task',
+          style: GoogleFonts.lexendDeca(
+            color: colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        centerTitle: true,
+        backgroundColor: colorScheme.surfaceBright,
+        leading: Icon(Icons.arrow_back, color: colorScheme.onSurface),
+        elevation: 1,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(15.0),
+      body: SafeArea(
+        minimum: const EdgeInsets.all(15.0),
         child: Form(
           key: _formKey,
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget> [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  RoundedIconButton(
-                    initialIcon: Icons.edit,
-                    onIconChanged: (icon) {
-                      setState(() {
-                        _selectedIcon = icon;
-                      });
-                    },
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                child: Column(
+                  children: [
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: colorScheme.tertiary,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Title(
+                        color: Colors.white, 
+                        child: Text(
+                          'NAME', 
+                          style: GoogleFonts.quicksand(
+                            color: colorScheme.onTertiary, 
+                            fontWeight: FontWeight.bold,
+                          )
+                        )
+                      ),
                     ),
-                  const SizedBox(width: 15),
-                  Expanded(
-                    child: TextFormField(
-                      decoration: const InputDecoration(labelText: 'Your task name'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the task name';
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _taskName = value!;
-                      },
+                    const SizedBox(height: 15),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        RoundedIconButton(
+                          initialIcon: Icons.edit,
+                          onIconChanged: (icon) {
+                            setState(() {
+                              _selectedIcon = icon;
+                            });
+                          },
+                        ),
+                        const SizedBox(width: 15),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _nameFieldController,
+                            decoration: InputDecoration(
+                              labelText: 'Your task name',
+                              fillColor: colorScheme.secondary,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: colorScheme.outline,
+                                  width: 2,
+                                  ),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: colorScheme.secondary,
+                                  width: 2,
+                                ),
+                                borderRadius: BorderRadius.circular(12.0),
+                              ),
+                              suffixIcon: _nameFieldController.text.isNotEmpty ? IconButton(
+                                onPressed: () {
+                                  _nameFieldController.clear();
+                                  setState(() {});
+                                },
+                                icon: const Icon(Icons.clear),
+                                ) : null,
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter the task name';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              setState(() {});
+                            },
+                            onSaved: (value) {
+                              _taskName = value!;
+                            },
+                          ),
+                        ),
+                      ]
                     ),
-                  ),
-                ]
+                  ],
+                ),
               ),
               const SizedBox(height: 15),
               Container (
                 width: double.infinity,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFB3C8C7),
+                  color: colorScheme.surfaceContainer,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Title(color: Colors.white, child: const Text('Time', style: TextStyle(color: Colors.white))),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                    SizedBox(
-                      height: 200,
-                      width: 100,
-                      child: ListWheelScrollView.useDelegate(
-                        controller: _hourController,
-                        useMagnifier: true,
-                        magnification: 1.2,
-                        physics: const FixedExtentScrollPhysics(),
-                        itemExtent: 50,
-                        onSelectedItemChanged: (index) {
-                          setState(() {
-                            _selectedHour = index;
-                          });
-                        },
-                        childDelegate: ListWheelChildBuilderDelegate(
-                          childCount: 25,
-                          builder: (context, index) {
-                            final String formattedIndex = index.toString().padLeft(2, '0');
-                            final bool isSelected = index == _selectedHour;
-                            return ListTile(
-                              title: Center(
-                                child: Text(
-                                  formattedIndex, 
-                                  style: TextStyle(
-                                    color: isSelected ? const Color(0xFFF8F0DF) : const Color.fromARGB(255, 211, 204, 188),
-                                    fontSize: 18.0, 
-                                    fontWeight: FontWeight.w500
-                                  )
-                                )
-                              ),
-                            );
-                          }
+                    Container(
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      decoration: BoxDecoration(
+                        color: colorScheme.tertiary,
+                        borderRadius: BorderRadius.circular(12.0),
+                      ),
+                      child: Title(
+                        color: Colors.white, 
+                        child: Text(
+                          'TIME', 
+                          style: GoogleFonts.quicksand(
+                            color: colorScheme.onTertiary, 
+                            fontWeight: FontWeight.bold,
+                          )
                         )
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(top: 17.0), 
-                      child: Text(
-                      ':',
-                      style: TextStyle(
-                          color: Color(0xFFF8F0DF),
-                          fontSize: 18.0,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                    const SizedBox(height: 5),
+                    HourAndMinutePickerWidget(
+                      initialHour: _selectedHour, 
+                      initialMinute: _selectedMinute, 
+                      onHourChanged: (hour) {
+                        _selectedHour = hour;
+                      }, 
+                      onMinuteChanged: (minute) {
+                        _selectedMinute = minute;
+                      }, 
                     ),
-                    SizedBox(
-                      height: 200,
-                      width: 100,
-                      child: ListWheelScrollView.useDelegate(
-                        controller: _minuteController,
-                        useMagnifier: true,
-                        magnification: 1.2,
-                        physics: const FixedExtentScrollPhysics(),
-                        itemExtent: 50,
-                        onSelectedItemChanged: (index) {
-                          setState(() {
-                            _selectedMinute = index;
-                          });
-                        }
-                        ,
-                        childDelegate: ListWheelChildBuilderDelegate(
-                          childCount: 60,
-                          builder: (context, index) {
-                            final String formattedIndex = index.toString().padLeft(2, '0');
-                            final bool isSelected = index == _selectedMinute;
-                            return ListTile(
-                              title: Center(child: Text(
-                                formattedIndex, 
-                                style: TextStyle(
-                                  color: isSelected ? const Color(0xFFF8F0DF) : const Color.fromARGB(255, 211, 204, 188),
-                                  fontSize: 18.0, 
-                                  fontWeight: FontWeight.w500)
-                                )
-                              ),
-                            );
-                          }
-                        )
-                      ),
-                    ),
-                    ],
-                    ),
+                    const SizedBox(height: 8),
                     DateDisplayWidget(
                       initialDate: DateTime.now(),
                       onDateChanged: (date) {

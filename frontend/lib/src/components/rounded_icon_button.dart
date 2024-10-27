@@ -19,16 +19,21 @@ class _RoundedIconButtonState extends State<RoundedIconButton> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
       decoration: ShapeDecoration(
-        color: const Color(0xFFB3C8C7),
+        color: colorScheme.secondary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
       ),
       child: IconButton(
         onPressed: () => print("gola"), 
-        icon: Icon(icon),
+        icon: Icon(
+          icon,
+          color: colorScheme.onSecondary,
+        ),
       ),
     );
   }
