@@ -20,6 +20,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   IconData _selectedIcon = Icons.edit;
   int _selectedMinute = DateTime.now().minute;
   final TextEditingController _nameFieldController = TextEditingController();
+  bool _showMoreOptions = false;
 
   @override
   Widget build(BuildContext context) {
@@ -90,15 +91,23 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         const SizedBox(width: 15),
                         Expanded(
                           child: TextFormField(
+                            style: GoogleFonts.quicksand(
+                              color: colorScheme.onSurface,
+                              fontWeight: FontWeight.bold,
+                            ),
                             controller: _nameFieldController,
                             decoration: InputDecoration(
-                              labelText: 'Your task name',
+                              hintText: 'Your task name',
+                              hintStyle: GoogleFonts.quicksand(
+                                color: colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w500,
+                              ),
                               fillColor: colorScheme.secondary,
                               enabledBorder: OutlineInputBorder(
                                 borderSide: BorderSide(
                                   color: colorScheme.outline,
                                   width: 2,
-                                  ),
+                                ),
                                 borderRadius: BorderRadius.circular(12.0),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -153,7 +162,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         borderRadius: BorderRadius.circular(12.0),
                       ),
                       child: Title(
-                        color: Colors.white, 
+                        color: colorScheme.onTertiary, 
                         child: Text(
                           'TIME', 
                           style: GoogleFonts.quicksand(
@@ -186,21 +195,85 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     ),
                   ])
               ),
-              TextFormField(
-                decoration: InputDecoration(labelText: 'Decription of the task'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor ingrese la descripción de la tarea';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _taskDescription = value!;
-                },
+              const SizedBox(height: 15),
+              Row(
+                children: [
+                  Expanded(
+                    child: Divider(
+                      color: colorScheme.outlineVariant,
+                    ),
+                  ),
+                  FilledButton(
+                    style: ButtonStyle(
+                      alignment: Alignment.center,
+                      shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                      ),
+                      backgroundColor: WidgetStatePropertyAll(colorScheme.surfaceContainerHighest), 
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _showMoreOptions = !_showMoreOptions;
+                      });
+                    },
+                    child: Text(
+                      'More options',
+                      style: GoogleFonts.quicksand(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    )
+                  ),
+                  Expanded(
+                    child: Divider(
+                      color: colorScheme.outlineVariant,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 15),
+              if (_showMoreOptions)
+                TextFormField(
+                  decoration: InputDecoration(
+                    labelText: 'Description',
+                    labelStyle: GoogleFonts.quicksand(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    fillColor: colorScheme.secondary,
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: colorScheme.outline,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                        color: colorScheme.secondary,
+                        width: 2,
+                      ),
+                      borderRadius: BorderRadius.circular(12.0),
+                    ),
+                  ),
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
+              Container(
+                width: double.infinity,
+                alignment: Alignment.center,
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: const WidgetStatePropertyAll<Size>(Size(280, 29)),
+                    backgroundColor: WidgetStatePropertyAll<Color>(colorScheme.primary),
+                    shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(25.0),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     _formKey.currentState!.save();
                     // Aquí puedes manejar el envío del formulario
@@ -209,8 +282,16 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     );
                   }
                 },
-                child: const Text('Create task'),
+                child: Text(
+                  'Create task',
+                  style: TextStyle(
+                    color: colorScheme.onPrimary,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  ),
+                )
               ),
+              )
             ],
           ),
         ),
