@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 
-class RoundedIconButton extends StatefulWidget {
-  final IconData initialIcon;
-  final ValueChanged<IconData> onIconChanged;
+class RoundedIconButton extends StatelessWidget {
+  final IconData icon;
+  final void Function() onPressed;
 
   const RoundedIconButton({
     super.key,
-    required this.initialIcon,
-    required this.onIconChanged,
+    required this.icon,
+    required this.onPressed,
   });
-
-  @override
-  State<RoundedIconButton> createState() => _RoundedIconButtonState();
-}
-
-class _RoundedIconButtonState extends State<RoundedIconButton> {
-  late IconData icon = widget.initialIcon;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +22,7 @@ class _RoundedIconButtonState extends State<RoundedIconButton> {
         ),
       ),
       child: IconButton(
-        onPressed: () => print("gola"), 
+        onPressed: onPressed, 
         icon: Icon(
           icon,
           color: colorScheme.onSecondary,

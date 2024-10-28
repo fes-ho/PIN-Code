@@ -5,5 +5,5 @@ class Activity(SQLModel):
     icon: Optional[str]
     name: str
     description: Optional[str]
-    duration: int
+    duration: Optional[int]
     estimated_duration: Optional[int]

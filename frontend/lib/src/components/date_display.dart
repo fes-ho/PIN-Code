@@ -28,7 +28,7 @@ class _DateDisplayWidgetState extends State<DateDisplayWidget> {
         DateTime? pickedDate = await showDatePicker(
           context: context,
           initialDate: date,
-          firstDate: DateTime(2000),
+          firstDate: DateTime.now(),
           lastDate: DateTime(2101),
         );
         if (pickedDate != null && pickedDate != date) {
