@@ -1,7 +1,7 @@
 from uuid import UUID, uuid4
 from sqlmodel import Field, Relationship
 from .frequency import Frequency
-from .activity import Activity
+from schemas import Activity
 from .day_time import DayTime
 from .quest import Quest
 from typing import TYPE_CHECKING, List

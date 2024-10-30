@@ -26,7 +26,7 @@ def populate_initial_data():
             name="Test Task",
             description="Test Description",
             icon="12342",
-            date=datetime(2024, 3, 3),
+            date=datetime.fromisoformat("2024-03-03 00:00:00"),
             estimated_duration=30,
             duration=30,
             member_id=member.id,
@@ -37,13 +37,13 @@ def populate_initial_data():
             days_of_the_month=[1,14,31],
             habit_id=habit.id
         )
-        Frequency.model_validate(frequency)
         quest = Quest(
             habit_id=habit.id,
             date=Date(2024, 3, 3),
             currentCount=0
         )
         
+        Frequency.model_validate(frequency)
         session.add(task)
         session.add(frequency)
         session.add(member)
