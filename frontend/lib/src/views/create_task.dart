@@ -5,6 +5,8 @@ import 'package:frontend/src/components/hour_and_minute_picker.dart';
 import 'package:frontend/src/components/icon_picker.dart';
 import 'package:frontend/src/components/rounded_icon_button.dart';
 import 'package:frontend/src/domain/icons.dart';
+import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/services/task_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateTaskScreen extends StatefulWidget {
@@ -21,11 +23,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
   String _taskName = '';
   String _taskDescription = '';
-
-  DateTime _dueDate = DateTime.now();
+  DateTime _selectedDate = DateTime.now();
   int _selectedHour = DateTime.now().hour;
-  IconData _selectedIcon = Icons.edit;
   int _selectedMinute = DateTime.now().minute;
+  IconData _selectedIcon = Icons.edit;
+  
   bool _showMoreOptions = false;
 
   @override
@@ -183,7 +185,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                         initialDate: DateTime.now(),
                         onDateChanged: (date) {
                           setState(() {
-                            _dueDate = date;
+                            _selectedDate = date;
                           });
                         },
                       ),
@@ -261,6 +263,21 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
+                      Task task = Task(
+                        id: '1',
+                        name: _taskName,
+                        description: _taskDescription,
+                        icon: _selectedIcon.codePoint.toString(),
+                        date: DateTime(
+                          _selectedDate.year,
+                          _selectedDate.month,
+                          _selectedDate.day,
+                          _selectedHour,
+                          _selectedMinute,
+                        ),
+                        memberId: '5da9ca3e-99e1-4556-b0fc-63caeec1118f',
+                      );
+                      createTask(task);
                       // Aquí puedes manejar el envío del formulario
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('Tarea creada con éxito')),
