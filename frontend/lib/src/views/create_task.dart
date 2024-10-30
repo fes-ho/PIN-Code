@@ -13,10 +13,10 @@ class CreateTaskScreen extends StatefulWidget {
   const CreateTaskScreen({super.key});
 
   @override
-  _CreateTaskScreenState createState() => _CreateTaskScreenState();
+  CreateTaskScreenState createState() => CreateTaskScreenState();
 }
 
-class _CreateTaskScreenState extends State<CreateTaskScreen> {
+class CreateTaskScreenState extends State<CreateTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameFieldController = TextEditingController();
   final TextEditingController _descriptionFieldController = TextEditingController();
@@ -232,6 +232,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 const SizedBox(height: 15),
                 if (_showMoreOptions)
                   TextFormField(
+                    style: GoogleFonts.quicksand(
+                      color: colorScheme.onSurface,
+                      fontWeight: FontWeight.bold,
+                    ),
                     controller: _descriptionFieldController,
                     maxLines: 2,
                     decoration: TextFieldDecorator.getTextFieldDecoration(
@@ -264,6 +268,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       Task task = Task(
+                        // This id is not used in the actual implementation
                         id: '1',
                         name: _taskName,
                         description: _taskDescription,
@@ -275,12 +280,12 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                           _selectedHour,
                           _selectedMinute,
                         ),
+                        // TODO: Replace with actual member ID
                         memberId: '5da9ca3e-99e1-4556-b0fc-63caeec1118f',
                       );
                       createTask(task);
-                      // Aquí puedes manejar el envío del formulario
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Tarea creada con éxito')),
+                        const SnackBar(content: Text('Task created successfully')),
                       );
                     }
                   },
