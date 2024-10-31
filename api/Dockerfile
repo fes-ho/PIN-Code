@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.10-alpine
+FROM python:3.12-alpine
 
 # Set environment variables for Poetry
 ENV POETRY_VERSION=1.8.1 \
@@ -20,6 +20,8 @@ ENV PATH="$POETRY_HOME/bin:$PATH"
 # Set the working directory inside the container
 WORKDIR /app
 
+ENV PYTHONPATH=/app/api/src
+
 # Copy the poetry files
 COPY pyproject.toml poetry.lock ./
 
@@ -27,10 +29,10 @@ COPY pyproject.toml poetry.lock ./
 RUN poetry install --no-root
 
 # Copy the application code
-COPY src ./src
+COPY src ./api/src
 
 # Expose the FastAPI port
 EXPOSE 8000
 
 # Command to run the FastAPI app using Uvicorn
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "api.src.main:app", "--host", "0.0.0.0", "--port", "8000"]
