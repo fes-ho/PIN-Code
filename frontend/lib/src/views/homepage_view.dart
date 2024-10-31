@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
+import 'package:frontend/src/views/create_task.dart';
 
 
 class HomePageView extends StatefulWidget {
@@ -40,6 +41,16 @@ class HomePageView extends StatefulWidget {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const CreateTaskScreen()),
+          );
+        },
+        backgroundColor: Colors.purple,
+        child: const Icon(Icons.add, color: Colors.white),
       ),
     );
   }
