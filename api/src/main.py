@@ -9,11 +9,6 @@ import os
 logger.info("Loading the environment variables")
 load_dotenv()
 
-app = FastAPI(
-    responses={404: {"description": "Not found"}},
-)
-app.include_router(api_router)
-
 if os.getenv("CREATE_DB_AND_TABLES", "false").lower() == "true":
     logger.info("Dropping the database tables")
     drop_all_tables()
@@ -30,6 +25,11 @@ if (
 if os.getenv("POPULATE_INITIAL_DATA", "false").lower() == "true":
     logger.info("Populating initial data")
     populate_initial_data()
+
+app = FastAPI(
+    responses={404: {"description": "Not found"}},
+)
+app.include_router(api_router)
 
 if __name__ == "__main__":
     host = os.getenv("HOST", "127.0.0.1")
