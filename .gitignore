@@ -34,3 +34,5 @@ apiErrors.log
 
 # Ignore Python bytecode files
 __pycache__/
+
+.idea
