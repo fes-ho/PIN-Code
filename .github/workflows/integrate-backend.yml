@@ -24,6 +24,7 @@ jobs:
       run: |
         pip install poetry
         cd ./api
+        poetry lock # Lock dependencies
         poetry install # Install project dependencies
 
     - name: Run Uvicorn in the background and capture logs
