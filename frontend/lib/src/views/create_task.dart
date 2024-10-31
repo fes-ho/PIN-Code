@@ -46,7 +46,10 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
         ),
         centerTitle: true,
         backgroundColor: colorScheme.surfaceBright,
-        leading: Icon(Icons.arrow_back, color: colorScheme.onSurface),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
         elevation: 1,
       ),
       body: SafeArea(
