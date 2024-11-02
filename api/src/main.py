@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 import uvicorn
 from services import create_db_and_tables, drop_all_tables, empty_db_data, logger
-from routers import member_router as api_router
+from routers import member_router as member_router, router as health_router
 from scripts import populate_initial_data
 import os
 
@@ -12,7 +12,8 @@ load_dotenv()
 app = FastAPI(
     responses={404: {"description": "Not found"}},
 )
-app.include_router(api_router)
+app.include_router(member_router)
+app.include_router(health_router)
 
 if __name__ == "__main__":
     host = os.getenv("HOST", "127.0.0.1")
@@ -39,7 +40,7 @@ if os.getenv("POPULATE_INITIAL_DATA", "false").lower() == "true":
 app = FastAPI(
     responses={404: {"description": "Not found"}},
 )
-app.include_router(api_router)
+app.include_router(member_router)
 
 if __name__ == "__main__":
     host = os.getenv("HOST", "127.0.0.1")
