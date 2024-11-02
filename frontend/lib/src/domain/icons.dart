@@ -1,0 +1,28 @@
+import 'package:flutter/material.dart';
+
+final List<IconData> icons = [
+  Icons.home,
+  Icons.work,
+  Icons.school,
+  Icons.shopping_cart,
+  Icons.fitness_center,
+  Icons.local_cafe,
+  Icons.local_dining,
+  Icons.edit,
+  Icons.alarm,
+  Icons.book,
+  Icons.camera,
+  Icons.directions_car,
+  Icons.flight,
+  Icons.hotel,
+  Icons.music_note,
+  Icons.pets,
+  Icons.phone,
+  Icons.restaurant,
+  Icons.shopping_bag,
+  Icons.sports_soccer,
+  Icons.star,
+  Icons.train,
+  Icons.tv,
+  Icons.wifi,
+];

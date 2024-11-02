@@ -8,16 +8,28 @@
             "name": "Python Debugger: FastAPI",
             "type": "debugpy",
             "request": "launch",
-            "module": "uvicorn",
-            "args": [
-                "api.src.main:app",
-                "--reload"
-            ],
+            "program": "${workspaceFolder}/api/src/main.py",
             "jinja": true,
             "envFile": "${workspaceFolder}/api/.env",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/api/src"
             }
+        },
+        {
+            "name": "Flutter: Main Application",
+            "type": "dart",
+            "request": "launch",
+            "program": "${workspaceFolder}/frontend/lib/main.dart",
+            "cwd": "${workspaceFolder}/frontend",
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Full Stack",
+            "configurations": [
+                "Python Debugger: FastAPI",
+                "Flutter: Main Application"
+            ]
         }
     ]
 }
