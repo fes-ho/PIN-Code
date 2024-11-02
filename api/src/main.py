@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 import uvicorn
 from services import create_db_and_tables, drop_all_tables, empty_db_data, logger
-from routers import router as api_router
+from routers import member_router as api_router
 from scripts import populate_initial_data
 import os
 
