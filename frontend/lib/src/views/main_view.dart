@@ -15,6 +15,6 @@ class MainView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InitialPageView();
+    return const InitialPageView();
   }
 }

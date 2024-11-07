@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:frontend/src/views/create_task.dart';
@@ -8,36 +9,43 @@ class HomePageView extends StatefulWidget {
   const HomePageView({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _HomePageViewState createState() => _HomePageViewState();
+  HomePageViewState createState() => HomePageViewState();
 }
 
-  class _HomePageViewState extends State<HomePageView> {
-  CalendarFormat _calendarFormat = CalendarFormat.month;
+class HomePageViewState extends State<HomePageView> {
+  CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  DateTime _selectedDay = DateTime.now();
+
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: colorScheme.surface,
+      appBar: AppBar(
+        title: Text(
+          DateFormat('MMMM, d').format(_focusedDay),
+          style: GoogleFonts.lexendDeca(
+            color: colorScheme.primary,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        backgroundColor: colorScheme.surfaceBright,
+      ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only( left: 15, right: 15, top: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Task List',
-                style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
               _buildCalendar(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 10),
+              Divider(color: colorScheme.outlineVariant),
               //_buildProgressBar(),
               const SizedBox(height: 20),
               _buildTaskDetails(),
               const Spacer(),
-              
             ],
           ),
         ),
@@ -49,23 +57,39 @@ class HomePageView extends StatefulWidget {
             MaterialPageRoute(builder: (context) => const CreateTaskScreen()),
           );
         },
-        backgroundColor: Colors.purple,
-        child: const Icon(Icons.add, color: Colors.white),
+        backgroundColor: colorScheme.tertiary,
+        child: Icon(Icons.add, color: colorScheme.onTertiary),
       ),
     );
   }
 
-Widget _buildCalendar() {
+  Widget _buildCalendar() {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.only(left: 5, right: 5, top: 12, bottom: 3),
       decoration: BoxDecoration(
-        color: Colors.grey[900],
+        color: colorScheme.secondaryContainer,
         borderRadius: BorderRadius.circular(12),
       ),
       child: TableCalendar(
+        headerVisible: false,
         firstDay: DateTime.utc(2020, 1, 1),
         lastDay: DateTime.utc(2030, 12, 31),
         focusedDay: _focusedDay,
+        daysOfWeekStyle: DaysOfWeekStyle(
+          weekdayStyle: GoogleFonts.quicksand(
+            color: colorScheme.onSecondaryContainer,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+          weekendStyle: GoogleFonts.quicksand(
+            color: colorScheme.onSecondaryContainer,
+            fontSize: 12,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        startingDayOfWeek: StartingDayOfWeek.monday,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
           return isSameDay(_selectedDay, day);
@@ -87,16 +111,39 @@ Widget _buildCalendar() {
           _focusedDay = focusedDay;
         },
 	  calendarStyle: CalendarStyle(
-          todayDecoration: const BoxDecoration(
-            color: Colors.blue,
+          todayDecoration: BoxDecoration(
             shape: BoxShape.circle,
+            border: Border.fromBorderSide(
+                BorderSide(
+                  width: 1.5,
+                  color: colorScheme.primary,
+                )
+            ), 
           ),
           selectedDecoration: BoxDecoration(
-            color: Colors.amber[800],
+            color: colorScheme.primary,
             shape: BoxShape.circle,
           ),
-          defaultTextStyle: const TextStyle(color: Colors.white),
-          weekendTextStyle: const TextStyle(color: Colors.white),
+          selectedTextStyle: GoogleFonts.quicksand(
+            color: colorScheme.onPrimary,
+            fontSize: 16,
+            fontWeight: FontWeight.w800,
+          ),
+          todayTextStyle: GoogleFonts.quicksand(
+            color: colorScheme.onSecondaryContainer,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          defaultTextStyle: GoogleFonts.quicksand(
+            color: colorScheme.onSecondaryContainer,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
+          weekendTextStyle: GoogleFonts.quicksand(
+            color: colorScheme.onSecondaryContainer,
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+          ),
           outsideTextStyle: const TextStyle(color: Colors.grey),
         ),
         headerStyle: HeaderStyle(
@@ -178,8 +225,4 @@ Widget _buildCalendar() {
       ),
     );
   }
-
-  
-
- 
 }

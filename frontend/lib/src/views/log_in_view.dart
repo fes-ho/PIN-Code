@@ -40,16 +40,16 @@ class _LogInState extends State<LogIn> {
           children: [
             Column(
               children: [
-                Text("Email"),
+                const Text("Email"),
                 TextField(
                   controller: _emailEditingController,
                 ),
               ],
             ),
-            SizedBox(height: 33,),
+            const SizedBox(height: 33,),
             Column(
               children: [
-                Text("Password"),
+                const Text("Password"),
                 TextField(
                   controller: _passwordEditingController,
                 ),
@@ -60,7 +60,7 @@ class _LogInState extends State<LogIn> {
                 _emailEditingController.text,
                 _passwordEditingController.text
               ).then((_) => Navigator.pushNamed(context, SplashLoadingView.routeName));
-            }, child: Text("Sign In"))
+            }, child: const Text("Sign In"))
           ],
         ),
       ),
