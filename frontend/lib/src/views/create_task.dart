@@ -276,6 +276,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         id: '1',
                         name: _taskName,
                         description: _taskDescription,
+                        isCompleted: false,
                         icon: _selectedIcon.codePoint.toString(),
                         date: DateTime(
                           _selectedDate.year,
