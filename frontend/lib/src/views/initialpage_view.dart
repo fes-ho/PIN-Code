@@ -7,11 +7,10 @@ class InitialPageView extends StatefulWidget {
   static const String routeName = "/InitialPageView";
 
   @override
-  // ignore: library_private_types_in_public_api
-  _InitialPageViewState createState() => _InitialPageViewState();
+  InitialPageViewState createState() => InitialPageViewState();
 }
 
-class _InitialPageViewState extends State<InitialPageView> {
+class InitialPageViewState extends State<InitialPageView> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
@@ -29,18 +28,17 @@ class _InitialPageViewState extends State<InitialPageView> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Initial Page'),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.today),
+            label: 'Today',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.people),
@@ -56,7 +54,7 @@ class _InitialPageViewState extends State<InitialPageView> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: colorScheme.primary,
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
       ),
