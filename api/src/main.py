@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI
 from dotenv import load_dotenv
+from middleware import AuhtorizationMiddleware
 import uvicorn
 from services import create_db_and_tables, drop_all_tables, empty_db_data, logger
 from routers import member_router as member_router, router as health_router
@@ -14,6 +15,7 @@ app = FastAPI(
 )
 app.include_router(member_router)
 app.include_router(health_router)
+app.add_middleware(AuhtorizationMiddleware)
 
 if os.getenv("CREATE_DB_AND_TABLES", "false").lower() == "true":
     logger.info("Dropping the database tables")

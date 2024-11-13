@@ -12,3 +12,8 @@ def read_members(db: Session = Depends(get_session)):
 def get_member_by_id(member_id: UUID, db: Session = Depends(get_session)):
     member = db.get(Member, member_id)
     return member
+
+def get_member_username_by_id(member_id: UUID, db: Session = Depends(get_session)):
+    member = get_member_by_id(member_id, db)
+    if member:
+        return member.username

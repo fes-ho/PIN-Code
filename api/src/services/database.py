@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, Session, create_engine
 from services import get_settings
 from models import *
 
-engine = create_engine(get_settings().connection_string, echo=True)
+engine = create_engine(get_settings().connection_string)
 
 def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
