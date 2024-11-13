@@ -17,10 +17,11 @@ def verify_jwt(request: Request):
     appSettings = get_settings()
     
     try:
-        return jwt.decode(token, appSettings.secret_jwt_key, algorithms=['HS256'])
+        return jwt.decode(token, appSettings.secret_jwt_key, algorithms=['HS256'], audience="authenticated")
 
     except ExpiredSignatureError:
         raise HTTPException(status_code=401, detail="Token expired")
 
-    except JWTError:
+    except JWTError as e:
+        logger.info(e)
         raise HTTPException(status_code=401, detail="Invalid token")
