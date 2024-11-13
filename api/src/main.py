@@ -15,6 +15,7 @@ app = FastAPI(
 )
 app.include_router(member_router)
 app.include_router(health_router)
+app.add_middleware(AuhtorizationMiddleware)
 
 if os.getenv("CREATE_DB_AND_TABLES", "false").lower() == "true":
     logger.info("Dropping the database tables")
