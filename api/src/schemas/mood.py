@@ -1,7 +1,8 @@
+from __future__ import annotations
 from uuid import UUID
-from sqlalchemy import Date
 from sqlmodel import SQLModel
-from models import TypesOfMood
+from .types_of_mood import TypesOfMood
+from sqlite3 import Date
 
 class MoodBase(SQLModel):
     day: Date
