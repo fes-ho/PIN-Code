@@ -1,14 +1,13 @@
 import 'dart:convert';
 import 'package:frontend/src/config.dart';
 import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/services/utils/headers/headers_factory.dart';
 import 'package:http/http.dart';
 
 Future<Task> createTask(Task task) async {
   final response = await post(
     Uri.parse('${Config.apiUrl}/tasks'),
-    headers: <String, String>{
-      'Content-Type': 'application/json; charset=UTF-8',
-    },
+    headers: HeadersFactory.getDefaultHeaders(),
     body: jsonEncode(task.toJson()),  
   );
 
