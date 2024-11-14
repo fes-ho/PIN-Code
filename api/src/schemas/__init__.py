@@ -2,10 +2,10 @@ from .member import MemberBase
 from .activity import Activity
 from .task import TaskBase, TaskCreate
 from .mood import MoodBase
-from .types_of_mood import TypesOfMood
+from .type_of_mood import TypeOfMood
 
 __all__ = [
-    "TypesOfMood",
+    "TypeOfMood",
     "MemberBase",
     "Activity",
     "TaskBase",
