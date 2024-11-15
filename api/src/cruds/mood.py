@@ -1,3 +1,4 @@
+from sqlite3 import Date
 from uuid import UUID
 from fastapi import Depends
 from sqlmodel import Session, select
@@ -13,6 +14,11 @@ def create_mood(moodBase: MoodBase, db: Session = Depends(get_session)):
     db.refresh(mood)
     return mood
 
-def get_mood(id: UUID, db: Session = Depends(get_session)):
-    mood = db.exec(select(Mood).where(Mood.member_id == id))
+def get_mood(id: UUID, date: Date, db: Session = Depends(get_session)):
+    mood = db.exec(select(Mood).where(Mood.member_id == id and Mood.day == date))
     return mood
+
+def delete_mood(mood: Mood, db: Session = Depends(get_session)):
+    db.delete(mood)
+    db.commit()
+    return True

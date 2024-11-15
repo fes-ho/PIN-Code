@@ -1,3 +1,4 @@
+from sqlite3 import Date
 from uuid import UUID
 from fastapi import APIRouter, Depends
 from services import get_session
@@ -15,9 +16,10 @@ def create_mood(
 ):
     return create_mood_crud(mood, db)
 
-@router.get("/{id}/mood")
+@router.get("/{id}/mood/{date}")
 def get_mood(
     id: UUID,
+    date: Date,
     db = Depends(get_session)
 ):
-    return get_mood_crud(id, db)
+    return get_mood_crud(id, date, db)
