@@ -7,4 +7,3 @@ class TypeOfMood(Enum):
     NEUTRAL = "neutral"
     POOR = "poor"
     BAD = "bad"
-    AWFUL = "awful"

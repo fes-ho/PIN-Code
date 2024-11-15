@@ -5,7 +5,6 @@ enum TypeOfMood {
   neutral,
   poor,
   bad,
-  awful,
 }
 
 TypeOfMood typeFromMoodfromJson(String json) {
@@ -22,8 +21,6 @@ TypeOfMood typeFromMoodfromJson(String json) {
       return TypeOfMood.poor;
     case "bad":
       return TypeOfMood.bad;
-    case "awful":
-      return TypeOfMood.awful;
     default:
       throw ArgumentError("Unknown mood: $json");
   }
