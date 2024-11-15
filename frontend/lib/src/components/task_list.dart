@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/domain/task.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/src/components/task_dialog.dart';
 
 class TaskList extends StatefulWidget {
   final List<Task> tasks;
@@ -11,6 +13,25 @@ class TaskList extends StatefulWidget {
 }
 
 class _TaskListState extends State<TaskList> {
+  void _showBottomSheet(BuildContext context, Task task) {
+    Navigator.of(context).push(PageRouteBuilder(
+      opaque: false,
+      barrierDismissible: true,
+      pageBuilder: (BuildContext context, _, __) {
+        return TaskDialog(task: task);
+      },
+      transitionsBuilder: (_, Animation<double> animation, __, Widget child) {
+        return SlideTransition(
+          position: Tween<Offset>(
+            begin: const Offset(0, 1),
+            end: Offset.zero,
+          ).animate(animation),
+          child: child,
+        );
+      },
+    ));
+  }
+
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -20,7 +41,8 @@ class _TaskListState extends State<TaskList> {
       itemCount: widget.tasks.length,
       itemBuilder: (context, index) {
         final task = widget.tasks[index];
-        final taskIcon = IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
+        final taskIcon =
+            IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
         final isCompleted = task.isCompleted;
         return Card(
           margin: const EdgeInsets.only(bottom: 15.0),
@@ -35,21 +57,23 @@ class _TaskListState extends State<TaskList> {
             leading: Icon(taskIcon, color: colorScheme.secondary),
             title: Text(
               task.name,
-              style: TextStyle(
+              style: GoogleFonts.quicksand(
                 color: colorScheme.onSurface,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 decoration: isCompleted ? TextDecoration.lineThrough : null,
               ),
             ),
             subtitle: Text(
               task.description,
-              style: TextStyle(
+              style: GoogleFonts.quicksand(
                 color: colorScheme.onSurface,
                 decoration: isCompleted ? TextDecoration.lineThrough : null,
               ),
             ),
             trailing: IconButton(
-              icon: Icon(isCompleted ? Icons.check_circle : Icons.radio_button_unchecked),
+              icon: Icon(isCompleted
+                  ? Icons.check_circle
+                  : Icons.radio_button_unchecked),
               color: isCompleted ? colorScheme.primary : colorScheme.outline,
               onPressed: () {
                 setState(() {
@@ -57,6 +81,9 @@ class _TaskListState extends State<TaskList> {
                 });
               },
             ),
+            onTap: () {
+              _showBottomSheet(context, task);
+            },
           ),
         );
       },
