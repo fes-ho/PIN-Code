@@ -286,7 +286,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         // TODO: Replace with actual member ID
                         memberId: '5da9ca3e-99e1-4556-b0fc-63caeec1118f',
                       );
-                      createTask(task);
+                      TaskService().createTask(task);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Task created successfully')),
                       );

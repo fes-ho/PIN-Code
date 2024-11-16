@@ -6,15 +6,23 @@ import 'package:http/http.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MemberService {
-  MemberService._internal();
+  MemberService._internal({HeadersFactory? headersFactory}) {
+    _headersFactory = headersFactory ?? HeadersFactory();
+  }
 
-  factory MemberService() {
+  factory 
+  MemberService({HeadersFactory? headersFactory, Client? client}) {
+    _memberService.._headersFactory = headersFactory ?? HeadersFactory();
+    _memberService._client = client ?? Client();
+
     return _memberService;
   }
 
   static final MemberService _memberService = MemberService._internal();
 
   Member? _member;
+  late HeadersFactory _headersFactory;
+  late Client _client;
 
   Future<Member> getMember() async {
     if (_member == null) {
@@ -72,9 +80,9 @@ class MemberService {
   Future<String> getUsername() async{
     String userId = getCurrentUserId();
 
-    final response = await get(
+    final response = await _client.get(
       Uri.parse('${Config.apiUrl}/members/$userId/username'),
-      headers: HeadersFactory.getDefaultHeaders()
+      headers: _headersFactory.getDefaultHeaders()
     );
 
     if (response.statusCode != 201) {
