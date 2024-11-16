@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from services import verify_jwt
 from starlette.middleware.base import BaseHTTPMiddleware
 
-EXCLUDED_PATHS = ['/health']
+EXCLUDED_PATHS = ['/health', '/docs', '/redoc', '/openapi.json']
 
 class AuhtorizationMiddleware(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next):
