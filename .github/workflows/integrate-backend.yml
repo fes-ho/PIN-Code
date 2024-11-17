@@ -21,17 +21,25 @@ jobs:
         python-version: '3.12.7'
         cache: 'pip'
 
+    - name: Configure Poetry
+      run: |
+        pip install poetry==${{ env.POETRY_VERSION }}
+        poetry config virtualenvs.in-project true
+      env:
+        POETRY_VERSION: 1.8.1
+
     - name: Cache Poetry dependencies
       uses: actions/cache@v4
       with:
-        path: ~/.cache/pypoetry
-        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        path: |
+          api/.venv
+          ~/.cache/pypoetry
+        key: poetry-${{ runner.os }}-${{ hashFiles('api/poetry.lock') }}
         restore-keys: |
-          ${{ runner.os }}-poetry-
+          poetry-${{ runner.os }}-
 
     - name: Install dependencies
       run: |
-        pip install poetry
         cd ./api
         poetry install --with test
 
@@ -46,7 +54,7 @@ jobs:
     - name: Upload coverage to Codacy
       env:
         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./api/coverage.xml
+      run: bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./api/coverage.xml
 
     - name: Start API and run health check
       run: |
