@@ -44,13 +44,7 @@ jobs:
         API_URL: ${{ vars.API_URL }}
       run: flutter test --coverage
 
-    - name: Generate lcov report
-      run: lcov --directory . --capture --output-file coverage/lcov.info
-
-    - name: Convert lcov to XML
-      run: genhtml coverage/lcov.info --output-directory coverage --prefix $(pwd) --output-format xml
-    
     - name: Upload coverage to Codacy
       env:
         CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
-      run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.xml
+      run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.info
