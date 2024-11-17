@@ -1,0 +1,51 @@
+name: Integrate frontend
+
+on:
+  pull_request:
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/integrate-frontend.yml'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+  
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Java
+      uses: actions/setup-java@4.5.0
+      with:
+        java-version: '17'
+
+    - name: Set up Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        channel: stable
+        flutter-version: '3.5.3'
+
+    - name: Setup lcov
+      run: sudo apt-get install lcov
+
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Run tests with coverage
+      run: flutter test --coverage
+
+    - name: Generate lcov report
+      run: lcov --directory . --capture --output-file coverage/lcov.info
+
+    - name: Convert lcov to XML
+      run: genhtml coverage/lcov.info --output-directory coverage --prefix $(pwd) --output-format xml
+    
+    - name: Upload coverage to Codacy
+      env:
+        CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+      run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r ./coverage/lcov.xml
