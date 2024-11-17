@@ -28,6 +28,8 @@ jobs:
         poetry install --with test
 
     - name: Run pytest
+      env:
+        TEST_USER_TOKEN: ${{ secrets.TEST_USER_TOKEN }}
       run: |
         cd api
         poetry run pytest -v --cov-report xml:coverage.xml --cov=src
