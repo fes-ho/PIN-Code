@@ -3,6 +3,7 @@ import 'package:frontend/src/services/exceptions/not_logged_in_member_exception.
 import 'package:frontend/src/services/member_service.dart';
 import 'package:frontend/src/views/log_in_view.dart';
 import 'package:frontend/src/views/main_view.dart';
+import 'package:get_it/get_it.dart';
 
 class SplashLoadingView extends StatefulWidget {
   const SplashLoadingView({super.key});
@@ -27,7 +28,7 @@ class _SplashLoadingView extends State<SplashLoadingView> {
     }
 
     try {
-      await MemberService().getMember();
+      await GetIt.I<MemberService>().getMember();
 
       Navigator.restorablePushAndRemoveUntil(
         context,

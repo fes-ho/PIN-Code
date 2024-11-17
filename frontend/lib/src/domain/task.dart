@@ -20,7 +20,7 @@ class Task {
         name = json['name'],
         description = json['description'],
         icon = json['icon'],
-        date = DateTime.parse(json['date']);
+        date = DateTime.parse(json['date'],);
 
   Map<String, dynamic> toJson() {
     return {
