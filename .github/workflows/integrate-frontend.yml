@@ -37,6 +37,8 @@ jobs:
       run: flutter pub get
     
     - name: Run tests with coverage
+      env:
+        API_URL: ${{ secrets.API_URL }}
       run: flutter test --coverage
 
     - name: Generate lcov report
