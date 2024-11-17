@@ -28,9 +28,11 @@ def client_fixture(session: Session):
     app.dependency_overrides[get_session] = get_session_override
     client = TestClient(app)
     
-    # Get the token from the environment variable
-    client.headers["Authorization"] = f"Bearer {os.getenv('TEST_USER_TOKEN')}"
-    env =  os.environ
+    token = os.getenv('TEST_USER_TOKEN')
+    if not token:
+        pytest.fail("TEST_USER_TOKEN environment variable is not set")
+    
+    client.headers["Authorization"] = f"Bearer {token}"
     
     yield client
-    app.dependency_overrides.clear() 
+    app.dependency_overrides.clear()
