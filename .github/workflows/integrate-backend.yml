@@ -4,10 +4,10 @@ on:
   pull_request:
     paths:
       - 'api/**'
-      - '.github/workflows/build-backend.yml'
+      - '.github/workflows/integrate-backend.yml'
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -19,12 +19,20 @@ jobs:
       uses: actions/setup-python@v5
       with:
         python-version: '3.12.7'
+        cache: 'pip'
+
+    - name: Cache Poetry dependencies
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pypoetry
+        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-poetry-
 
     - name: Install dependencies
       run: |
         pip install poetry
         cd ./api
-        poetry lock
         poetry install --with test
 
     - name: Run pytest
@@ -37,39 +45,20 @@ jobs:
     - name: Upload coverage to Codacy
       run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
 
-    - name: Run Uvicorn in the background and capture logs
+    - name: Start API and run health check
       run: |
-        echo "Starting uvicorn server..."
         cd api
-        PYTHONPATH=./src nohup poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
-        sleep 5
-
-    - name: Wait for API to become available
-      run: |
-        echo "Waiting for the API to become available..."
-        TIMEOUT=30
-        INTERVAL=2
-        END=$((SECONDS + TIMEOUT))
+        echo "Starting uvicorn server..."
+        PYTHONPATH=./src poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000 &
         
-        while [ $SECONDS -lt $END ]; do
-          if curl -f http://localhost:8000/health; then
-            echo "API is up!"
-            break
-          else
-            echo "API is not ready yet, waiting $INTERVAL seconds..."
-            sleep $INTERVAL
-          fi
-        done
-        
-        if [ $SECONDS -ge $END ]; then
-          echo "API did not become available in time."
+        echo "Waiting for API to become available..."
+        timeout 30s bash -c 'while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' localhost:8000/health)" != "200" ]]; do sleep 1; done' || {
+          echo "API failed to start within timeout"
           exit 1
-        fi
-
-    - name: Run Tests
-      run: |
-        echo "Testing if the API is running..."
-        curl -f http://localhost:8000/health || (echo "API failed to start" && exit 1)
+        }
+        
+        echo "API is up and healthy!"
+        pkill -f uvicorn
 
     - name: Display Uvicorn logs on failure
       if: failure()
@@ -77,8 +66,3 @@ jobs:
         echo "Showing Uvicorn logs after failure..."
         cd api
         cat uvicorn.log
-
-    - name: Kill Uvicorn process
-      run: |
-        echo "Stopping the uvicorn server..."
-        pkill -f uvicorn
