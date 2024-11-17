@@ -16,11 +16,24 @@
             }
         },
         {
+            "name": "Python Debugger: Tests",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "pytest",
+            "args": [
+                "-v",
+                "--no-cov"
+            ],
+            "cwd": "${workspaceFolder}/api",
+            "envFile": "${workspaceFolder}/api/.env",
+            "justMyCode": false
+        },
+        {
             "name": "Flutter: Main Application",
             "type": "dart",
             "request": "launch",
             "program": "${workspaceFolder}/frontend/lib/main.dart",
-            "cwd": "${workspaceFolder}/frontend",
+            "cwd": "${workspaceFolder}/frontend"
         }
     ],
     "compounds": [
