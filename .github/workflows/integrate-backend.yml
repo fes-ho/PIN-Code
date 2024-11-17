@@ -27,10 +27,14 @@ jobs:
         poetry lock
         poetry install --with test
 
+    - name: Set environment variables
+      run: |
+        echo "TEST_USER_TOKEN=${{ secrets.TEST_USER_TOKEN }}" >> ./api/.env 
+
     - name: Run pytest
       run: |
         cd api
-        TEST_USER_TOKEN=${{ secrets.TEST_USER_TOKEN }} poetry run pytest -v --cov-report xml:coverage.xml --cov=src
+        poetry run pytest -v --cov-report xml:coverage.xml --cov=src
 
     - name: Upload coverage to Codacy
       run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
