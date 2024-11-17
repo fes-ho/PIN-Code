@@ -25,7 +25,7 @@ jobs:
         pip install poetry
         cd ./api
         poetry lock
-        poetry install
+        poetry install --with test
 
     - name: Run pytest
       run: |
