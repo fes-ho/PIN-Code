@@ -30,7 +30,10 @@ jobs:
     - name: Run pytest
       run: |
         cd api
-        poetry run pytest -v --no-cov
+        poetry run pytest -v --cov-report xml:coverage.xml --cov=src
+
+    - name: Upload coverage to Codacy
+      run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
 
     - name: Run Uvicorn in the background and capture logs
       run: |
