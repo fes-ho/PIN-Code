@@ -30,7 +30,7 @@ def client_fixture(session: Session):
     
     # Get the token from the environment variable
     client.headers["Authorization"] = f"Bearer {os.getenv('TEST_USER_TOKEN')}"
-    env = os.environ
+    env =  os.environ
     
     yield client
     app.dependency_overrides.clear() 
