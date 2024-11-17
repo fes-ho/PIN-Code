@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI
 from dotenv import load_dotenv
 from middleware import AuhtorizationMiddleware
 import uvicorn

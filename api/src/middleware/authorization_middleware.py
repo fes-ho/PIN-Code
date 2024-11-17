@@ -14,7 +14,7 @@ class AuhtorizationMiddleware(BaseHTTPMiddleware):
             verify_jwt(request)
 
             return await call_next(request)
-        
+
         except HTTPException as exc:
             return JSONResponse(content={"detail": exc.detail}, status_code=exc.status_code)
         
