@@ -10,6 +10,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
+    env:
+        TEST_USER_TOKEN: ${{ secrets.TEST_USER_TOKEN }}
 
     steps:
     - name: Checkout code
