@@ -24,10 +24,14 @@ jobs:
     - name: Cache Poetry dependencies
       uses: actions/cache@v4
       with:
-        path: ~/.cache/pypoetry
-        key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}-${{ runner.job }}-${{ github.sha }}
+        path: |
+          ~/.cache/pypoetry
+          ~/.local/share/pypoetry
+          api/.venv
+        key: ${{ runner.os }}-poetry-${{ hashFiles('api/poetry.lock') }}-${{ hashFiles('api/pyproject.toml') }}
         restore-keys: |
-          ${{ runner.os }}-poetry-${{ runner.job }}-
+          ${{ runner.os }}-poetry-${{ hashFiles('api/poetry.lock') }}-
+          ${{ runner.os }}-poetry-
 
     - name: Install dependencies
       run: |
