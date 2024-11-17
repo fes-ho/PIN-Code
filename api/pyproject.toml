@@ -14,6 +14,7 @@ sqlmodel = "^0.0.22"
 pydantic-settings = "^2.5.2"
 python-dotenv = "^1.0.1"
 python-jose = {version = "^3.3.0", extras = ["cryptography"]}
+coverage = "^7.6.7"
 
 [tool.poetry.group.test]
 optional = true
