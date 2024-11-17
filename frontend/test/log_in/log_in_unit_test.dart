@@ -32,7 +32,7 @@ void main() {
   });
 
   group('MemberService Tests', () {
-    test('Debe lanzar NotLoggedInMemberException si no hay sesión o usuario',
+    test('Throws NotLoggedInMemberException if there is no session or user provided',
         () async {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(null);
@@ -47,7 +47,7 @@ void main() {
           throwsA(isA<NotLoggedInMemberException>()));
     });
 
-    test('Debe retornar un Member válido si hay sesión y usuario', () async {
+    test('Returns Member if session and user are provided', () async {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(defaultSession);
       when(mockAuthClient.currentUser).thenReturn(defaultMockUser);
@@ -73,7 +73,7 @@ void main() {
       expect(member.username, 'test-username');
     });
 
-    test('Debe lanzar una excepción si falla el endpoint de username',
+    test('Throws excecption if the username endpoint fails',
         () async {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(defaultSession);
@@ -93,7 +93,7 @@ void main() {
       expect(() async => await memberService.getMember(), throwsException);
     });
 
-    test('signIn debe llamar al método de Supabase', () async {
+    test('sign in method from supabase must be called', () async {
       // Arrange.
       const email = 'test@example.com';
       const password = 'password123';
@@ -115,7 +115,7 @@ void main() {
           .called(1);
     });
 
-    test('getJWT debe retornar el token JWT actual', () {
+    test('returns current jwt', () {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(defaultSession);
 
@@ -130,7 +130,7 @@ void main() {
       expect(jwt, sessionJwt);
     });
 
-    test('getJWT debe retornar un string vacío si no hay sesión', () {
+    test('returns empty string if no jwt is provided', () {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(null);
 
