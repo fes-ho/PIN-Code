@@ -38,6 +38,7 @@ jobs:
     - name: Run pytest
       env:
         TEST_USER_TOKEN: ${{ secrets.TEST_USER_TOKEN }}
+        SECRET_JWT_KEY: ${{ secrets.SECRET_JWT_KEY }}
       run: |
         cd api
         poetry run pytest -v --cov-report xml:coverage.xml --cov=src
