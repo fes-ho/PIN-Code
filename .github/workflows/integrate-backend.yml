@@ -27,10 +27,6 @@ jobs:
         poetry lock
         poetry install --with test
 
-    - name: Set environment variables
-      run: |
-        echo "TEST_USER_TOKEN=${{ secrets.TEST_USER_TOKEN }}" >> .env 
-
     - name: Run pytest
       run: |
         cd api
