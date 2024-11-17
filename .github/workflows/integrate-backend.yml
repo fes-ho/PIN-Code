@@ -18,27 +18,32 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
-        python-version: '3.12.7' # Specify the Python version
+        python-version: '3.12.7'
 
     - name: Install dependencies
       run: |
         pip install poetry
         cd ./api
-        poetry lock # Lock dependencies
-        poetry install # Install project dependencies
+        poetry lock
+        poetry install
+
+    - name: Run pytest
+      run: |
+        cd api
+        poetry run pytest -v --no-cov
 
     - name: Run Uvicorn in the background and capture logs
       run: |
         echo "Starting uvicorn server..."
         cd api
         PYTHONPATH=./src nohup poetry run uvicorn src.main:app --host 0.0.0.0 --port 8000 > uvicorn.log 2>&1 &
-        sleep 5  # Wait for the server to start
+        sleep 5
 
     - name: Wait for API to become available
       run: |
         echo "Waiting for the API to become available..."
-        TIMEOUT=30  # Total timeout in seconds
-        INTERVAL=2   # Interval between checks in seconds
+        TIMEOUT=30
+        INTERVAL=2
         END=$((SECONDS + TIMEOUT))
         
         while [ $SECONDS -lt $END ]; do
