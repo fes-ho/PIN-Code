@@ -29,7 +29,7 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "TEST_USER_TOKEN=${{ secrets.TEST_USER_TOKEN }}" >> ./api/.env 
+        echo "TEST_USER_TOKEN=${{ secrets.TEST_USER_TOKEN }}" >> .env 
 
     - name: Run pytest
       run: |
