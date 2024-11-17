@@ -10,8 +10,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    env:
-        TEST_USER_TOKEN: ${{ secrets.TEST_USER_TOKEN }}
 
     steps:
     - name: Checkout code
@@ -32,7 +30,7 @@ jobs:
     - name: Run pytest
       run: |
         cd api
-        poetry run pytest -v --cov-report xml:coverage.xml --cov=src
+        TEST_USER_TOKEN=${{ secrets.TEST_USER_TOKEN }} poetry run pytest -v --cov-report xml:coverage.xml --cov=src
 
     - name: Upload coverage to Codacy
       run:  bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
