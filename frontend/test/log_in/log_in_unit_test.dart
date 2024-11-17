@@ -24,7 +24,11 @@ void main() {
     GetIt.I.registerSingleton<HeadersFactory>(HeadersFactory());
     GetIt.I.registerSingleton(Client());
 
-    await dotenv.load();
+    dotenv.testLoad(
+        fileInput: '''
+          API_URL=http://10.0.2.2:8000 
+      ''',
+      );
   });
 
   tearDown(() {

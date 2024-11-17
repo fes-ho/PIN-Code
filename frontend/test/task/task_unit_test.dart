@@ -26,8 +26,12 @@ void main() {
           .thenReturn(<String, String>{});
 
       GetIt.I.registerSingleton<HeadersFactory>(mockHeadersFactory);
-
-      await dotenv.load(fileName: ".env");
+      
+      dotenv.testLoad(
+        fileInput: '''
+          API_URL=http://10.0.2.2:8000 
+      ''',
+      );
     });
 
     test('createTask should return a Task when the API call is successful',

@@ -17,7 +17,6 @@ import 'utils.dart';
 
 @GenerateMocks([MemberService])
 void main() {
-
   String testMail = 'pacopepe@pacopepe.es';
   String testPassword = 'pacopepe';
 
@@ -26,18 +25,23 @@ void main() {
       GetIt.I.reset();
     });
 
-    testWidgets('navigates to an authorizated view when Sign In button is pressed',
+    testWidgets(
+        'navigates to an authorizated view when Sign In button is pressed',
         (WidgetTester tester) async {
       // Arrange.
-      await dotenv.load();
-
+      dotenv.testLoad(
+        fileInput: '''
+          API_URL=http://10.0.2.2:8000 
+      ''',
+      );
+      
       MockMemberService mockMemberService = MockMemberService();
 
-      when(mockMemberService.signIn(any, any))
-        .thenAnswer((_) async => AuthResponse(session: defaultSession, user: defaultMockUser));
+      when(mockMemberService.signIn(any, any)).thenAnswer((_) async =>
+          AuthResponse(session: defaultSession, user: defaultMockUser));
 
       when(mockMemberService.getMember())
-        .thenAnswer((_) async => Member(username: 'username', id: 'id'));
+          .thenAnswer((_) async => Member(username: 'username', id: 'id'));
 
       GetIt.I.registerSingleton<MemberService>(mockMemberService);
 
