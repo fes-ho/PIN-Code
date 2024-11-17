@@ -2,27 +2,22 @@ import 'package:frontend/src/config.dart';
 import 'package:frontend/src/domain/member.dart';
 import 'package:frontend/src/services/exceptions/not_logged_in_member_exception.dart';
 import 'package:frontend/src/services/utils/headers/headers_factory.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class MemberService {
-  MemberService._internal({HeadersFactory? headersFactory}) {
-    _headersFactory = headersFactory ?? HeadersFactory();
+
+  MemberService() {
+    _headersFactory = GetIt.I<HeadersFactory>();
+    _client = GetIt.I<Client>();
+    _goTrueClient = GetIt.I<GoTrueClient>();
   }
-
-  factory 
-  MemberService({HeadersFactory? headersFactory, Client? client}) {
-    _memberService.._headersFactory = headersFactory ?? HeadersFactory();
-    _memberService._client = client ?? Client();
-
-    return _memberService;
-  }
-
-  static final MemberService _memberService = MemberService._internal();
 
   Member? _member;
   late HeadersFactory _headersFactory;
   late Client _client;
+  late GoTrueClient _goTrueClient;
 
   Future<Member> getMember() async {
     if (_member == null) {
@@ -42,20 +37,18 @@ class MemberService {
   }
 
   Future<AuthResponse> signIn(String email, String password) async {
-    return Supabase.instance.client.auth.signInWithPassword(
+    return _goTrueClient.signInWithPassword(
       email: email,
       password: password,
     );
   }
 
   Session? getCurrentSession() {
-    GoTrueClient authClient = Supabase.instance.client.auth;
-    return authClient.currentSession;
+    return _goTrueClient.currentSession;
   }
 
   User? getCurrentUser() {
-    GoTrueClient authClient = Supabase.instance.client.auth;
-    return authClient.currentUser;
+    return _goTrueClient.currentUser;
   }
 
   String getCurrentUserId() {

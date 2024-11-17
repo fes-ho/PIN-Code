@@ -2,15 +2,16 @@ import 'dart:convert';
 import 'package:frontend/src/config.dart';
 import 'package:frontend/src/domain/task.dart';
 import 'package:frontend/src/services/utils/headers/headers_factory.dart';
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 
 class TaskService {
   late Client _client;
   late HeadersFactory _headersFactory;
 
-  TaskService({Client? client, HeadersFactory? headersFactory}) {
-    _client = client ?? Client();
-    _headersFactory = headersFactory ?? HeadersFactory();
+  TaskService() {
+    _client = GetIt.I<Client>();
+    _headersFactory = GetIt.I<HeadersFactory>();
   }
 
   Future<Task> createTask(Task task) async {

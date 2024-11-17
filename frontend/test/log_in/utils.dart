@@ -9,5 +9,5 @@ const defaultMockUser = User(
     aud: 'authenticated',
     createdAt: "now");
 
-final session =
+final defaultSession =
     Session(accessToken: sessionJwt, user: defaultMockUser, tokenType: "JWT");

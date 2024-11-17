@@ -7,6 +7,7 @@ import 'package:frontend/src/components/rounded_icon_button.dart';
 import 'package:frontend/src/domain/icons.dart';
 import 'package:frontend/src/domain/task.dart';
 import 'package:frontend/src/services/task_service.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateTaskScreen extends StatefulWidget {
@@ -286,7 +287,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         // TODO: Replace with actual member ID
                         memberId: '5da9ca3e-99e1-4556-b0fc-63caeec1118f',
                       );
-                      TaskService().createTask(task);
+                      GetIt.I<TaskService>().createTask(task);
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Task created successfully')),
                       );

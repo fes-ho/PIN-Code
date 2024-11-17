@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
-
+import 'package:frontend/src/config.dart';
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
@@ -11,10 +10,10 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
 
-  await Supabase.initialize(
-    url: dotenv.get("URL"),
-    anonKey: dotenv.get("ANON_KEY"),
-  );
+  await Config.initializeSupabase();
+
+
+  Config.initializeDependencyInjection();
 
   final settingsController = SettingsController(SettingsService());
 
@@ -22,3 +21,4 @@ void main() async {
   
   runApp(MyApp(settingsController: settingsController));
 }
+

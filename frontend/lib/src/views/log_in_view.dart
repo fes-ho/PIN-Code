@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/services/member_service.dart';
 import 'package:frontend/src/views/splash_loading_view.dart';
+import 'package:get_it/get_it.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -56,7 +57,7 @@ class _LogInState extends State<LogIn> {
               ],
             ),
             ElevatedButton(onPressed: () {
-              MemberService().signIn(
+              GetIt.I<MemberService>().signIn(
                 _emailEditingController.text,
                 _passwordEditingController.text
               ).then((_) => Navigator.pushNamed(context, SplashLoadingView.routeName));
