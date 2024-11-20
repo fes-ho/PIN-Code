@@ -43,7 +43,6 @@ def populate_initial_data():
             date=Date(2024, 3, 3),
             currentCount=0
         )
-        
         Frequency.model_validate(frequency)
         session.add(task)
         session.add(frequency)

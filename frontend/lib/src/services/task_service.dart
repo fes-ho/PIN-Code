@@ -27,5 +27,23 @@ class TaskService {
       throw Exception('Failed to create task');
     }
   }
+
+  Future<List<Task>> getTasks() async {
+    // TODO: Replace with the actual member ID
+    const memberId = '1';
+    final response = await get(
+      Uri.parse('${Config.apiUrl}/members/$memberId/tasks'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> taskListJson = jsonDecode(response.body) as List<dynamic>;
+      return taskListJson.map((json) => Task.fromJson(json as Map<String, dynamic>)).toList();
+    } else {
+      throw Exception('Failed to create task');
+    }
+  }
 }
 

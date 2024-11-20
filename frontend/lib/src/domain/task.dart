@@ -4,6 +4,7 @@ class Task {
   final String description;
   final String icon;
   final DateTime date;
+  bool isCompleted;
   String? memberId;
 
   Task ({
@@ -12,6 +13,7 @@ class Task {
     required this.description,
     required this.icon,
     required this.date,
+    required this.isCompleted,
     this.memberId,
   });
 
@@ -20,7 +22,8 @@ class Task {
         name = json['name'],
         description = json['description'],
         icon = json['icon'],
-        date = DateTime.parse(json['date'],);
+        isCompleted = json['is_completed'],
+        date = DateTime.parse(json['date']);
 
   Map<String, dynamic> toJson() {
     return {
@@ -29,6 +32,7 @@ class Task {
       'icon': icon,
       'date': date.toIso8601String(),
       'member_id': memberId,
+      'is_completed': isCompleted,
     };
   }
 }

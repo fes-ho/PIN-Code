@@ -3,7 +3,6 @@ from fastapi import Depends
 from sqlmodel import Session, select
 from services import get_session
 from models import Task
-from services import logger
 from schemas import TaskCreate
 
 def read_task_by_member(member_id: UUID, db: Session = Depends(get_session)):
