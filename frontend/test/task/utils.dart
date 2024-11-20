@@ -8,6 +8,7 @@ final Task task = Task(
   icon: 'icon',
   date: DateTime.parse('2024-11-16T12:00:00Z'),
   memberId: '123',
+  isCompleted: false,
 );
 
 void compareTasks(Task firstTask, Task secondTask) {
