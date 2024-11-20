@@ -26,7 +26,7 @@ jobs:
         distribution: 'temurin'
 
     - name: Set up Flutter
-      uses: subosito/flutter-action@v2.16.0
+      uses: subosito/flutter-action@v980391a6c51b6f81252a39f1a63c5c3e64ada99c
       with:
         flutter-version: '3.24.5'
 
