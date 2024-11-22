@@ -24,7 +24,7 @@ def get_member(
         raise HTTPException(status_code=404, detail="Member not found")
     return member
 
-@router.get("/{id}/username", response_class=PlainTextResponse, status_code=201)
+@router.get("/{id}/username", response_class=PlainTextResponse)
 def get_member_username(
     id: UUID,
     db = Depends(get_session)

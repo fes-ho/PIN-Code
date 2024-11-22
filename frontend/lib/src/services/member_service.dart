@@ -83,7 +83,7 @@ class MemberService {
       headers: await _headersFactory.getDefaultHeaders()
     );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       throw Exception("Failed to get Username");
     }
 
