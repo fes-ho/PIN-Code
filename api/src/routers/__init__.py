@@ -9,6 +9,7 @@ from .health import router as health_router
 
 router = APIRouter()
 router.include_router(health_router)
+router.include_router(tasks_router)
 
 member_router = APIRouter(
     prefix="/members",
@@ -17,4 +18,3 @@ member_router.include_router(habits_router)
 member_router.include_router(members_router)
 member_router.include_router(moods_router)
 member_router.include_router(quests_router)
-member_router.include_router(tasks_router)
