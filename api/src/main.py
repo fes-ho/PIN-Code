@@ -16,10 +16,12 @@ bearer_scheme = HTTPBearer()
 
 app = FastAPI(
     responses={404: {"description": "Not found"}},
-    dependencies=[Depends(bearer_scheme)],
 )
 
-app.include_router(member_router)
+app.include_router(
+    member_router,
+    dependencies=[Depends(bearer_scheme)],
+)
 app.include_router(health_router)
 app.add_middleware(AuhtorizationMiddleware)
 
