@@ -49,7 +49,7 @@ void main() {
 
       // Act.
       await tester.pumpWidget(
-        Provider<TaskListState> (
+        ChangeNotifierProvider (
           create: (context) => TaskListState(),
           child: MaterialApp(
             home: const LogIn(),
