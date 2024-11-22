@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/services/member_service.dart';
 import 'package:frontend/src/services/task_service.dart';
 import 'package:frontend/src/services/utils/headers/headers_factory.dart';
 import 'package:frontend/src/states/task_list_state.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
+import '../log_in/log_in_unit_test.mocks.dart';
 import 'task_unit_test.mocks.dart';
 import 'utils.dart';
 
@@ -23,11 +25,14 @@ void main() {
 
     setUp(() async {
       MockHeadersFactory mockHeadersFactory = MockHeadersFactory();
+      MockMemberService mockMemberService = MockMemberService();
 
       when(mockHeadersFactory.getDefaultHeaders())
           .thenAnswer((_) async => <String, String>{});
 
       GetIt.I.registerSingleton<HeadersFactory>(mockHeadersFactory);
+      GetIt.I.registerSingleton<MemberService>(mockMemberService);
+      
       
       dotenv.testLoad(
         fileInput: '''

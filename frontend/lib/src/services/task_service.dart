@@ -9,12 +9,12 @@ import 'member_service.dart';
 class TaskService {
   late Client _client;
   late HeadersFactory _headersFactory;
-  late String _memberId;
+  late MemberService _memberService;
 
   TaskService() {
     _client = GetIt.I<Client>();
     _headersFactory = GetIt.I<HeadersFactory>();
-    _memberId = GetIt.I<MemberService>().getCurrentUserId();
+    _memberService = GetIt.I<MemberService>();
   }
 
   Future<Task> createTask(Task task) async {
@@ -32,8 +32,9 @@ class TaskService {
   }
 
   Future<List<Task>> getTasks() async {
+    var memberId = await _memberService.getMember().then((member) => member.id);
     final response = await get(
-      Uri.parse('${Config.apiUrl}/members/$_memberId/tasks'),
+      Uri.parse('${Config.apiUrl}/members/$memberId/tasks'),
       headers: await _headersFactory.getDefaultHeaders()
     );
 
