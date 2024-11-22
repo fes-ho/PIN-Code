@@ -66,7 +66,7 @@ void main() {
       final mockHttpClient = MockClient((request) async {
         expect(request.url.toString(),
             '${Config.apiUrl}/members/test-user-id/username');
-        return http.Response('test-username', 201);
+        return http.Response('test-username', 200);
       });
 
       GetIt.I.unregister<Client>();
