@@ -3,6 +3,8 @@
 // Do not manually edit this file.
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
+import 'dart:async' as _i3;
+
 import 'package:frontend/src/services/utils/headers/headers_factory.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
@@ -29,11 +31,11 @@ class MockHeadersFactory extends _i1.Mock implements _i2.HeadersFactory {
   }
 
   @override
-  Map<String, String> getDefaultHeaders() => (super.noSuchMethod(
+  _i3.Future<Map<String, String>> getDefaultHeaders() => (super.noSuchMethod(
         Invocation.method(
           #getDefaultHeaders,
           [],
         ),
-        returnValue: <String, String>{},
-      ) as Map<String, String>);
+        returnValue: _i3.Future<Map<String, String>>.value(<String, String>{}),
+      ) as _i3.Future<Map<String, String>>);
 }

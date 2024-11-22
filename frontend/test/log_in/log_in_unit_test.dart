@@ -14,7 +14,7 @@ import 'package:mockito/annotations.dart';
 import 'log_in_unit_test.mocks.dart';
 import 'utils.dart';
 
-@GenerateMocks([GoTrueClient])
+@GenerateMocks([GoTrueClient, MemberService])
 void main() {
   late MockGoTrueClient mockAuthClient;
 
@@ -55,6 +55,13 @@ void main() {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(defaultSession);
       when(mockAuthClient.currentUser).thenReturn(defaultMockUser);
+      when(mockAuthClient
+          .refreshSession())
+          .thenAnswer((_) async => AuthResponse(session: defaultSession, user: defaultMockUser));
+      
+      final mockMemberService = MockMemberService();
+
+      when(mockMemberService.getJWT()).thenAnswer((_) async => "");
 
       final mockHttpClient = MockClient((request) async {
         expect(request.url.toString(),
@@ -66,6 +73,8 @@ void main() {
       GetIt.I.registerSingleton<Client>(mockHttpClient);
 
       GetIt.I.registerSingleton<GoTrueClient>(mockAuthClient);
+
+      GetIt.I.registerSingleton<MemberService>(mockMemberService);
 
       MemberService memberService = MemberService();
 
@@ -83,6 +92,10 @@ void main() {
       when(mockAuthClient.currentSession).thenReturn(defaultSession);
       when(mockAuthClient.currentUser).thenReturn(defaultMockUser);
 
+      final mockMemberService = MockMemberService();
+
+      when(mockMemberService.getJWT()).thenAnswer((_) async => "");
+
       final mockHttpClient = MockClient((request) async {
         return http.Response('Failed to get Username', 400);
       });
@@ -90,6 +103,7 @@ void main() {
       GetIt.I.unregister<Client>();
       GetIt.I.registerSingleton<Client>(mockHttpClient);
       GetIt.I.registerSingleton<GoTrueClient>(mockAuthClient);
+      GetIt.I.registerSingleton<MemberService>(mockMemberService);
 
      MemberService memberService = MemberService(); 
 
@@ -119,7 +133,7 @@ void main() {
           .called(1);
     });
 
-    test('returns current jwt', () {
+    test('returns current jwt', () async {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(defaultSession);
 
@@ -128,13 +142,13 @@ void main() {
       MemberService memberService = MemberService();
 
       // Act.
-      final jwt = memberService.getJWT();
+      final jwt = await memberService.getJWT();
 
       // Assert.
       expect(jwt, sessionJwt);
     });
 
-    test('returns empty string if no jwt is provided', () {
+    test('returns empty string if no jwt is provided', () async {
       // Arrange.
       when(mockAuthClient.currentSession).thenReturn(null);
 
@@ -143,7 +157,7 @@ void main() {
       MemberService memberService = MemberService();
 
       // Act.
-      final jwt = memberService.getJWT();
+      final jwt = await memberService.getJWT();
 
       // Assert.
       expect(jwt, '');

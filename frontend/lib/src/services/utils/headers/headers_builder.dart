@@ -1,4 +1,5 @@
 import 'package:frontend/src/services/member_service.dart';
+import 'package:get_it/get_it.dart';
 
 class HeadersBuilder {
   late Map<String, String> _headers;
@@ -11,8 +12,8 @@ class HeadersBuilder {
     _headers = {};
   }
 
-  void addAuthorization() { 
-    String jwt = MemberService().getJWT();
+  Future addAuthorization() async{ 
+    String jwt = await GetIt.I<MemberService>().getJWT();
 
     _headers.putIfAbsent('Authorization',() => 'Bearer $jwt');
   }

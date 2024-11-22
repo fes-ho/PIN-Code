@@ -108,19 +108,19 @@ class MockMemberService extends _i1.Mock implements _i4.MemberService {
       ) as String);
 
   @override
-  String getJWT() => (super.noSuchMethod(
+  _i5.Future<String> getJWT() => (super.noSuchMethod(
         Invocation.method(
           #getJWT,
           [],
         ),
-        returnValue: _i6.dummyValue<String>(
+        returnValue: _i5.Future<String>.value(_i6.dummyValue<String>(
           this,
           Invocation.method(
             #getJWT,
             [],
           ),
-        ),
-      ) as String);
+        )),
+      ) as _i5.Future<String>);
 
   @override
   _i5.Future<String> getUsername() => (super.noSuchMethod(

@@ -23,7 +23,7 @@ void main() {
       MockHeadersFactory mockHeadersFactory = MockHeadersFactory();
 
       when(mockHeadersFactory.getDefaultHeaders())
-          .thenReturn(<String, String>{});
+          .thenAnswer((_) async => <String, String>{});
 
       GetIt.I.registerSingleton<HeadersFactory>(mockHeadersFactory);
       
