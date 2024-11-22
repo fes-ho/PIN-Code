@@ -4,9 +4,12 @@ import 'package:frontend/src/components/decorators/text_field_decorator.dart';
 import 'package:frontend/src/components/hour_and_minute_picker.dart';
 import 'package:frontend/src/components/icon_picker.dart';
 import 'package:frontend/src/components/rounded_icon_button.dart';
+import 'package:frontend/src/components/task_list.dart';
+import 'package:provider/provider.dart';
 import 'package:frontend/src/domain/icons.dart';
 import 'package:frontend/src/domain/task.dart';
 import 'package:frontend/src/services/task_service.dart';
+import 'package:frontend/src/states/task_list_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -286,12 +289,29 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                           _selectedMinute,
                         ),
                         // TODO: Replace with actual member ID
-                        memberId: '5da9ca3e-99e1-4556-b0fc-63caeec1118f',
+                        memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
                       );
                       GetIt.I<TaskService>().createTask(task);
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Task created successfully')),
+                      var taskList = context.read<TaskListState>();
+                      taskList.add(task);
+
+                      showDialog(
+                        context: context,
+                        barrierDismissible: false,
+                        builder: (BuildContext context) {
+                          return const AlertDialog(
+                            content: Text('Task created successfully!'),
+                          );
+                        },
                       );
+
+                      Future.delayed(const Duration(seconds: 1), () {
+                        // Storing a BuildContext for later use can lead to difficult to diagnose crashes. Asynchronous gaps implicitly store a BuildContext, making them easy to overlook for diagnosis.
+                        if (context.mounted) {
+                          Navigator.of(context).pop();
+                          Navigator.of(context).pop();
+                        }
+                      });
                     }
                   },
                   child: Text(

@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:frontend/src/domain/task.dart';
 import 'package:frontend/src/services/task_service.dart';
 import 'package:frontend/src/services/utils/headers/headers_factory.dart';
+import 'package:frontend/src/states/task_list_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
@@ -68,6 +70,25 @@ void main() {
 
       // Act & Assert.
       expect(() async => await taskService.createTask(task), throwsException);
+    });
+
+    test('adding tasks increase task_list length', () {
+      // Arrange.
+      final taskList = TaskListState();
+      final task = Task(
+        id: '1',
+        name: 'Task 1',
+        description: 'Description 1',
+        date: DateTime.now(),
+        icon: '12345',
+        isCompleted: false,
+      );
+
+      // Act.
+      taskList.add(task);
+
+      // Assert.
+      expect(taskList.tasks.length, 1);
     });
   });
 }

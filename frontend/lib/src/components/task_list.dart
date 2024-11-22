@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/states/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/components/task_dialog.dart';
+import 'package:provider/provider.dart';
 
 class TaskList extends StatefulWidget {
-  final List<Task> tasks;
-
-  const TaskList({super.key, required this.tasks});
+  const TaskList({super.key});
 
   @override
   State<TaskList> createState() => _TaskListState();
@@ -36,57 +36,61 @@ class _TaskListState extends State<TaskList> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: widget.tasks.length,
-      itemBuilder: (context, index) {
-        final task = widget.tasks[index];
-        final taskIcon =
-            IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
-        final isCompleted = task.isCompleted;
-        return Card(
-          margin: const EdgeInsets.only(bottom: 15.0),
-          shape: RoundedRectangleBorder(
-            side: BorderSide(color: colorScheme.outlineVariant, width: 1.0),
-            borderRadius: BorderRadius.circular(15.0), // Borde circular
-          ),
-          elevation: 1.5,
-          color: colorScheme.surface,
-          shadowColor: colorScheme.outline,
-          child: ListTile(
-            leading: Icon(taskIcon, color: colorScheme.secondary),
-            title: Text(
-              task.name,
-              style: GoogleFonts.quicksand(
-                color: colorScheme.onSurface,
-                fontWeight: FontWeight.w600,
-                decoration: isCompleted ? TextDecoration.lineThrough : null,
+    return Consumer<TaskListState>(
+      builder: (context, taskListState, child) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: taskListState.tasks.length,
+          itemBuilder: (context, index) {
+            final task = taskListState.tasks[index];
+            final taskIcon =
+                IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
+            final isCompleted = task.isCompleted;
+            return Card(
+              margin: const EdgeInsets.only(bottom: 15.0),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: colorScheme.outlineVariant, width: 1.0),
+                borderRadius: BorderRadius.circular(15.0), // Borde circular
               ),
-            ),
-            subtitle: Text(
-              task.description,
-              style: GoogleFonts.quicksand(
-                color: colorScheme.onSurface,
-                decoration: isCompleted ? TextDecoration.lineThrough : null,
+              elevation: 1.5,
+              color: colorScheme.surface,
+              shadowColor: colorScheme.outline,
+              child: ListTile(
+                leading: Icon(taskIcon, color: colorScheme.secondary),
+                title: Text(
+                  task.name,
+                  style: GoogleFonts.quicksand(
+                    color: colorScheme.onSurface,
+                    fontWeight: FontWeight.w600,
+                    decoration: isCompleted ? TextDecoration.lineThrough : null,
+                  ),
+                ),
+                subtitle: Text(
+                  task.description,
+                  style: GoogleFonts.quicksand(
+                    color: colorScheme.onSurface,
+                    decoration: isCompleted ? TextDecoration.lineThrough : null,
+                  ),
+                ),
+                trailing: IconButton(
+                  icon: Icon(isCompleted
+                      ? Icons.check_circle
+                      : Icons.radio_button_unchecked),
+                  color: isCompleted ? colorScheme.primary : colorScheme.outline,
+                  onPressed: () {
+                    setState(() {
+                      task.isCompleted = !task.isCompleted;
+                    });
+                  },
+                ),
+                onTap: () {
+                  _showBottomSheet(context, task);
+                },
               ),
-            ),
-            trailing: IconButton(
-              icon: Icon(isCompleted
-                  ? Icons.check_circle
-                  : Icons.radio_button_unchecked),
-              color: isCompleted ? colorScheme.primary : colorScheme.outline,
-              onPressed: () {
-                setState(() {
-                  task.isCompleted = !task.isCompleted;
-                });
-              },
-            ),
-            onTap: () {
-              _showBottomSheet(context, task);
-            },
-          ),
+            );
+          },
         );
-      },
+      }
     );
   }
 }

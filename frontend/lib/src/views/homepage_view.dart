@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/components/task_list.dart';
 import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/states/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:frontend/src/views/create_task.dart';
 
@@ -18,32 +20,6 @@ class HomePageViewState extends State<HomePageView> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
-  final List<Task> tasks = [
-    Task(
-      id: '1',
-      name: 'Drink water',
-      date: DateTime.now(),
-      description: 'Drink 8 glasses of water',
-      icon: '57815',
-      isCompleted: false,
-    ),
-    Task(
-      id: '2',
-      name: 'Go for a walk',
-      date: DateTime.now(),
-      description: 'Walk for 30 minutes',
-      icon: '57815',
-      isCompleted: false,
-    ),
-    Task(
-      id: '3',
-      name: 'Read a book',
-      date: DateTime.now(),
-      description: 'Read for 1 hour',
-      icon: '57815',
-      isCompleted: false,
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +48,7 @@ class HomePageViewState extends State<HomePageView> {
               Divider(color: colorScheme.outlineVariant),
               const SizedBox(height: 8),
               //_buildProgressBar(),
-              Expanded(child: TaskList(tasks: tasks)),
+              const Expanded(child: TaskList()),
               // _buildTaskDetails(),
             ],
           ),
