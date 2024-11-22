@@ -17,7 +17,7 @@ class TaskService {
   Future<Task> createTask(Task task) async {
     final response = await _client.post(
       Uri.parse('${Config.apiUrl}/tasks'),
-      headers: _headersFactory.getDefaultHeaders(),
+      headers: await _headersFactory.getDefaultHeaders(),
       body: jsonEncode(task.toJson()),
     );
 

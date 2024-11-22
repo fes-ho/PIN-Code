@@ -54,4 +54,13 @@ class MockTaskService extends _i1.Mock implements _i3.TaskService {
           ),
         )),
       ) as _i4.Future<_i2.Task>);
+
+  @override
+  _i4.Future<List<_i2.Task>> getTasks() => (super.noSuchMethod(
+        Invocation.method(
+          #getTasks,
+          [],
+        ),
+        returnValue: _i4.Future<List<_i2.Task>>.value(<_i2.Task>[]),
+      ) as _i4.Future<List<_i2.Task>>);
 }

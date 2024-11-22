@@ -61,10 +61,15 @@ class MemberService {
     return currentUser.id;
   }
 
-  String getJWT() {
+  Future<String> getJWT() async{
     Session? currentSession = getCurrentSession();
+    
     if (currentSession == null) {
       return '';
+    }
+
+    if (currentSession.isExpired) {
+      await _goTrueClient.refreshSession();
     }
 
     return currentSession.accessToken;
@@ -75,10 +80,10 @@ class MemberService {
 
     final response = await _client.get(
       Uri.parse('${Config.apiUrl}/members/$userId/username'),
-      headers: _headersFactory.getDefaultHeaders()
+      headers: await _headersFactory.getDefaultHeaders()
     );
 
-    if (response.statusCode != 201) {
+    if (response.statusCode != 200) {
       throw Exception("Failed to get Username");
     }
 
