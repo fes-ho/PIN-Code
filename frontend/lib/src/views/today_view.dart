@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/task_list.dart';
-import 'package:frontend/src/domain/task.dart';
-import 'package:frontend/src/states/task_list_state.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:frontend/src/views/create_task.dart';
+import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 
 
 class HomePageView extends StatefulWidget {
@@ -48,7 +48,7 @@ class HomePageViewState extends State<HomePageView> {
               Divider(color: colorScheme.outlineVariant),
               const SizedBox(height: 8),
               //_buildProgressBar(),
-              const Expanded(child: TaskList()),
+              const Expanded(child: TaskListView()),
               // _buildTaskDetails(),
             ],
           ),

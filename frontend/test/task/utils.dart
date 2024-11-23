@@ -1,5 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
 
 final Task task = Task(
   id: '1',

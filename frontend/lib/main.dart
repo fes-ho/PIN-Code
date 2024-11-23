@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/config.dart';
-import 'package:frontend/src/states/task_list_state.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:provider/provider.dart';
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';

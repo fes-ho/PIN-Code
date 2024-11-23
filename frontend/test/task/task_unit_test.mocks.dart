@@ -5,7 +5,7 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i3;
 
-import 'package:frontend/src/services/utils/headers/headers_factory.dart'
+import 'package:frontend/src/utils/headers_factory.dart'
     as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 

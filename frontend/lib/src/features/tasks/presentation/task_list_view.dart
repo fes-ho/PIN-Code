@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/domain/task.dart';
-import 'package:frontend/src/states/task_list_state.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:frontend/src/components/task_dialog.dart';
+import 'package:frontend/src/features/tasks/presentation/task_dialog.dart';
 import 'package:provider/provider.dart';
 
-class TaskList extends StatefulWidget {
-  const TaskList({super.key});
+class TaskListView extends StatefulWidget {
+  const TaskListView({super.key});
 
   @override
-  State<TaskList> createState() => _TaskListState();
+  State<TaskListView> createState() => _TaskListViewState();
 }
 
-class _TaskListState extends State<TaskList> {
+class _TaskListViewState extends State<TaskListView> {
   void _showBottomSheet(BuildContext context, Task task) {
     Navigator.of(context).push(PageRouteBuilder(
       opaque: false,

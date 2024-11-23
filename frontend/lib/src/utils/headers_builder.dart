@@ -1,4 +1,4 @@
-import 'package:frontend/src/services/member_service.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:get_it/get_it.dart';
 
 class HeadersBuilder {

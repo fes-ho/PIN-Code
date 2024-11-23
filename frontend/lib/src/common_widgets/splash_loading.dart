@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/services/exceptions/not_logged_in_member_exception.dart';
-import 'package:frontend/src/services/member_service.dart';
-import 'package:frontend/src/views/log_in_view.dart';
-import 'package:frontend/src/views/main_view.dart';
+import 'package:frontend/src/exceptions/not_logged_in_member_exception.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/features/authentication/presentation/log_in_view.dart';
+import 'package:frontend/src/views/main_navigation_view.dart';
 import 'package:get_it/get_it.dart';
 
-class SplashLoadingView extends StatefulWidget {
-  const SplashLoadingView({super.key});
+class SplashLoading extends StatefulWidget {
+  const SplashLoading({super.key});
 
   static const String routeName = "/splashLoadingView";
 
   @override
-  _SplashLoadingView createState() => _SplashLoadingView();
+  _SplashLoading createState() => _SplashLoading();
 }
 
-class _SplashLoadingView extends State<SplashLoadingView> {
+class _SplashLoading extends State<SplashLoading> {
   @override
   void initState() {
     super.initState();
@@ -32,7 +32,7 @@ class _SplashLoadingView extends State<SplashLoadingView> {
 
       Navigator.restorablePushAndRemoveUntil(
         context,
-        MainView.getRouteBuilder,
+        (context, __) => MaterialPageRoute(builder: (context) => const MainNavigationView()),
         (_) => false
       );      
     }

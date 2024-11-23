@@ -1,4 +1,4 @@
-import 'package:frontend/src/services/utils/headers/headers_builder.dart';
+import 'package:frontend/src/utils/headers_builder.dart';
 
 class HeadersFactory {
   Future<Map<String, String>> getDefaultHeaders() async {

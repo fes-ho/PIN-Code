@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/views/homepage_view.dart';
+import 'package:frontend/src/views/today_view.dart';
 
-class InitialPageView extends StatefulWidget {
-  const InitialPageView({super.key});
+class MainNavigationView extends StatefulWidget {
+  const MainNavigationView({super.key});
 
-  static const String routeName = "/InitialPageView";
+  static const String routeName = "/MainNavigationView";
 
   @override
-  InitialPageViewState createState() => InitialPageViewState();
+  MainNavigationViewState createState() => MainNavigationViewState();
 }
 
-class InitialPageViewState extends State<InitialPageView> {
+class MainNavigationViewState extends State<MainNavigationView> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[

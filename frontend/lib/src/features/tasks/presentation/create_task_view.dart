@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/date_display.dart';
-import 'package:frontend/src/components/decorators/text_field_decorator.dart';
-import 'package:frontend/src/components/hour_and_minute_picker.dart';
-import 'package:frontend/src/components/icon_picker.dart';
-import 'package:frontend/src/components/rounded_icon_button.dart';
-import 'package:frontend/src/components/task_list.dart';
+import 'package:frontend/src/common_widgets/date_display.dart';
+import 'package:frontend/src/common_decorators/text_field_decorator.dart';
+import 'package:frontend/src/common_widgets/hour_and_minute_picker.dart';
+import 'package:frontend/src/common_widgets/icon_picker.dart';
+import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
 import 'package:provider/provider.dart';
-import 'package:frontend/src/domain/icons.dart';
-import 'package:frontend/src/domain/task.dart';
-import 'package:frontend/src/services/task_service.dart';
-import 'package:frontend/src/states/task_list_state.dart';
+import 'package:frontend/src/constants/icons.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/application/task_service.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 

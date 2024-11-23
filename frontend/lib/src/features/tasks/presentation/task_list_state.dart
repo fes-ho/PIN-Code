@@ -1,9 +1,8 @@
-
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
-import 'package:frontend/src/domain/task.dart';
-import 'package:frontend/src/services/task_service.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:get_it/get_it.dart';
 
 class TaskListState extends ChangeNotifier

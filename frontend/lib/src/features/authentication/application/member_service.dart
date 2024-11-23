@@ -1,7 +1,7 @@
 import 'package:frontend/src/config.dart';
-import 'package:frontend/src/domain/member.dart';
-import 'package:frontend/src/services/exceptions/not_logged_in_member_exception.dart';
-import 'package:frontend/src/services/utils/headers/headers_factory.dart';
+import 'package:frontend/src/features/authentication/domain/member.dart';
+import 'package:frontend/src/exceptions/not_logged_in_member_exception.dart';
+import 'package:frontend/src/utils/headers_factory.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';

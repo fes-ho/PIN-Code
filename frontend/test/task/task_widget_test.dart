@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:frontend/src/components/rounded_icon_button.dart';
-import 'package:frontend/src/services/task_service.dart';
-import 'package:frontend/src/views/create_task.dart';
+import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
+import 'package:frontend/src/features/tasks/application/task_service.dart';
+import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'task_widget_test.mocks.dart';

@@ -1,10 +1,10 @@
 import 'dart:convert';
 import 'package:frontend/src/config.dart';
-import 'package:frontend/src/domain/task.dart';
-import 'package:frontend/src/services/utils/headers/headers_factory.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/utils/headers_factory.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
-import 'member_service.dart';
+import '../../authentication/application/member_service.dart';
 
 class TaskService {
   late Client _client;

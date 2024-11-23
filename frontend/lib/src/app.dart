@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:frontend/src/theme.dart';
-import 'package:frontend/src/views/log_in_view.dart';
-import 'package:frontend/src/views/main_view.dart';
-import 'package:frontend/src/views/splash_loading_view.dart';
-import 'package:frontend/src/views/initialpage_view.dart';
+import 'package:frontend/src/features/authentication/presentation/log_in_view.dart';
+import 'package:frontend/src/common_widgets/splash_loading.dart';
+import 'package:frontend/src/views/main_navigation_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
@@ -73,13 +72,11 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case LogIn.routeName:
                     return const LogIn();
-                  case InitialPageView.routeName:
-                    return const InitialPageView();
-                  case MainView.routeName:
-                    return const MainView();
-                  case SplashLoadingView.routeName:
+                  case MainNavigationView.routeName:
+                    return const MainNavigationView();
+                  case SplashLoading.routeName:
                   default:
-                    return const SplashLoadingView();
+                    return const SplashLoading();
                 }
               },
             );

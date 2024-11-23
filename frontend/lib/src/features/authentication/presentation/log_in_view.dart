@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/services/member_service.dart';
-import 'package:frontend/src/views/splash_loading_view.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/common_widgets/splash_loading.dart';
 import 'package:get_it/get_it.dart';
 
 class LogIn extends StatefulWidget {

@@ -1,8 +1,8 @@
 
 import 'package:flutter/material.dart';
-import 'package:frontend/src/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:frontend/src/components/action_button.dart';
+import 'package:frontend/src/common_widgets/action_button.dart';
 
 class TaskDialog extends StatelessWidget {
   final Task task;
