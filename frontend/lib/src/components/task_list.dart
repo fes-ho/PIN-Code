@@ -40,9 +40,9 @@ class _TaskListState extends State<TaskList> {
       builder: (context, taskListState, child) {
         return ListView.builder(
           shrinkWrap: true,
-          itemCount: taskListState.tasks.length,
+          itemCount: taskListState.visibleTasks.length,
           itemBuilder: (context, index) {
-            final task = taskListState.tasks[index];
+            final task = taskListState.visibleTasks[index];
             final taskIcon =
                 IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
             final isCompleted = task.isCompleted;
@@ -50,7 +50,7 @@ class _TaskListState extends State<TaskList> {
               margin: const EdgeInsets.only(bottom: 15.0),
               shape: RoundedRectangleBorder(
                 side: BorderSide(color: colorScheme.outlineVariant, width: 1.0),
-                borderRadius: BorderRadius.circular(15.0), // Borde circular
+                borderRadius: BorderRadius.circular(15.0),
               ),
               elevation: 1.5,
               color: colorScheme.surface,

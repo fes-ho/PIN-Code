@@ -99,9 +99,9 @@ class HomePageViewState extends State<HomePageView> {
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
+          Provider.of<TaskListState>(context, listen: false).changeDay(selectedDay);
           setState(() {
             _selectedDay = selectedDay;
-            _focusedDay = focusedDay; // update `_focusedDay` here as well
           });
         },
         onFormatChanged: (format) {
