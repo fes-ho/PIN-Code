@@ -16,12 +16,20 @@ def read_quests_by_member(member_id: UUID, db: Session = Depends(get_session)):
         quests.extend(habit_quests)
     return quests
 
-def update_quest_duration_in_db(quest_id: UUID, duration: int, db: Session) -> Quest:
+def update_quest_duration_in_db(
+    quest_id: UUID, 
+    duration: int, 
+    estimated_duration: int | None = None,
+    db: Session = Depends(get_session)
+) -> Quest:
     quest = db.get(Quest, quest_id)
     if not quest:
         raise HTTPException(status_code=404, detail="Quest not found")
     
     quest.duration = duration
+    if estimated_duration is not None:
+        quest.estimated_duration = estimated_duration
+    
     db.add(quest)
     db.commit()
     db.refresh(quest)

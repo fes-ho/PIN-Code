@@ -13,6 +13,7 @@ class Quest(SQLModel, table=True):
     isCompleted: bool = Field(default=False)
     currentCount: int
     duration: Optional[int] = Field(default=None)
+    estimated_duration: Optional[int] = Field(default=None)
 
     habit_id: UUID = Field(foreign_key="habit.id")
     habit: "Habit" = Relationship(back_populates="quests")
