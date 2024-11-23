@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/routing/routes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -55,10 +57,7 @@ class TodayViewState extends State<TodayView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CreateTaskScreen()),
-          );
+          context.go(Routes.createTask);
         },
         backgroundColor: colorScheme.tertiary,
         child: Icon(Icons.add, color: colorScheme.onTertiary),

@@ -5,7 +5,7 @@ import 'package:frontend/src/routing/router.dart';
 import 'package:frontend/src/theme.dart';
 import 'package:frontend/src/features/authentication/presentation/login_view.dart';
 import 'package:frontend/src/common_widgets/splash_loading.dart';
-import 'package:frontend/src/views/main_navigation_view.dart';
+import 'package:frontend/src/views/custom_navigation_bar.dart';
 import 'package:provider/provider.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';

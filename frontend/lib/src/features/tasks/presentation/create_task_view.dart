@@ -4,6 +4,8 @@ import 'package:frontend/src/common_decorators/text_field_decorator.dart';
 import 'package:frontend/src/common_widgets/hour_and_minute_picker.dart';
 import 'package:frontend/src/common_widgets/icon_picker.dart';
 import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
+import 'package:frontend/src/routing/routes.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/src/constants/icons.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
@@ -51,7 +53,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
         backgroundColor: colorScheme.surfaceBright,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () => context.go(Routes.today),
         ),
         elevation: 1,
       ),
