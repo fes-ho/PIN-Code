@@ -1,5 +1,5 @@
 from uuid import UUID
-from fastapi import Depends
+from fastapi import Depends, HTTPException
 from sqlmodel import Session, select
 from services import get_session
 from models import Quest, Habit
@@ -15,3 +15,14 @@ def read_quests_by_member(member_id: UUID, db: Session = Depends(get_session)):
         habit_quests = db.exec(select(Quest).where(Quest.habit_id == habit.id)).all()
         quests.extend(habit_quests)
     return quests
+
+def update_quest_duration_in_db(quest_id: UUID, duration: int, db: Session) -> Quest:
+    quest = db.get(Quest, quest_id)
+    if not quest:
+        raise HTTPException(status_code=404, detail="Quest not found")
+    
+    quest.duration = duration
+    db.add(quest)
+    db.commit()
+    db.refresh(quest)
+    return quest
