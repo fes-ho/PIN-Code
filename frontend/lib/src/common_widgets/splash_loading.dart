@@ -8,10 +8,10 @@ import 'package:get_it/get_it.dart';
 class SplashLoading extends StatefulWidget {
   const SplashLoading({super.key});
 
-  static const String routeName = "/splashLoadingView";
+  static const routeName = "/splashLoading";
 
   @override
-  _SplashLoading createState() => _SplashLoading();
+  State<SplashLoading> createState() => _SplashLoading();
 }
 
 class _SplashLoading extends State<SplashLoading> {
@@ -32,7 +32,7 @@ class _SplashLoading extends State<SplashLoading> {
 
       Navigator.restorablePushAndRemoveUntil(
         context,
-        (context, __) => MaterialPageRoute(builder: (context) => const MainNavigationView()),
+        MainNavigationView.getRouteBuilder,
         (_) => false
       );      
     }

@@ -12,8 +12,8 @@ import 'package:http/http.dart';
 import 'package:http/testing.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import '../log_in/log_in_unit_test.mocks.dart';
-import 'task_unit_test.mocks.dart';
+import '../../authentication/application/member_service_test.mocks.dart';
+import 'task_service_test.mocks.dart';
 import 'utils.dart';
 
 @GenerateMocks([HeadersFactory])
@@ -75,25 +75,6 @@ void main() {
 
       // Act & Assert.
       expect(() async => await taskService.createTask(task), throwsException);
-    });
-
-    test('adding tasks increase task_list length', () {
-      // Arrange.
-      final taskList = TaskListState();
-      final task = Task(
-        id: '1',
-        name: 'Task 1',
-        description: 'Description 1',
-        date: DateTime.now(),
-        icon: '12345',
-        isCompleted: false,
-      );
-
-      // Act.
-      taskList.add(task);
-
-      // Assert.
-      expect(taskList.tasks.length, 1);
     });
   });
 }

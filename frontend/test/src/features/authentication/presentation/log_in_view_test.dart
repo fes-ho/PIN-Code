@@ -3,19 +3,19 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/src/features/authentication/domain/member.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:frontend/src/views/main_navigation_view.dart';
 import 'package:frontend/src/features/authentication/presentation/log_in_view.dart';
-import 'package:frontend/src/views/main_view.dart';
 import 'package:frontend/src/common_widgets/splash_loading.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
-import 'log_in_widget_test.mocks.dart';
-import 'utils.dart';
+import '../../tasks/presentation/create_task_view_test.mocks.dart';
+import 'log_in_view_test.mocks.dart';
+import '../application/utils.dart';
 
 @GenerateMocks([MemberService])
 void main() {
@@ -38,6 +38,7 @@ void main() {
       );
       
       MockMemberService mockMemberService = MockMemberService();
+      TaskService mockTaskService = MockTaskService();
 
       when(mockMemberService.signIn(any, any)).thenAnswer((_) async =>
           AuthResponse(session: defaultSession, user: defaultMockUser));
@@ -45,7 +46,11 @@ void main() {
       when(mockMemberService.getMember())
           .thenAnswer((_) async => Member(username: 'username', id: 'id'));
 
+      when(mockTaskService.getTasks())
+          .thenAnswer((_) async => []);
+
       GetIt.I.registerSingleton<MemberService>(mockMemberService);
+      GetIt.I.registerSingleton<TaskService>(mockTaskService);
 
       // Act.
       await tester.pumpWidget(
@@ -54,8 +59,8 @@ void main() {
           child: MaterialApp(
             home: const LogIn(),
             routes: {
-              SplashLoadingView.routeName: (_) => const SplashLoadingView(),
-              InitialPageView.routeName: (_) => const InitialPageView()
+              SplashLoading.routeName: (_) => const SplashLoading(),
+              MainNavigationView.routeName: (_) => const MainNavigationView()
             },
           ),
         )
@@ -68,7 +73,7 @@ void main() {
       await tester.pumpAndSettle();
 
       // Assert.
-      expect(find.byType(MainView), findsOneWidget);
+      expect(find.byType(MainNavigationView), findsOneWidget);
     });
   });
 }

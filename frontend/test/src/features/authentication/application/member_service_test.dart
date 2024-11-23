@@ -11,7 +11,7 @@ import 'package:http/testing.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:mockito/mockito.dart';
 import 'package:mockito/annotations.dart';
-import 'log_in_unit_test.mocks.dart';
+import 'member_service_test.mocks.dart';
 import 'utils.dart';
 
 @GenerateMocks([GoTrueClient, MemberService])

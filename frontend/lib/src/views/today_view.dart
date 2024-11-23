@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -9,14 +8,14 @@ import 'package:table_calendar/table_calendar.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 
 
-class HomePageView extends StatefulWidget {
-  const HomePageView({super.key});
+class TodayView extends StatefulWidget {
+  const TodayView({super.key});
 
   @override
-  HomePageViewState createState() => HomePageViewState();
+  TodayViewState createState() => TodayViewState();
 }
 
-class HomePageViewState extends State<HomePageView> {
+class TodayViewState extends State<TodayView> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();

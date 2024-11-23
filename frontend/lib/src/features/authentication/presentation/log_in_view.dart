@@ -60,7 +60,7 @@ class _LogInState extends State<LogIn> {
               GetIt.I<MemberService>().signIn(
                 _emailEditingController.text,
                 _passwordEditingController.text
-              ).then((_) => Navigator.pushNamed(context, SplashLoadingView.routeName));
+              ).then((_) => Navigator.pushNamed(context, SplashLoading.routeName));
             }, child: const Text("Sign In"))
           ],
         ),

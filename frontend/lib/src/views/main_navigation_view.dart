@@ -6,6 +6,13 @@ class MainNavigationView extends StatefulWidget {
 
   static const String routeName = "/MainNavigationView";
 
+  static Route<void> getRouteBuilder(BuildContext context, Object? arguments) {
+    return MaterialPageRoute<void>(
+      builder: (BuildContext context) =>
+          const MainNavigationView(),
+    );
+  }
+
   @override
   MainNavigationViewState createState() => MainNavigationViewState();
 }
@@ -14,7 +21,7 @@ class MainNavigationViewState extends State<MainNavigationView> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePageView(),
+    TodayView(),
     Text('Social Page'),
     Text('Stats Page'),
     Text('Profile Page'),

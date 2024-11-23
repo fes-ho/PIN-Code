@@ -4,11 +4,10 @@ import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'task_widget_test.mocks.dart';
+import 'create_task_view_test.mocks.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
-
-import 'utils.dart';
+import '../application/utils.dart';
 
 @GenerateMocks([TaskService])
 void main() {
