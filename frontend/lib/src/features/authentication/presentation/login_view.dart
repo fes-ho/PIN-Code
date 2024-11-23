@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:frontend/src/common_widgets/splash_loading.dart';
 import 'package:frontend/src/features/authentication/presentation/login_viewmodel.dart';
+import 'package:frontend/src/routing/routes.dart';
 import 'package:get_it/get_it.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({
@@ -11,15 +13,6 @@ class LoginView extends StatefulWidget {
   });
 
   final LoginViewModel viewModel;
-
-  static const routeName = "/logIn";
-
-  static Route<void> getRouteBuilder(BuildContext context, Object? arguments) {
-    return MaterialPageRoute<void>(
-      builder: (BuildContext context) =>
-          const LoginView(),
-    );
-  }
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -87,16 +80,16 @@ class _LoginViewState extends State<LoginView> {
   void _onResult() {
     if (widget.viewModel.login.completed) {
       widget.viewModel.login.clearResult();
-      context.go(Routes.home);
+      context.go(Routes.today);
     }
 
     if (widget.viewModel.login.error) {
       widget.viewModel.login.clearResult();
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(AppLocalization.of(context).errorWhileLogin),
+          content: Text("Login failed"),
           action: SnackBarAction(
-            label: AppLocalization.of(context).tryAgain,
+            label: "Try again",
             onPressed: () => widget.viewModel.login
                 .execute((_email.value.text, _password.value.text)),
           ),

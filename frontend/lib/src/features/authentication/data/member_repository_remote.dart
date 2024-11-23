@@ -4,7 +4,7 @@ import 'package:frontend/src/features/authentication/domain/member.dart';
 import 'package:frontend/src/features/authentication/domain/user/member_api_model.dart';
 import 'package:frontend/src/utils/result.dart';
 
-class MemberRepositoryRemote implements UserRepository {
+class MemberRepositoryRemote implements MemberRepository {
   MemberRepositoryRemote({
     required ApiClient apiClient,
   }) : _apiClient = apiClient;

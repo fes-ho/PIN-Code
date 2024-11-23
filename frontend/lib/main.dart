@@ -7,6 +7,8 @@ import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 
+import 'package:frontend/src/settings/dependencies.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -21,8 +23,13 @@ void main() async {
   await settingsController.loadSettings();
   
   runApp(
-    ChangeNotifierProvider( 
-      create: (context) => TaskListState(),
-      child: MyApp(settingsController: settingsController)));
+    MultiProvider(
+      providers: providersRemote,
+      child: MyApp(settingsController: settingsController),
+    )
+  );
+    // ChangeNotifierProvider( 
+    //   create: (context) => TaskListState(),
+    //   child: MyApp(settingsController: settingsController)));
 }
 
