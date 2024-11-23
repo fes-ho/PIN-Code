@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, openapi, Depends
 from dotenv import load_dotenv
+from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 from middleware import AuhtorizationMiddleware
 import uvicorn
 from services import create_db_and_tables, drop_all_tables, empty_db_data, logger
@@ -10,10 +11,17 @@ import os
 logger.info("Loading the environment variables")
 load_dotenv()
 
+# Needed for the OpenAPI documentation
+bearer_scheme = HTTPBearer()
+
 app = FastAPI(
     responses={404: {"description": "Not found"}},
 )
-app.include_router(member_router)
+
+app.include_router(
+    member_router,
+    dependencies=[Depends(bearer_scheme)],
+)
 app.include_router(health_router)
 app.add_middleware(AuhtorizationMiddleware)
 

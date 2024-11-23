@@ -1,7 +1,7 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:frontend/src/services/member_service.dart';
-import 'package:frontend/src/services/task_service.dart';
-import 'package:frontend/src/services/utils/headers/headers_factory.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/features/tasks/application/task_service.dart';
+import 'package:frontend/src/utils/headers_factory.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
