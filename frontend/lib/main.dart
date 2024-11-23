@@ -14,7 +14,6 @@ void main() async {
 
   await Config.initializeSupabase();
 
-
   Config.initializeDependencyInjection();
 
   final settingsController = SettingsController(SettingsService());

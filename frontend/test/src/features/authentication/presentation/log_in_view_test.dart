@@ -6,7 +6,7 @@ import 'package:frontend/src/features/authentication/application/member_service.
 import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:frontend/src/views/main_navigation_view.dart';
-import 'package:frontend/src/features/authentication/presentation/log_in_view.dart';
+import 'package:frontend/src/features/authentication/presentation/login_view.dart';
 import 'package:frontend/src/common_widgets/splash_loading.dart';
 import 'package:get_it/get_it.dart';
 import 'package:mockito/annotations.dart';
