@@ -1,11 +1,14 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/authentication/data/auth_apli_client.dart';
-import 'package:frontend/src/features/authentication/data/auth_repository.dart';
-import 'package:frontend/src/features/authentication/data/auth_repository_remote.dart';
-import 'package:frontend/src/features/authentication/data/member_repository_remote.dart';
-import 'package:frontend/src/features/authentication/data/member_repository.dart';
+import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository.dart';
+import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository_remote.dart';
+import 'package:frontend/src/features/authentication/data/member_repositories/member_repository_remote.dart';
+import 'package:frontend/src/features/authentication/data/member_repositories/member_repository.dart';
 import 'package:frontend/src/features/authentication/data/shared_preferences_service.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/features/tasks/data/task_repository.dart';
+import 'package:frontend/src/features/tasks/data/task_repository_remote.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -37,8 +40,15 @@ List<SingleChildWidget> get providersRemote {
         apiClient: context.read(),
       ) as MemberRepository,
     ),
+    Provider(
+      create: (context) => TaskRepositoryRemote(
+        apiClient: context.read(),
+      ) as TaskRepository,
+    ),
     ChangeNotifierProvider(
-      create: (context) => TaskListState(),
+      create: (context) => TaskListViewModel(
+        taskRepository: context.read()
+      ),
     ),
     ..._sharedProviders,
   ];

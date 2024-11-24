@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -97,7 +97,7 @@ class TodayViewState extends State<TodayView> {
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
-          Provider.of<TaskListState>(context, listen: false).changeDay(selectedDay);
+          Provider.of<TaskListViewModel>(context, listen: false).changeDay(selectedDay);
           setState(() {
             _selectedDay = selectedDay;
           });

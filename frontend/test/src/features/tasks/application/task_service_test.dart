@@ -5,7 +5,7 @@ import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/utils/headers_factory.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';

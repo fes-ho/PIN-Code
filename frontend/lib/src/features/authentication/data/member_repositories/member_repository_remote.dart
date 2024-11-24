@@ -1,13 +1,14 @@
 import 'package:frontend/src/features/authentication/data/api_client.dart';
-import 'package:frontend/src/features/authentication/data/member_repository.dart';
-import 'package:frontend/src/features/authentication/domain/member.dart';
-import 'package:frontend/src/features/authentication/domain/user/member_api_model.dart';
+import 'package:frontend/src/features/authentication/data/member_repositories/member_repository.dart';
+import 'package:frontend/src/features/authentication/domain/member/member.dart';
+import 'package:frontend/src/features/authentication/domain/member_api/member_api_model.dart';
 import 'package:frontend/src/utils/result.dart';
 
 class MemberRepositoryRemote implements MemberRepository {
   MemberRepositoryRemote({
     required ApiClient apiClient,
   }) : _apiClient = apiClient;
+
 
   final ApiClient _apiClient;
 
@@ -19,7 +20,7 @@ class MemberRepositoryRemote implements MemberRepository {
       return Future.value(Result.ok(_cachedData!));
     }
 
-    final result = await _apiClient.getUser();
+    final result = await _apiClient.getMember();
     switch (result) {
       case Ok<MemberApiModel>():
         final user = Member(

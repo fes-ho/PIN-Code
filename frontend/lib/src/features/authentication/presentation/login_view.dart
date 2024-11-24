@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/authentication/application/member_service.dart';
-import 'package:frontend/src/common_widgets/splash_loading.dart';
 import 'package:frontend/src/features/authentication/presentation/login_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 
 class LoginView extends StatefulWidget {

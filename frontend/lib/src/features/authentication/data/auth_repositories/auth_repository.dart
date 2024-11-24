@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import '../../../utils/result.dart';
+import '../../../../utils/result.dart';
 
 abstract class AuthRepository extends ChangeNotifier {
   /// Returns true when the user is logged in

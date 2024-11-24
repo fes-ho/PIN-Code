@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/features/tasks/presentation/task_dialog.dart';
 import 'package:provider/provider.dart';
 
 class TaskListView extends StatefulWidget {
-  const TaskListView({super.key});
+  const TaskListView({
+    super.key,
+  });
 
   @override
   State<TaskListView> createState() => _TaskListViewState();
@@ -36,7 +38,7 @@ class _TaskListViewState extends State<TaskListView> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Consumer<TaskListState>(
+    return Consumer<TaskListViewModel>(
       builder: (context, taskListState, child) {
         return ListView.builder(
           shrinkWrap: true,

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/authentication/data/auth_repository.dart';
+import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository.dart';
 import 'package:frontend/src/features/authentication/presentation/login_view.dart';
 import 'package:frontend/src/features/authentication/presentation/login_viewmodel.dart';
+import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
+import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
 import 'package:frontend/src/views/custom_navigation_bar.dart';
 import 'package:frontend/src/views/today_view.dart';
@@ -15,6 +19,7 @@ import 'package:provider/provider.dart';
 /// to /login when the user logs out.
 GoRouter router(
   AuthRepository authRepository,
+  TaskListViewModel taskListViewModel,
 ) =>
     GoRouter(
       initialLocation: Routes.today,
@@ -46,7 +51,12 @@ GoRouter router(
                       GoRoute(
                         path: Routes.createTask,
                         builder: (context, state) {
-                          return CreateTaskScreen();
+                          return CreateTaskView(
+                            viewModel: CreateTaskViewModel(
+                              taskRepository: context.read(),
+                              taskListViewModel: context.read(),
+                            ),
+                          );
                         },
                       )
                     ]),

@@ -1,26 +1,30 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/tasks/data/task_repository.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
-import 'package:frontend/src/features/tasks/application/task_service.dart';
-import 'package:get_it/get_it.dart';
+import 'package:frontend/src/utils/command.dart';
+import 'package:frontend/src/utils/result.dart';
+import 'package:logging/logging.dart';
 
-class TaskListState extends ChangeNotifier
+class TaskListViewModel extends ChangeNotifier
 {
-  // TaskListViewMod({
-  //   required 
-  // })
+  TaskListViewModel({
+    required TaskRepository taskRepository,
+  }) : _taskRepository = taskRepository {
+    getTasks = Command0(_getTasks);
+  }
+
   // All the user tasks
   final List<Task> _tasks = [];
   // Only the tasks that are visible
   final List<Task> _visibleTasks = [];
   DateTime _selectedDate = DateTime.now();
-  late TaskService _taskService;
+  final _log = Logger('TaskListViewModel');
 
-  TaskListState() {
-    _taskService = GetIt.I<TaskService>();
-    loadTasksFromApi();
-  }
+  final TaskRepository _taskRepository;
+
+  late Command0 getTasks;
 
   UnmodifiableListView<Task> get tasks => UnmodifiableListView(_tasks);
   UnmodifiableListView<Task> get visibleTasks => UnmodifiableListView(_visibleTasks);
@@ -41,9 +45,17 @@ class TaskListState extends ChangeNotifier
     notifyListeners();
   }
 
-  Future<void> loadTasksFromApi() async {
-    final tasks = await _taskService.getTasks();
-    refresh(tasks);
+  Future<Result<List<Task>>> _getTasks() async {
+    final result = await _taskRepository.getTasks();
+    switch(result) {
+      case Ok<List<Task>>():
+        refresh(result.value);
+        _log.fine('Tasks loaded');
+      case Error<List<Task>>():
+        _log.warning('Failed to load tasks: ${result.error}');
+        return result;
+    }
+    return result;
   }
 
   void refresh(List<Task> tasks) {

@@ -4,24 +4,26 @@ import 'package:frontend/src/common_decorators/text_field_decorator.dart';
 import 'package:frontend/src/common_widgets/hour_and_minute_picker.dart';
 import 'package:frontend/src/common_widgets/icon_picker.dart';
 import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
+import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
 import 'package:frontend/src/constants/icons.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
-import 'package:frontend/src/features/tasks/application/task_service.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
-import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class CreateTaskScreen extends StatefulWidget {
-  const CreateTaskScreen({super.key});
+class CreateTaskView extends StatefulWidget {
+  const CreateTaskView({
+    super.key,
+    required this.viewModel,
+  });
+
+  final CreateTaskViewModel viewModel;
 
   @override
-  CreateTaskScreenState createState() => CreateTaskScreenState();
+  State<CreateTaskView> createState() => _CreateTaskViewState();
 }
 
-class CreateTaskScreenState extends State<CreateTaskScreen> {
+class _CreateTaskViewState extends State<CreateTaskView> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameFieldController = TextEditingController();
   final TextEditingController _descriptionFieldController = TextEditingController();
@@ -34,6 +36,25 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
   IconData _selectedIcon = Icons.edit;
   
   bool _showMoreOptions = false;
+
+  @override
+  void initState() {
+    super.initState();
+    widget.viewModel.createTask.addListener(_onResult);
+  }
+
+  @override
+  void didUpdateWidget(covariant CreateTaskView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    oldWidget.viewModel.createTask.removeListener(_onResult);
+    widget.viewModel.createTask.addListener(_onResult);
+  }
+
+  @override
+  void dispose() {
+    widget.viewModel.createTask.removeListener(_onResult);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -272,7 +293,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       Task task = Task(
@@ -292,27 +313,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         // TODO: Replace with actual member ID
                         memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
                       );
-                      GetIt.I<TaskService>().createTask(task);
-                      var taskList = context.read<TaskListState>();
-                      taskList.add(task);
-
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return const AlertDialog(
-                            content: Text('Task created successfully!'),
-                          );
-                        },
-                      );
-
-                      Future.delayed(const Duration(seconds: 1), () {
-                        // Storing a BuildContext for later use can lead to difficult to diagnose crashes. Asynchronous gaps implicitly store a BuildContext, making them easy to overlook for diagnosis.
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
-                        }
-                      });
+                      await widget.viewModel.createTask.execute(task);
                     }
                   },
                   child: Text(
@@ -331,5 +332,34 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
         ),
       ),
     );
+  }
+
+  void _onResult() {
+    if (widget.viewModel.createTask.completed) {
+      widget.viewModel.createTask.clearResult();
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return const AlertDialog(
+            content: Text('Task created successfully!'),
+          );
+        },
+      );
+
+      Future.delayed(const Duration(seconds: 1), () {
+        if (context.mounted) {
+          context.go(Routes.today);
+        }
+      });
+    if (widget.viewModel.createTask.error) {
+      widget.viewModel.createTask.clearResult();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Failed to create task'),
+        ),
+      );
+    }
+    }
   }
 }

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:frontend/src/features/authentication/domain/member.dart';
+import 'package:frontend/src/features/authentication/domain/member/member.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
 import 'package:frontend/src/views/custom_navigation_bar.dart';
 import 'package:frontend/src/features/authentication/presentation/login_view.dart';
 import 'package:frontend/src/common_widgets/splash_loading.dart';

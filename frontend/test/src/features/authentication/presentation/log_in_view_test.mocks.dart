@@ -7,7 +7,7 @@ import 'dart:async' as _i5;
 
 import 'package:frontend/src/features/authentication/application/member_service.dart'
     as _i4;
-import 'package:frontend/src/features/authentication/domain/member.dart' as _i2;
+import 'package:frontend/src/features/authentication/domain/member/member.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:mockito/src/dummies.dart' as _i6;
 import 'package:supabase_flutter/supabase_flutter.dart' as _i3;

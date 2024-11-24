@@ -5,7 +5,7 @@ import 'package:frontend/src/features/authentication/domain/login_request/login_
 import 'package:frontend/src/features/authentication/domain/login_response/login_response.dart';
 import 'package:logging/logging.dart';
 
-import '../../../utils/result.dart';
+import '../../../../utils/result.dart';
 import 'auth_repository.dart';
 
 class AuthRepositoryRemote extends AuthRepository {

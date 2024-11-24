@@ -1,4 +1,4 @@
-import 'package:frontend/src/features/authentication/data/auth_repository.dart';
+import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository.dart';
 import 'package:frontend/src/utils/command.dart';
 import 'package:frontend/src/utils/result.dart';
 import 'package:logging/logging.dart';
