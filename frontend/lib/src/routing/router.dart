@@ -19,7 +19,6 @@ import 'package:provider/provider.dart';
 /// to /login when the user logs out.
 GoRouter router(
   AuthRepository authRepository,
-  TaskListViewModel taskListViewModel,
 ) =>
     GoRouter(
       initialLocation: Routes.today,

@@ -347,19 +347,23 @@ class _CreateTaskViewState extends State<CreateTaskView> {
         },
       );
 
-      Future.delayed(const Duration(seconds: 1), () {
-        if (context.mounted) {
+      Future.delayed(const Duration(seconds: 2), () {
+        if (mounted) {
+          context.pop();
           context.go(Routes.today);
         }
       });
+    }
+
     if (widget.viewModel.createTask.error) {
       widget.viewModel.createTask.clearResult();
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Failed to create task'),
-        ),
-      );
-    }
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to create task'),
+          ),
+        );
+      }
     }
   }
 }

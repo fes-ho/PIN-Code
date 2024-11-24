@@ -1,9 +1,12 @@
+import 'dart:ffi';
+
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/authentication/data/auth_apli_client.dart';
 import 'package:frontend/src/features/authentication/data/shared_preferences_service.dart';
 import 'package:frontend/src/features/authentication/domain/login_request/login_request.dart';
 import 'package:frontend/src/features/authentication/domain/login_response/login_response.dart';
 import 'package:logging/logging.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../../utils/result.dart';
 import 'auth_repository.dart';
@@ -45,10 +48,14 @@ class AuthRepositoryRemote extends AuthRepository {
   @override
   Future<bool> get isAuthenticated async {
     // Status is cached
+    if (_authApiClient.sessionExpired()) {
+      _isAuthenticated = false;
+    }
     if (_isAuthenticated != null) {
       return _isAuthenticated!;
     }
     // No status cached, fetch from storage
+    await _sharedPreferencesService.saveToken(_authApiClient.getAuthToken());
     await _fetch();
     return _isAuthenticated ?? false;
   }
@@ -71,6 +78,7 @@ class AuthRepositoryRemote extends AuthRepository {
           // Set auth status
           _isAuthenticated = true;
           _authToken = result.value.session.accessToken;
+          _authSubscriptionProvider();
           // Store in Shared preferences
           return await _sharedPreferencesService.saveToken(result.value.session.accessToken);
         case Error<LoginResponse>():
@@ -98,6 +106,24 @@ class AuthRepositoryRemote extends AuthRepository {
       // Clear authenticated status
       _isAuthenticated = false;
       return result;
+    } finally {
+      notifyListeners();
+    }
+  }
+
+  void _authSubscriptionProvider() {
+    _log.info('Setting up auth subscription');
+    try {
+      final authStream = _authApiClient.onAuthStateChange();
+      authStream.listen((data) {
+        final AuthChangeEvent event = data.event;
+        final Session? session = data.session;
+
+        if(event == AuthChangeEvent.tokenRefreshed){
+          _authToken = session?.accessToken;
+          _sharedPreferencesService.saveToken(session?.accessToken);
+        }
+    });
     } finally {
       notifyListeners();
     }

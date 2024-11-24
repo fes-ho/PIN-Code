@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../../../utils/result.dart';
@@ -30,4 +32,20 @@ class AuthApiClient {
       client.dispose();
     }
   }
+
+  bool sessionExpired() {
+    final client = _clientFactory();
+    return client.auth.currentSession?.isExpired ?? true;
+  }
+
+  String getAuthToken() {
+    final client = _clientFactory();
+    return client.auth.currentSession?.accessToken ?? '';
+  }
+
+  Stream<AuthState> onAuthStateChange() {
+    final client = _clientFactory();
+    return client.auth.onAuthStateChange;  
+  }
+
 }
