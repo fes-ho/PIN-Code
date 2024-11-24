@@ -8,7 +8,7 @@ import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.d
 import 'package:frontend/src/routing/routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:frontend/src/constants/icons.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateTaskView extends StatefulWidget {
@@ -301,7 +301,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                         id: '1',
                         name: _taskName,
                         description: _taskDescription,
-                        isCompleted: false,
+                        is_completed: false,
                         icon: _selectedIcon.codePoint.toString(),
                         date: DateTime(
                           _selectedDate.year,

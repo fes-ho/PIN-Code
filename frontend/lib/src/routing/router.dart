@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository.dart';
 import 'package:frontend/src/features/authentication/presentation/login_view.dart';
 import 'package:frontend/src/features/authentication/presentation/login_viewmodel.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
+import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
-import 'package:frontend/src/views/custom_navigation_bar.dart';
-import 'package:frontend/src/views/today_view.dart';
+import 'package:frontend/src/common_widgets/custom_navigation_bar.dart';
+import 'package:frontend/src/features/tasks/presentation/today_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
@@ -44,11 +44,13 @@ GoRouter router(
                 GoRoute(
                     path: Routes.today,
                     builder: (context, state) {
-                      return TodayView();
+                      return TodayView(
+                        viewModel: context.read(),
+                      );
                     },
                     routes: [
                       GoRoute(
-                        path: Routes.createTask,
+                        path: Routes.createTaskRelative,
                         builder: (context, state) {
                           return CreateTaskView(
                             viewModel: CreateTaskViewModel(

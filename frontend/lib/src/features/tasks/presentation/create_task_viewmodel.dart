@@ -1,6 +1,6 @@
 import 'package:frontend/src/features/tasks/data/task_repository.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
+import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
 import 'package:frontend/src/utils/command.dart';
 import 'package:frontend/src/utils/result.dart';
 import 'package:logging/logging.dart';
@@ -8,13 +8,13 @@ import 'package:logging/logging.dart';
 class CreateTaskViewModel {
   CreateTaskViewModel({
     required TaskRepository taskRepository,
-    required TaskListViewModel taskListViewModel,
+    required TodayViewModel taskListViewModel,
   }) : _taskListViewModel = taskListViewModel, 
       _taskRepository = taskRepository {
     createTask = Command1(_createTask);
   }
 
-  final TaskListViewModel _taskListViewModel;
+  final TodayViewModel _taskListViewModel;
   final TaskRepository _taskRepository;
   final _log = Logger('CreateTaskViewmodel');
 

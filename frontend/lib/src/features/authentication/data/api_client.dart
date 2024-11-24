@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/features/authentication/domain/member_api/member_api_model.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/utils/result.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -15,16 +15,13 @@ class ApiClient {
     String? host,
     int? port,
     HttpClient Function()? clientFactory,
-    SupabaseClient? supabaseClient,
+    SupabaseClient Function()? supabaseClient,
   })  : _host = host ?? dotenv.get("API_HOST"),
         _port = port ?? int.parse(dotenv.get("API_PORT")),
         _clientFactory = clientFactory ?? (() => HttpClient()),
-        _supabaseClient = supabaseClient ?? SupabaseClient(
-          dotenv.get("URL"),
-          dotenv.get("ANON_KEY"),
-        );
+        _supabaseClient = supabaseClient ?? (() => Supabase.instance.client); 
 
-  final SupabaseClient _supabaseClient;
+  final SupabaseClient Function() _supabaseClient;
   final String _host;
   final int _port;
   final HttpClient Function() _clientFactory;
@@ -47,7 +44,8 @@ class ApiClient {
     if (_memberId != null) {
       return _memberId!;
     }
-    final id = _supabaseClient.auth.currentUser?.id;
+    final client = _supabaseClient();
+    final id = client.auth.currentUser?.id;
     if (id == null) {
       throw Exception('User is not authenticated');
     }

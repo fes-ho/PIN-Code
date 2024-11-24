@@ -1,6 +1,6 @@
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/tasks/data/task_repository.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/utils/result.dart';
 
 class TaskRepositoryRemote implements TaskRepository{

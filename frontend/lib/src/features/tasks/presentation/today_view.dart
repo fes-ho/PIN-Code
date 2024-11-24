@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
+import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
-import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 
 
 class TodayView extends StatefulWidget {
-  const TodayView({super.key});
+  const TodayView({
+    super.key,
+    required this.viewModel,
+  });
+
+  final TodayViewModel viewModel;
 
   @override
   TodayViewState createState() => TodayViewState();
@@ -49,7 +53,7 @@ class TodayViewState extends State<TodayView> {
               Divider(color: colorScheme.outlineVariant),
               const SizedBox(height: 8),
               //_buildProgressBar(),
-              const Expanded(child: TaskListView()),
+              Expanded(child: TaskListView(viewModel: widget.viewModel)),
               // _buildTaskDetails(),
             ],
           ),
@@ -97,7 +101,7 @@ class TodayViewState extends State<TodayView> {
           return isSameDay(_selectedDay, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
-          Provider.of<TaskListViewModel>(context, listen: false).changeDay(selectedDay);
+          Provider.of<TodayViewModel>(context, listen: false).changeDay(selectedDay);
           setState(() {
             _selectedDay = selectedDay;
           });

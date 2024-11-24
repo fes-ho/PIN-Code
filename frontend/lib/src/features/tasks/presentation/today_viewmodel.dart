@@ -2,14 +2,14 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/data/task_repository.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/utils/command.dart';
 import 'package:frontend/src/utils/result.dart';
 import 'package:logging/logging.dart';
 
-class TaskListViewModel extends ChangeNotifier
+class TodayViewModel extends ChangeNotifier
 {
-  TaskListViewModel({
+  TodayViewModel({
     required TaskRepository taskRepository,
   }) : _taskRepository = taskRepository {
     getTasks = Command0(_getTasks);
@@ -49,7 +49,7 @@ class TaskListViewModel extends ChangeNotifier
     final result = await _taskRepository.getTasks();
     switch(result) {
       case Ok<List<Task>>():
-        refresh(result.value);
+        refresh(result.asOk.value);
         _log.fine('Tasks loaded');
       case Error<List<Task>>():
         _log.warning('Failed to load tasks: ${result.error}');
@@ -64,6 +64,15 @@ class TaskListViewModel extends ChangeNotifier
     _visibleTasks.clear();
     _visibleTasks.addAll(UnmodifiableListView(_tasks.where((task) => task.date.day == _selectedDate.day)));
     notifyListeners();
+  }
+
+  void update(Task task) {
+    final index = _tasks.indexWhere((element) => element.id == task.id);
+    if (index != -1) {
+      _tasks[index] = task;
+      // Assume that the task is in the visible list
+      _visibleTasks[_visibleTasks.indexWhere((element) => element.id == task.id)] = task;
+    }
   }
 
   void remove(Task task) {

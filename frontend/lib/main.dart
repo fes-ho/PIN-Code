@@ -28,8 +28,4 @@ void main() async {
       child: MyApp(settingsController: settingsController),
     )
   );
-    // ChangeNotifierProvider( 
-    //   create: (context) => TaskListState(),
-    //   child: MyApp(settingsController: settingsController)));
 }
-

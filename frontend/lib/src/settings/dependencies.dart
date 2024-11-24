@@ -8,7 +8,7 @@ import 'package:frontend/src/features/authentication/data/member_repositories/me
 import 'package:frontend/src/features/authentication/data/shared_preferences_service.dart';
 import 'package:frontend/src/features/tasks/data/task_repository.dart';
 import 'package:frontend/src/features/tasks/data/task_repository_remote.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
+import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -46,7 +46,7 @@ List<SingleChildWidget> get providersRemote {
       ) as TaskRepository,
     ),
     ChangeNotifierProvider(
-      create: (context) => TaskListViewModel(
+      create: (context) => TodayViewModel(
         taskRepository: context.read()
       ),
     ),

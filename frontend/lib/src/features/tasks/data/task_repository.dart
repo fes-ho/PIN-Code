@@ -1,4 +1,4 @@
-import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/utils/result.dart';
 
 abstract class TaskRepository

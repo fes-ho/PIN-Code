@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
-import 'package:frontend/src/features/tasks/presentation/task_list_viewmodel.dart';
+import 'package:frontend/src/features/tasks/domain/task/task.dart';
+import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/features/tasks/presentation/task_dialog.dart';
-import 'package:provider/provider.dart';
 
 class TaskListView extends StatefulWidget {
   const TaskListView({
     super.key,
+    required this.viewModel,
   });
+
+  final TodayViewModel viewModel;
 
   @override
   State<TaskListView> createState() => _TaskListViewState();
 }
 
 class _TaskListViewState extends State<TaskListView> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.viewModel.getTasks.execute();
+  }
+
+  @override
+  void didUpdateWidget(covariant TaskListView oldWidget) {
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _showBottomSheet(BuildContext context, Task task) {
     Navigator.of(context).push(PageRouteBuilder(
       opaque: false,
@@ -38,16 +57,17 @@ class _TaskListViewState extends State<TaskListView> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Consumer<TaskListViewModel>(
-      builder: (context, taskListState, child) {
+    return ListenableBuilder(
+      listenable: widget.viewModel,
+      builder: (context, child) {
         return ListView.builder(
           shrinkWrap: true,
-          itemCount: taskListState.visibleTasks.length,
+          itemCount: widget.viewModel.visibleTasks.length,
           itemBuilder: (context, index) {
-            final task = taskListState.visibleTasks[index];
+            final task = widget.viewModel.visibleTasks[index];
             final taskIcon =
                 IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
-            final isCompleted = task.isCompleted;
+            final isCompleted = task.is_completed;
             return Card(
               margin: const EdgeInsets.only(bottom: 15.0),
               shape: RoundedRectangleBorder(
@@ -81,7 +101,8 @@ class _TaskListViewState extends State<TaskListView> {
                   color: isCompleted ? colorScheme.primary : colorScheme.outline,
                   onPressed: () {
                     setState(() {
-                      task.isCompleted = !task.isCompleted;
+                      final updatedTask = task.copyWith(is_completed: !task.is_completed);
+                      widget.viewModel.update(updatedTask);
                     });
                   },
                 ),
