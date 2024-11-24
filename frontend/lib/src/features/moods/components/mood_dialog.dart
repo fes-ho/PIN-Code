@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/moods/components/mood_button.dart';
 import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
+import 'package:frontend/src/features/moods/services/mood_service.dart';
+import 'package:get_it/get_it.dart';
 
 Future<void> showMoodDialog(BuildContext context) async {
   return showDialog(
@@ -17,7 +19,10 @@ Future<void> showMoodDialog(BuildContext context) async {
             TypeOfMood.values.length,
             (index) => MoodButton(
               typeOfMood: TypeOfMood.values[index], 
-              onAction: () => print("Selected index $index")
+              onAction: () async {
+                await GetIt.I<MoodService>().createOrUpdateMood(TypeOfMood.values[index]);
+                Navigator.of(context).pop();
+              } 
             ),
           ),
         ),
