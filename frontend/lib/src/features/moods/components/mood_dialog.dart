@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/mood/mood_button.dart';
-import 'package:frontend/src/domain/type_of_mood.dart';
+import 'package:frontend/src/features/moods/components/mood_button.dart';
+import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
 
 Future<void> showMoodDialog(BuildContext context) async {
   return showDialog(

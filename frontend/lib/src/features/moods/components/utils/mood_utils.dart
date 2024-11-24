@@ -1,4 +1,4 @@
-import 'package:frontend/src/domain/type_of_mood.dart';
+import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
 
 const Map<TypeOfMood, String> _moodEmojis = {
   TypeOfMood.excellent: "🌟",

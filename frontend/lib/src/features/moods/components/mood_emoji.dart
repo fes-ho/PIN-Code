@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/components/mood/utils/mood_utils.dart';
-import 'package:frontend/src/domain/type_of_mood.dart';
+import 'package:frontend/src/features/moods/components/utils/mood_utils.dart';
+import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
 
 class MoodEmoji extends StatelessWidget {
   const MoodEmoji({super.key, this.mood});
