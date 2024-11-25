@@ -55,7 +55,7 @@ GoRouter router(
                           return CreateTaskView(
                             viewModel: CreateTaskViewModel(
                               taskRepository: context.read(),
-                              taskListViewModel: context.read(),
+                              todayViewModel: context.read(),
                             ),
                           );
                         },

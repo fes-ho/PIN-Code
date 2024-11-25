@@ -8,13 +8,13 @@ import 'package:logging/logging.dart';
 class CreateTaskViewModel {
   CreateTaskViewModel({
     required TaskRepository taskRepository,
-    required TodayViewModel taskListViewModel,
-  }) : _taskListViewModel = taskListViewModel, 
+    required TodayViewModel todayViewModel,
+  }) : _todayViewModel = todayViewModel, 
       _taskRepository = taskRepository {
     createTask = Command1(_createTask);
   }
 
-  final TodayViewModel _taskListViewModel;
+  final TodayViewModel _todayViewModel;
   final TaskRepository _taskRepository;
   final _log = Logger('CreateTaskViewmodel');
 
@@ -25,7 +25,7 @@ class CreateTaskViewModel {
     switch (resultCreate) {
       case Ok<void>():
         _log.fine('Task created');
-        _taskListViewModel.add(task);
+        _todayViewModel.add(task);
       case Error<void>():
         _log.warning('Failed to create task: ${resultCreate.error}');
         return resultCreate;

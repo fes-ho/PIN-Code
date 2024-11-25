@@ -1,10 +1,19 @@
 import 'package:frontend/src/features/tasks/domain/task/task.dart';
 
-final kTask = Task(
-  id: 'ID',
-  name: 'NAME',
-  description: 'DESCRIPTION',
+final kTask1 = Task(
+  id: 'id1',
+  name: 'name1',
+  description: 'description1',
   date: DateTime.now(),
   is_completed: false,
-  icon: 'ICON',
+  icon: 'icon1',
+);
+
+final kTask2 = Task(
+  id: 'id2',
+  name: 'name1',
+  description: 'description1',
+  date: DateTime.now(),
+  is_completed: false,
+  icon: 'icon2',
 );

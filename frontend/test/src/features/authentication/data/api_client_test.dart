@@ -42,15 +42,15 @@ void main() {
     });
 
     test('should get member tasks', () async {
-      final tasks = [kTask]; 
+      final tasks = [kTask1]; 
       mockHttpClient.mockGet('/members/ID/tasks', tasks);
       final result = await apiClient.getTasks();
       expect(result.asOk.value, tasks);
     });
 
     test('should create task', () async {
-      mockHttpClient.mockPost('/tasks', kTask);
-      final result = await apiClient.createTask(kTask);
+      mockHttpClient.mockPost('/tasks', kTask1);
+      final result = await apiClient.createTask(kTask1);
       expect(result, isA<Ok<void>>());
     });
   });

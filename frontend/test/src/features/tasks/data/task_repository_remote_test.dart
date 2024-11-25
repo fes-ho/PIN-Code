@@ -20,11 +20,11 @@ void main() {
     test('should get tasks', () async {
       final result = await repository.getTasks();
       final tasks = result.asOk.value;
-      expect(tasks, [kTask]);
+      expect(tasks, [kTask1]);
     });
 
     test('should create task', () async {
-      final result = await repository.createTask(kTask);
+      final result = await repository.createTask(kTask1);
       expect(result, isA<Ok<void>>());
     });
   });

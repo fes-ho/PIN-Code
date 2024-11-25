@@ -17,6 +17,7 @@ testApp(
 }) async {
   tester.view.devicePixelRatio = 1.0;
   final settingsController = SettingsController(SettingsService());
+  await settingsController.loadSettings();
   await tester.binding.setSurfaceSize(const Size(1200, 800));
   await mockNetworkImages(() async {
     await tester.pumpWidget(
