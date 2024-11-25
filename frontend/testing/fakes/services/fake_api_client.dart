@@ -14,6 +14,9 @@ class FakeApiClient implements ApiClient {
   AuthHeaderProvider? authHeaderProvider;
 
   @override
+  String? memberId;
+
+  @override
   Future<Result<MemberApiModel>> getMember() async {
     return Result.ok(memberApiModel);
   }

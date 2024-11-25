@@ -33,6 +33,10 @@ class ApiClient {
     _authHeaderProvider = authHeaderProvider;
   }
 
+  set memberId(String memberId) {
+    _memberId = memberId;
+  }
+
   Future<void> _authHeader(HttpHeaders headers) async {
     final header = _authHeaderProvider?.call();
     if (header != null) {
@@ -82,10 +86,9 @@ class ApiClient {
       final response = await request.close();
       if (response.statusCode == 200) {
         final stringData = await response.transform(utf8.decoder).join();
-        final taskList = (jsonDecode(stringData) as List)
-            .map((dynamic json) => Task.fromJson(json as Map<String, dynamic>))
-            .toList();
-        return Result.ok(taskList);
+        final json = jsonDecode(stringData) as List<dynamic>;
+        return Result.ok(
+          json.map((e) => Task.fromJson(e)).toList());
       } else {
         return Result.error(const HttpException("Invalid response"));
       }
