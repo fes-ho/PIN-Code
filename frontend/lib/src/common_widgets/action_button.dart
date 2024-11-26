@@ -1,12 +1,17 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
+  final VoidCallback? onPressed;
 
-  const ActionButton({super.key, required this.icon, required this.label});
+  const ActionButton({
+    super.key, 
+    required this.icon, 
+    required this.label,
+    this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +23,7 @@ class ActionButton extends StatelessWidget {
         color: colorScheme.onSecondaryContainer,
         fontWeight: FontWeight.w600,
       )),
-      onPressed: () {},
+      onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         backgroundColor: colorScheme.secondaryContainer,
         minimumSize: const Size(double.infinity, 40),

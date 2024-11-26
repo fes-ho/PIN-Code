@@ -1,13 +1,53 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/common_widgets/action_button.dart';
 import 'package:frontend/src/features/tasks/presentation/task_timer.dart';
+import 'package:get_it/get_it.dart';
+import 'package:frontend/src/features/tasks/application/task_service.dart';
+import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
+import 'package:provider/provider.dart';
 
 class TaskDialog extends StatelessWidget {
   final Task task;
 
   const TaskDialog({super.key, required this.task});
+
+  Future<void> _showEstimatedTimeDialog(BuildContext context) async {
+    final TaskService taskService = GetIt.I<TaskService>();
+    final colorScheme = Theme.of(context).colorScheme;
+
+    final int? estimatedDuration = await showDialog<int>(
+      context: context,
+      builder: (BuildContext context) => EstimatedTimeDialog(
+        initialEstimatedDuration: task.estimatedDuration,
+      ),
+    );
+
+    if (estimatedDuration != null && context.mounted) {
+      try {
+        final updatedTask = await taskService.updateTaskDuration(
+          task.id!,
+          task.duration ?? 0,
+          estimatedDuration: estimatedDuration,
+        );
+        
+        if (context.mounted) {
+          context.read<TaskListState>().updateTask(updatedTask);
+        }
+      } catch (e) {
+        if (context.mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Error updating estimated duration'),
+              backgroundColor: colorScheme.error,
+            ),
+          );
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +121,11 @@ class TaskDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 8),
-            const ActionButton(icon: Icons.access_time, label: 'Time'),
+            ActionButton(
+              icon: Icons.access_time,
+              label: 'Time',
+              onPressed: () => _showEstimatedTimeDialog(context),
+            ),
             const SizedBox(height: 8),
             const ActionButton(icon: Icons.edit, label: 'Edit'),
           ],
