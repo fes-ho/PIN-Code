@@ -5,10 +5,18 @@ class TimerService {
   final Map<String, Timer> _timers = {};
   final Map<String, int> _durations = {};
   final Map<String, Function(int)> _callbacks = {};
+  final Map<String, bool> _isPaused = {};
 
   void startTimer(String taskId, int initialDuration, Function(int) onTick) {
+    if (_timers.containsKey(taskId)) {
+      _callbacks[taskId] = onTick;
+      onTick(_durations[taskId]!);
+      return;
+    }
+
     _durations[taskId] = initialDuration;
     _callbacks[taskId] = onTick;
+    _isPaused[taskId] = false;
     
     _timers[taskId] = Timer.periodic(const Duration(seconds: 1), (timer) {
       _durations[taskId] = (_durations[taskId] ?? 0) + 1;
@@ -20,8 +28,9 @@ class TimerService {
   void pauseTimer(String taskId) {
     _timers[taskId]?.cancel();
     _timers.remove(taskId);
-    _callbacks.remove(taskId);
-    debugPrint('Timer paused for task: $taskId');
+    _isPaused[taskId] = true;
+    // Keep duration and callback for resuming
+    debugPrint('Timer paused for task: $taskId. Duration: ${_durations[taskId]}');
   }
 
   void stopTimer(String taskId) {
@@ -29,6 +38,7 @@ class TimerService {
     _timers.remove(taskId);
     _callbacks.remove(taskId);
     _durations.remove(taskId);
+    _isPaused[taskId] = false;
     debugPrint('Timer stopped for task: $taskId');
   }
 
@@ -40,6 +50,10 @@ class TimerService {
     return _timers.containsKey(taskId);
   }
 
+  bool isPaused(String taskId) {
+    return _isPaused[taskId] ?? false;
+  }
+
   void dispose() {
     for (var timer in _timers.values) {
       timer.cancel();
@@ -47,5 +61,11 @@ class TimerService {
     _timers.clear();
     _durations.clear();
     _callbacks.clear();
+    _isPaused.clear();
+  }
+
+  void removeCallback(String taskId) {
+    _callbacks.remove(taskId);
+    debugPrint('Callback removed for task: $taskId');
   }
 } 
