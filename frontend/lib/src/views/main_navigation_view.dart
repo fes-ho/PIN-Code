@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/views/statistics_view.dart';
 import 'package:frontend/src/views/today_view.dart';
 
 class MainNavigationView extends StatefulWidget {
@@ -23,7 +24,7 @@ class MainNavigationViewState extends State<MainNavigationView> {
   static const List<Widget> _widgetOptions = <Widget>[
     TodayView(),
     Text('Social Page'),
-    Text('Stats Page'),
+    StatisticsView(),
     Text('Profile Page'),
   ];
 
