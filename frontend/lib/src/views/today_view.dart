@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/moods/components/mood_button.dart';
+import 'package:frontend/src/features/moods/components/mood_dialog.dart';
+import 'package:frontend/src/features/moods/domain/mood.dart';
+import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
+import 'package:frontend/src/features/moods/services/mood_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +25,17 @@ class TodayViewState extends State<TodayView> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   DateTime _selectedDay = DateTime.now();
+  TypeOfMood _typeOfMood = TypeOfMood.great;
+
+  @override
+  void initState() {
+    super.initState();
+    GetIt.I<MoodService>().getMood().then((res) {
+      setState(() {
+        _typeOfMood = res ?? TypeOfMood.great;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,12 +44,30 @@ class TodayViewState extends State<TodayView> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          DateFormat('MMMM, d').format(_focusedDay),
-          style: GoogleFonts.lexendDeca(
-            color: colorScheme.primary,
-            fontWeight: FontWeight.w500,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              DateFormat('MMMM, d').format(_focusedDay),
+              style: GoogleFonts.lexendDeca(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+
+            MoodButton(
+              typeOfMood: _typeOfMood, 
+              onAction: () async {
+                await showMoodDialog(context);
+
+                _typeOfMood = await GetIt.I<MoodService>().getMood() ?? TypeOfMood.great;
+
+                setState(() {
+                  
+                });
+              } 
+            )
+          ],
         ),
         backgroundColor: colorScheme.surfaceBright,
       ),
