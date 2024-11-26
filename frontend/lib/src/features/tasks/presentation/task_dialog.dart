@@ -9,10 +9,22 @@ import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
 import 'package:provider/provider.dart';
 
-class TaskDialog extends StatelessWidget {
+class TaskDialog extends StatefulWidget {
   final Task task;
-
   const TaskDialog({super.key, required this.task});
+
+  @override
+  State<TaskDialog> createState() => _TaskDialogState();
+}
+
+class _TaskDialogState extends State<TaskDialog> {
+  late Task _currentTask;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentTask = widget.task;
+  }
 
   Future<void> _showEstimatedTimeDialog(BuildContext context) async {
     final TaskService taskService = GetIt.I<TaskService>();
@@ -21,17 +33,21 @@ class TaskDialog extends StatelessWidget {
     final int? estimatedDuration = await showDialog<int>(
       context: context,
       builder: (BuildContext context) => EstimatedTimeDialog(
-        initialEstimatedDuration: task.estimatedDuration,
+        initialEstimatedDuration: _currentTask.estimatedDuration,
       ),
     );
 
     if (estimatedDuration != null && context.mounted) {
       try {
         final updatedTask = await taskService.updateTaskDuration(
-          task.id!,
-          task.duration ?? 0,
+          _currentTask.id!,
+          _currentTask.duration ?? 0,
           estimatedDuration: estimatedDuration,
         );
+        
+        setState(() {
+          _currentTask = updatedTask;
+        });
         
         if (context.mounted) {
           context.read<TaskListState>().updateTask(updatedTask);
@@ -70,9 +86,9 @@ class TaskDialog extends StatelessWidget {
           children: [
             Row(
               children: [
-                Icon(IconData(int.parse(task.icon), fontFamily: 'MaterialIcons'), color: colorScheme.onSecondary),
+                Icon(IconData(int.parse(_currentTask.icon), fontFamily: 'MaterialIcons'), color: colorScheme.onSecondary),
                 const SizedBox(width: 8),
-                Text(task.name,
+                Text(_currentTask.name,
                     style: GoogleFonts.lexendDeca(
                       color: colorScheme.onSecondary, 
                       fontSize: 18,
@@ -81,7 +97,7 @@ class TaskDialog extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            TaskTimer(task: task),
+            TaskTimer(task: _currentTask),
             const SizedBox(height: 12),
             Row(
               children: [

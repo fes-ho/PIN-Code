@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/tasks/application/timer_service.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
@@ -16,33 +17,77 @@ class TaskTimer extends StatefulWidget {
 }
 
 class _TaskTimerState extends State<TaskTimer> {
-  Timer? _timer;
   late int _elapsedSeconds;
+  late int _remainingSeconds;
   bool _isRunning = false;
   bool _isPaused = false;
+  bool _isCountingUp = false;
   final TaskService _taskService = GetIt.I<TaskService>();
+  final TimerService _timerService = GetIt.I<TimerService>();
 
   @override
   void initState() {
     super.initState();
-    _elapsedSeconds = widget.task.duration ?? 0;
+    
+    if (widget.task.id != null) {
+      // Get duration from timer service or task
+      _elapsedSeconds = _timerService.getDuration(widget.task.id!) ?? widget.task.duration ?? 0;
+      
+      // Restore timer state
+      _isRunning = _timerService.isRunning(widget.task.id!);
+      _isPaused = _timerService.isPaused(widget.task.id!);
+      
+      // If timer is running or paused, register callback
+      if (_isRunning || _isPaused) {
+        _timerService.startTimer(widget.task.id!, _elapsedSeconds, (duration) {
+          if (mounted) {
+            setState(() {
+              _elapsedSeconds = duration;
+              if (widget.task.estimatedDuration != null) {
+                _remainingSeconds = widget.task.estimatedDuration! - _elapsedSeconds;
+                _isCountingUp = _remainingSeconds <= 0;
+              }
+            });
+          }
+        });
+      }
+    } else {
+      _elapsedSeconds = widget.task.duration ?? 0;
+    }
+
+    // Initialize countdown state
+    if (widget.task.estimatedDuration != null) {
+      _remainingSeconds = widget.task.estimatedDuration! - _elapsedSeconds;
+      _isCountingUp = _remainingSeconds <= 0;
+    } else {
+      _remainingSeconds = 0;
+      _isCountingUp = true;
+    }
   }
 
   void _startTimer() {
+    if (widget.task.id == null) return;
+
     setState(() {
       _isRunning = true;
       _isPaused = false;
     });
     
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+    _timerService.startTimer(widget.task.id!, _elapsedSeconds, (duration) {
       setState(() {
-        _elapsedSeconds++;
+        _elapsedSeconds = duration;
+        if (widget.task.estimatedDuration != null) {
+          _remainingSeconds = widget.task.estimatedDuration! - _elapsedSeconds;
+          _isCountingUp = _remainingSeconds <= 0;
+        }
       });
     });
   }
 
   void _pauseTimer() {
-    _timer?.cancel();
+    if (widget.task.id == null) return;
+    
+    _timerService.pauseTimer(widget.task.id!);
     setState(() {
       _isRunning = false;
       _isPaused = true;
@@ -50,16 +95,13 @@ class _TaskTimerState extends State<TaskTimer> {
   }
 
   Future<void> _stopTimer() async {
-    _timer?.cancel();
+    if (widget.task.id == null) return;
+
+    _timerService.stopTimer(widget.task.id!);
     setState(() {
       _isRunning = false;
       _isPaused = false;
     });
-    
-    if (widget.task.id == null) {
-      debugPrint('Cannot update duration: Task has no ID');
-      return;
-    }
 
     try {
       final updatedTask = await _taskService.updateTaskDuration(
@@ -77,6 +119,7 @@ class _TaskTimerState extends State<TaskTimer> {
   }
 
   String _formatTime(int seconds) {
+    if (seconds < 0) seconds = 0;
     int hours = seconds ~/ 3600;
     int minutes = (seconds % 3600) ~/ 60;
     int remainingSeconds = seconds % 60;
@@ -104,7 +147,9 @@ class _TaskTimerState extends State<TaskTimer> {
         ),
         const SizedBox(height: 8),
         Text(
-          _formatTime(_elapsedSeconds),
+          hasEstimatedDuration && !_isCountingUp
+              ? _formatTime(_remainingSeconds)
+              : _formatTime(_elapsedSeconds),
           style: TextStyle(
             color: colorScheme.onSurface,
             fontSize: 24,
@@ -148,5 +193,14 @@ class _TaskTimerState extends State<TaskTimer> {
         ),
       ],
     );
+  }
+
+  @override
+  void dispose() {
+    // Don't stop the timer service when disposing, just remove the callback
+    if (widget.task.id != null && _isRunning) {
+      _timerService.removeCallback(widget.task.id!);
+    }
+    super.dispose();
   }
 }
