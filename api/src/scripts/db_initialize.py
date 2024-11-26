@@ -31,7 +31,6 @@ def populate_initial_data():
             estimated_duration=30,
             duration=30,
             member_id=member.id,
-            is_completed=False,
         )
         frequency = Frequency(
             daily=False,
