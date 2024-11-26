@@ -56,7 +56,7 @@ class MoodService {
       return;
     }
 
-    _updateMood(typeOfMood);
+    await _updateMood(typeOfMood);
   }
 
   Future _createMood(TypeOfMood typeOfMood) async {
