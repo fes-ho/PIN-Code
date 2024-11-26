@@ -2,10 +2,15 @@ from datetime import datetime
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import Uuid
+from models.mood import Mood
 from schemas.mood import MoodBase
 from schemas.type_of_mood import TypeOfMood
 from services import get_session
-from cruds import create_mood as create_mood_crud, get_mood as get_mood_crud, update_mood as update_mood_crud
+from cruds import create_mood as create_mood_crud
+from cruds import get_mood as get_mood_crud
+from cruds import update_mood as update_mood_crud
+from cruds import get_member_moods as get_member_moods_crud
+from cruds import delete_mood as delete_mood_crud
 
 router = APIRouter(
     tags=["moods"],
@@ -36,3 +41,17 @@ def update_mood(
     db = Depends(get_session)
 ):
     return update_mood_crud(mood_id, type_of_mood, db)
+
+@router.get("/{id}/moods")
+def get_member_moods(
+    id: UUID,
+    db = Depends(get_session)
+):
+    return get_member_moods_crud(id, db)
+
+@router.delete("/mood/{id}")
+def delete_mood(
+    id: UUID,
+    db = Depends(get_session)
+):
+    return delete_mood_crud(id, db)
