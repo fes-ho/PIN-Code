@@ -13,7 +13,7 @@ __all__ = [
     "create_task",
     "get_member_username_by_id",
     "update_task_duration_in_db",
-    "update_quest_duration_in_db"
+    "update_quest_duration_in_db",
     "create_mood",
     "get_mood",
     "update_mood",
