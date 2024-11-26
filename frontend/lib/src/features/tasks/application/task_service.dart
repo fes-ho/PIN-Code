@@ -45,4 +45,21 @@ class TaskService {
       throw Exception('Failed to retrieve tasks');
     }
   }
+
+  Future<Task> updateTaskDuration(String taskId, int duration, {int? estimatedDuration}) async {
+    final response = await _client.patch(
+      Uri.parse('${Config.apiUrl}/tasks/$taskId/duration'),
+      headers: await _headersFactory.getDefaultHeaders(),
+      body: jsonEncode({
+        'duration': duration,
+        'estimated_duration': estimatedDuration,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      return Task.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to update task duration');
+    }
+  }
 }

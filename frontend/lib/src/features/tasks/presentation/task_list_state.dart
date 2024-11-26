@@ -31,11 +31,15 @@ class TaskListState extends ChangeNotifier
   }
 
   void add(Task task) {
-    _tasks.add(task);
-    if (task.date.day == _selectedDate.day) {
-      _visibleTasks.add(task);
+    if (task.id != null) {
+      _tasks.add(task);
+      if (task.date.day == _selectedDate.day) {
+        _visibleTasks.add(task);
+      }
+      notifyListeners();
+    } else {
+      debugPrint('Attempted to add task without UUID');
     }
-    notifyListeners();
   }
 
   Future<void> loadTasksFromApi() async {
