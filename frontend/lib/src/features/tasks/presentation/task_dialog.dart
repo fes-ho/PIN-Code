@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/common_widgets/action_button.dart';
+import 'package:frontend/src/features/tasks/presentation/task_timer.dart';
 
 class TaskDialog extends StatelessWidget {
   final Task task;
@@ -15,7 +15,7 @@ class TaskDialog extends StatelessWidget {
 
     return Dialog(
       insetPadding: EdgeInsets.only(
-        top: MediaQuery.of(context).size.height * 0.6,
+        top: MediaQuery.of(context).size.height * 0.5,
         right: MediaQuery.of(context).size.width * 0.03,
         left: MediaQuery.of(context).size.width * 0.03,
       ),
@@ -40,6 +40,8 @@ class TaskDialog extends StatelessWidget {
                 ),
               ],
             ),
+            const SizedBox(height: 12),
+            TaskTimer(task: task),
             const SizedBox(height: 12),
             Row(
               children: [

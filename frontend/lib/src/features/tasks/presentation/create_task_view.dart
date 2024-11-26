@@ -270,59 +270,67 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         ),
                       ),
                     ),
-                    onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      Task task = Task(
-                        // This id is not used in the actual implementation
-                        id: '1',
-                        name: _taskName,
-                        description: _taskDescription,
-                        isCompleted: false,
-                        icon: _selectedIcon.codePoint.toString(),
-                        date: DateTime(
-                          _selectedDate.year,
-                          _selectedDate.month,
-                          _selectedDate.day,
-                          _selectedHour,
-                          _selectedMinute,
-                        ),
-                        // TODO: Replace with actual member ID
-                        memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
-                      );
-                      GetIt.I<TaskService>().createTask(task);
-                      var taskList = context.read<TaskListState>();
-                      taskList.add(task);
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        _formKey.currentState!.save();
+                        Task task = Task(
+                          name: _taskName,
+                          description: _taskDescription,
+                          isCompleted: false,
+                          icon: _selectedIcon.codePoint.toString(),
+                          date: DateTime(
+                            _selectedDate.year,
+                            _selectedDate.month,
+                            _selectedDate.day,
+                            _selectedHour,
+                            _selectedMinute,
+                          ),
+                          memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
+                        );
 
-                      showDialog(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return const AlertDialog(
-                            content: Text('Task created successfully!'),
-                          );
-                        },
-                      );
+                        try {
+                          final createdTask = await GetIt.I<TaskService>().createTask(task);
+                          
+                          if (context.mounted) {
+                            var taskList = context.read<TaskListState>();
+                            taskList.add(createdTask);
 
-                      Future.delayed(const Duration(seconds: 1), () {
-                        // Storing a BuildContext for later use can lead to difficult to diagnose crashes. Asynchronous gaps implicitly store a BuildContext, making them easy to overlook for diagnosis.
-                        if (context.mounted) {
-                          Navigator.of(context).pop();
-                          Navigator.of(context).pop();
+                            showDialog(
+                              context: context,
+                              barrierDismissible: false,
+                              builder: (BuildContext context) {
+                                return const AlertDialog(
+                                  content: Text('Task created successfully!'),
+                                );
+                              },
+                            );
+
+                            Future.delayed(const Duration(seconds: 1), () {
+                              if (context.mounted) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pop();
+                              }
+                            });
+                          }
+                        } catch (e) {
+                          if (context.mounted) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Error creating task: ${e.toString()}')),
+                            );
+                          }
                         }
-                      });
-                    }
-                  },
-                  child: Text(
-                    'Create task',
-                    style: TextStyle(
-                      color: colorScheme.onPrimary,
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  )
+                      }
+                    },
+                    child: Text(
+                      'Create task',
+                      style: TextStyle(
+                        color: colorScheme.onPrimary,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    )
+                  ),
                 ),
-                )
               ],
             ),
           ),
