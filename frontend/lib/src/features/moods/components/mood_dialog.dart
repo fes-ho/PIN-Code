@@ -20,7 +20,7 @@ Future<void> showMoodDialog(BuildContext context) async {
             (index) => MoodButton(
               typeOfMood: TypeOfMood.values[index], 
               onAction: () async {
-                await GetIt.I<MoodService>().createOrUpdateMood(TypeOfMood.values[index]);
+                await GetIt.I<MoodService>().manageMood(TypeOfMood.values[index]);
                 Navigator.of(context).pop();
               } 
             ),
