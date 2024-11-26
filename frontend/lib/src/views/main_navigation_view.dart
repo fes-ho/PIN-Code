@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/views/profile_view.dart';
 import 'package:frontend/src/views/statistics_view.dart';
 import 'package:frontend/src/views/today_view.dart';
 
@@ -25,7 +26,7 @@ class MainNavigationViewState extends State<MainNavigationView> {
     TodayView(),
     Text('Social Page'),
     StatisticsView(),
-    Text('Profile Page'),
+    ProfileView(),
   ];
 
   void _onItemTapped(int index) {
