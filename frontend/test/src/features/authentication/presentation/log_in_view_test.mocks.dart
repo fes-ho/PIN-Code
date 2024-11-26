@@ -159,7 +159,7 @@ class MockMoodService extends _i1.Mock implements _i7.MoodService {
       ) as _i5.Future<_i8.TypeOfMood?>);
 
   @override
-  _i5.Future<dynamic> createOrUpdateMood(_i8.TypeOfMood? typeOfMood) =>
+  _i5.Future<dynamic> manageMood(_i8.TypeOfMood? typeOfMood) =>
       (super.noSuchMethod(
         Invocation.method(
           #createOrUpdateMood,
