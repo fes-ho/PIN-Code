@@ -2,7 +2,7 @@
 from fastapi import APIRouter
 from .habits import router as habits_router
 from .members import router as members_router
-from .moods import router as moods_router
+from .mood import router as moods_router
 from .quests import router as quests_router
 from .tasks import router as tasks_router
 from .health import router as health_router

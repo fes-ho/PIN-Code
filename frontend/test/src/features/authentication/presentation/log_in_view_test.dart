@@ -3,6 +3,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/src/features/authentication/domain/member.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/features/moods/services/mood_service.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:frontend/src/views/main_navigation_view.dart';
@@ -17,7 +18,7 @@ import '../../tasks/presentation/create_task_view_test.mocks.dart';
 import 'log_in_view_test.mocks.dart';
 import '../application/utils.dart';
 
-@GenerateMocks([MemberService])
+@GenerateMocks([MemberService, MoodService])
 void main() {
   String testMail = 'pacopepe@pacopepe.es';
   String testPassword = 'pacopepe';
@@ -39,6 +40,7 @@ void main() {
       
       MockMemberService mockMemberService = MockMemberService();
       TaskService mockTaskService = MockTaskService();
+      MockMoodService mockMoodService = MockMoodService();
 
       when(mockMemberService.signIn(any, any)).thenAnswer((_) async =>
           AuthResponse(session: defaultSession, user: defaultMockUser));
@@ -49,8 +51,12 @@ void main() {
       when(mockTaskService.getTasks())
           .thenAnswer((_) async => []);
 
+      when(mockMoodService.getMood())
+          .thenAnswer((_) async => null);
+
       GetIt.I.registerSingleton<MemberService>(mockMemberService);
       GetIt.I.registerSingleton<TaskService>(mockTaskService);
+      GetIt.I.registerSingleton<MoodService>(mockMoodService);
 
       // Act.
       await tester.pumpWidget(
