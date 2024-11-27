@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/moods/presentation/mood_button.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
 import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
@@ -33,14 +34,20 @@ class TodayViewState extends State<TodayView> {
     return Scaffold(
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
-        title: Text(
-          DateFormat('MMMM, d').format(_focusedDay),
-          style: GoogleFonts.lexendDeca(
-            color: colorScheme.primary,
-            fontWeight: FontWeight.w500,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              DateFormat('MMMM, d').format(_focusedDay),
+              style: GoogleFonts.lexendDeca(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            MoodButton(),
+          ],
         ),
-        backgroundColor: colorScheme.surfaceBright,
+      backgroundColor: colorScheme.surfaceBright,
       ),
       body: SafeArea(
         child: Padding(

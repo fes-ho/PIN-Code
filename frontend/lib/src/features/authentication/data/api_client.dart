@@ -18,33 +18,36 @@ class ApiClient {
     SupabaseClient Function()? supabaseClient,
   })  : _host = host ?? dotenv.get("API_HOST"),
         _port = port ?? int.parse(dotenv.get("API_PORT")),
-        _clientFactory = clientFactory ?? (() => HttpClient()),
+        clientFactory = clientFactory ?? (() => HttpClient()),
         _supabaseClient = supabaseClient ?? (() => Supabase.instance.client); 
 
   final SupabaseClient Function() _supabaseClient;
   final String _host;
   final int _port;
-  final HttpClient Function() _clientFactory;
+  final HttpClient Function() clientFactory;
 
   AuthHeaderProvider? _authHeaderProvider;
   String? _memberId;
 
   set authHeaderProvider(AuthHeaderProvider authHeaderProvider) {
-    _authHeaderProvider = authHeaderProvider;
+    authHeaderProvider = authHeaderProvider;
   }
 
   set memberId(String memberId) {
     _memberId = memberId;
   }
 
-  Future<void> _authHeader(HttpHeaders headers) async {
+  get host => _host;
+  get port => _port;
+
+  Future<void> authHeader(HttpHeaders headers) async {
     final header = _authHeaderProvider?.call();
     if (header != null) {
       headers.add(HttpHeaders.authorizationHeader, header);
     }
   }
 
-  Future<String> _getMemberId() async {
+  Future<String> getMemberId() async {
     if (_memberId != null) {
       return _memberId!;
     }
@@ -57,11 +60,11 @@ class ApiClient {
   }
 
   Future<Result<MemberApiModel>> getMember() async {
-    final client = _clientFactory();
+    final client = clientFactory();
     try {
-      String memberId = await _getMemberId();
+      String memberId = await getMemberId();
       final request = await client.get(_host, _port, '/members/$memberId');
-      await _authHeader(request.headers);
+      await authHeader(request.headers);
       final response = await request.close();
       if (response.statusCode == 200) {
         final stringData = await response.transform(utf8.decoder).join();
@@ -78,11 +81,11 @@ class ApiClient {
   }
 
   Future<Result<List<Task>>> getTasks() async {
-    final client = _clientFactory();
+    final client = clientFactory();
     try {
-      String memberId = await _getMemberId();
+      String memberId = await getMemberId();
       final request = await client.get(_host, _port, '/members/$memberId/tasks');
-      await _authHeader(request.headers);
+      await authHeader(request.headers);
       final response = await request.close();
       if (response.statusCode == 200) {
         final stringData = await response.transform(utf8.decoder).join();
@@ -100,11 +103,10 @@ class ApiClient {
   }
 
   Future<Result<void>> createTask(Task task) async {
-    final client = _clientFactory();
+    final client = clientFactory();
     try {
       final request = await client.post(_host, _port, '/tasks');
-      await _authHeader(request.headers);
-      request.headers.contentType = ContentType.json;
+      await authHeader(request.headers);
       request.write(jsonEncode(task));
       final response = await request.close();
       if (response.statusCode == 201) {

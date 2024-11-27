@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/authentication/domain/member_api/member_api_model.dart';
 import 'package:frontend/src/features/tasks/domain/task/task.dart';
@@ -31,4 +33,28 @@ class FakeApiClient implements ApiClient {
   Future<Result<void>> createTask(Task task) async {
     return Result.ok(null);
   }
+
+  @override
+  Future<void> authHeader(HttpHeaders headers) {
+    // TODO: implement authHeader
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement clientFactory
+  HttpClient Function() get clientFactory => throw UnimplementedError();
+
+  @override
+  Future<String> getMemberId() {
+    // TODO: implement getMemberId
+    throw UnimplementedError();
+  }
+
+  @override
+  // TODO: implement host
+  get host => throw UnimplementedError();
+
+  @override
+  // TODO: implement port
+  get port => throw UnimplementedError();
 }
