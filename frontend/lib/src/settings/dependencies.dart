@@ -1,4 +1,3 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/authentication/data/auth_apli_client.dart';
 import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository.dart';
@@ -6,9 +5,12 @@ import 'package:frontend/src/features/authentication/data/auth_repositories/auth
 import 'package:frontend/src/features/authentication/data/member_repositories/member_repository_remote.dart';
 import 'package:frontend/src/features/authentication/data/member_repositories/member_repository.dart';
 import 'package:frontend/src/features/authentication/data/shared_preferences_service.dart';
+import 'package:frontend/src/features/moods/data/mood_api_client.dart';
+import 'package:frontend/src/features/moods/data/mood_repositories/mood_repository.dart';
+import 'package:frontend/src/features/moods/data/mood_repositories/mood_repository_remote.dart';
 import 'package:frontend/src/features/tasks/data/task_repository.dart';
 import 'package:frontend/src/features/tasks/data/task_repository_remote.dart';
-import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
+import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 
@@ -24,6 +26,11 @@ List<SingleChildWidget> get providersRemote {
     ),
     Provider(
       create: (context) => ApiClient(),
+    ),
+    Provider(
+      create: (context) => MoodApiClient(
+        apiClient: context.read(),
+      ),
     ),
     Provider(
       create: (context) => SharedPreferencesService(),
@@ -45,9 +52,16 @@ List<SingleChildWidget> get providersRemote {
         apiClient: context.read(),
       ) as TaskRepository,
     ),
+    Provider(
+      create: (context) => MoodRepositoryRemote(
+        apiClient: context.read(),
+        moodApiClient: context.read(),
+      ) as MoodRepository,
+    ),
     ChangeNotifierProvider(
       create: (context) => TodayViewModel(
-        taskRepository: context.read()
+        taskRepository: context.read(),
+        moodRepository: context.read(),
       ),
     ),
     ..._sharedProviders,

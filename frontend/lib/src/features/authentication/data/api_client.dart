@@ -30,7 +30,7 @@ class ApiClient {
   String? _memberId;
 
   set authHeaderProvider(AuthHeaderProvider authHeaderProvider) {
-    authHeaderProvider = authHeaderProvider;
+    _authHeaderProvider = authHeaderProvider;
   }
 
   set memberId(String memberId) {

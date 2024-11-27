@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/src/features/tasks/presentation/today_view.dart';
+import 'package:frontend/src/features/today/presentation/today_view.dart';
 import 'package:go_router/go_router.dart';
 
 class CustomNavigationBar extends StatelessWidget {

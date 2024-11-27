@@ -1,6 +1,6 @@
 import 'package:frontend/src/features/tasks/data/task_repository.dart';
 import 'package:frontend/src/features/tasks/domain/task/task.dart';
-import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
+import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:frontend/src/utils/command.dart';
 import 'package:frontend/src/utils/result.dart';
 import 'package:logging/logging.dart';

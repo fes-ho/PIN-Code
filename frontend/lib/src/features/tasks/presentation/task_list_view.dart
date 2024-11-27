@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/domain/task/task.dart';
-import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
+import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/features/tasks/presentation/task_dialog.dart';
 

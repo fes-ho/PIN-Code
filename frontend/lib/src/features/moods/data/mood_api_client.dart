@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/moods/domain/mood.dart';
-import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
 import 'package:frontend/src/utils/date_time_utils.dart';
 import 'package:frontend/src/utils/result.dart';
 

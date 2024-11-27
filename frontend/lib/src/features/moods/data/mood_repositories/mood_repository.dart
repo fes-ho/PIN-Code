@@ -9,7 +9,7 @@ abstract class MoodRepository
 
   Future<Result<List<Mood>>> getMoods();
 
-  Future<Result<void>> updateMood(String moodId, TypeOfMood typeOfMood);
+  Future<Result<Mood>> updateMood(String moodId, TypeOfMood typeOfMood);
 
   Future<Result<void>> deleteMood(String moodId);
 

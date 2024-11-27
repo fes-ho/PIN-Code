@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/moods/presentation/mood_button.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
-import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
+import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -44,7 +44,7 @@ class TodayViewState extends State<TodayView> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            MoodButton(),
+            MoodButton(viewModel: widget.viewModel),
           ],
         ),
       backgroundColor: colorScheme.surfaceBright,

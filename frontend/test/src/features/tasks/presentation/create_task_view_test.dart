@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.dart';
-import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
+import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:mocktail/mocktail.dart';
 
 import '../../../../../testing/app.dart';

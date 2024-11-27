@@ -6,10 +6,10 @@ import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
-import 'package:frontend/src/features/tasks/presentation/today_viewmodel.dart';
+import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:frontend/src/routing/routes.dart';
 import 'package:frontend/src/common_widgets/custom_navigation_bar.dart';
-import 'package:frontend/src/features/tasks/presentation/today_view.dart';
+import 'package:frontend/src/features/today/presentation/today_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
