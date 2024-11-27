@@ -52,7 +52,7 @@ List<SingleChildWidget> get providersRemote {
         apiClient: context.read(),
       ) as TaskRepository,
     ),
-    Provider(
+    ChangeNotifierProvider(
       create: (context) => MoodRepositoryRemote(
         apiClient: context.read(),
         moodApiClient: context.read(),

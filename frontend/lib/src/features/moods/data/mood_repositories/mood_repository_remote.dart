@@ -1,4 +1,4 @@
-
+import 'package:flutter/material.dart';
 import 'package:frontend/src/features/authentication/data/api_client.dart';
 import 'package:frontend/src/features/moods/data/mood_api_client.dart';
 import 'package:frontend/src/features/moods/data/mood_repositories/mood_repository.dart';
@@ -7,7 +7,7 @@ import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
 import 'package:frontend/src/utils/date_time_utils.dart';
 import 'package:frontend/src/utils/result.dart';
 
-class MoodRepositoryRemote implements MoodRepository {
+class MoodRepositoryRemote extends ChangeNotifier implements MoodRepository {
   MoodRepositoryRemote({
     required ApiClient apiClient,
     required MoodApiClient moodApiClient,
@@ -32,11 +32,19 @@ class MoodRepositoryRemote implements MoodRepository {
       typeOfMood: typeOfMood,
       memberId: await _apiClient.getMemberId(),
     );
-    return await _moodApiClient.createMood(mood);
+    final result = await _moodApiClient.createMood(mood);
+    final createdMood = result.asOk.value;
+    _cachedData ??= [];
+    _checkDuplicates(createdMood.id);
+    _cachedData?.add(result.asOk.value);
+    notifyListeners();
+    return result;
   }
 
   @override
   Future<Result<void>> deleteMood(String moodId) async {
+    _cachedData?.removeWhere((element) => element.id == moodId);
+    notifyListeners();
     return await _moodApiClient.deleteMood(moodId);
   }
 
@@ -46,6 +54,7 @@ class MoodRepositoryRemote implements MoodRepository {
       final result = await _moodApiClient.getMoods();
       if (result is Ok) {
         _cachedData = result.asOk.value;
+        notifyListeners();
       }
       return result;
     } else {
@@ -56,7 +65,26 @@ class MoodRepositoryRemote implements MoodRepository {
   @override
   Future<Result<Mood>> updateMood(String moodId, TypeOfMood typeOfMood) async {
     String typeOfMoodValue = typeOfMood.name;
-    return await _moodApiClient.updateMood(moodId, typeOfMoodValue);
+    _checkDuplicates(moodId);
+    final result = await _moodApiClient.updateMood(moodId, typeOfMoodValue);
+    if (result is Ok) {
+      final updatedMood = result.asOk.value;
+      _cachedData?.add(updatedMood);
+      notifyListeners();
+
+      return Result.ok(updatedMood);
+    } else {
+      return result;
+    }
   }
 
+  void _checkDuplicates(String? moodId) {
+    if (_cachedData == null || 
+        moodId == null || 
+        !_cachedData!.any((element) => element.id == moodId)) 
+    {
+      return;
+    }
+    _cachedData?.removeWhere((element) => element.id == moodId);
+  }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/authentication/data/auth_repositories/auth_repository.dart';
 import 'package:frontend/src/features/authentication/presentation/login_view.dart';
 import 'package:frontend/src/features/authentication/presentation/login_viewmodel.dart';
+import 'package:frontend/src/features/stats/presentation/statistics_view.dart';
+import 'package:frontend/src/features/stats/presentation/statistics_viewmodel.dart';
 import 'package:frontend/src/features/tasks/domain/task/task.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_viewmodel.dart';
@@ -83,13 +85,12 @@ GoRouter router(
                   GoRoute(
                     path: Routes.stats,
                     builder: (context, state) {
-                      // TODO: Implement Stats view
-                      return Container(
-                        color: Colors.green,
-                        child: Center(
-                          child: Text('Stats'),
-                        ),
+                      final viewModel = StatisticsViewmodel(
+                        moodRepository: context.read(),
                       );
+                      return StatisticsView(
+                        viewModel: viewModel,
+                      ); 
                     },
                   ),
                 ],
