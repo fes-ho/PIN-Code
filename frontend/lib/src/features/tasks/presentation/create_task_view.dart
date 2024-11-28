@@ -311,7 +311,7 @@ class _CreateTaskViewState extends State<CreateTaskView> {
                           _selectedMinute,
                         ),
                         // TODO: Replace with actual member ID
-                        memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
+                        member_id: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
                       );
                       await widget.viewModel.createTask.execute(task);
                     }

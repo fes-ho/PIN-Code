@@ -13,7 +13,7 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       icon: json['icon'] as String,
       date: DateTime.parse(json['date'] as String),
       is_completed: json['is_completed'] as bool,
-      memberId: json['memberId'] as String?,
+      member_id: json['member_id'] as String?,
     );
 
 Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
@@ -24,5 +24,5 @@ Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>
       'icon': instance.icon,
       'date': instance.date.toIso8601String(),
       'is_completed': instance.is_completed,
-      'memberId': instance.memberId,
+      'member_id': instance.member_id,
     };

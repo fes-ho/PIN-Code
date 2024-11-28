@@ -1,5 +1,7 @@
-from fastapi import FastAPI, openapi, Depends
+from fastapi import FastAPI, Request, openapi, Depends
 from dotenv import load_dotenv
+from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from fastapi.security import HTTPBearer, OAuth2PasswordBearer
 from middleware import AuhtorizationMiddleware
 import uvicorn
@@ -17,6 +19,14 @@ bearer_scheme = HTTPBearer()
 app = FastAPI(
     responses={404: {"description": "Not found"}},
 )
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    logger.error(f"Validation error: {exc} for request {request.url}")
+    return JSONResponse(
+        status_code=422,
+        content={"detail": exc.errors(), "body": exc.body},
+    )
 
 app.include_router(
     member_router,

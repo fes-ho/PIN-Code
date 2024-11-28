@@ -26,7 +26,7 @@ mixin _$Task {
   String get icon => throw _privateConstructorUsedError;
   DateTime get date => throw _privateConstructorUsedError;
   bool get is_completed => throw _privateConstructorUsedError;
-  String? get memberId => throw _privateConstructorUsedError;
+  String? get member_id => throw _privateConstructorUsedError;
 
   /// Serializes this Task to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +49,7 @@ abstract class $TaskCopyWith<$Res> {
       String icon,
       DateTime date,
       bool is_completed,
-      String? memberId});
+      String? member_id});
 }
 
 /// @nodoc
@@ -73,7 +73,7 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? icon = null,
     Object? date = null,
     Object? is_completed = null,
-    Object? memberId = freezed,
+    Object? member_id = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -100,9 +100,9 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.is_completed
           : is_completed // ignore: cast_nullable_to_non_nullable
               as bool,
-      memberId: freezed == memberId
-          ? _value.memberId
-          : memberId // ignore: cast_nullable_to_non_nullable
+      member_id: freezed == member_id
+          ? _value.member_id
+          : member_id // ignore: cast_nullable_to_non_nullable
               as String?,
     ) as $Val);
   }
@@ -122,7 +122,7 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       String icon,
       DateTime date,
       bool is_completed,
-      String? memberId});
+      String? member_id});
 }
 
 /// @nodoc
@@ -143,7 +143,7 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? icon = null,
     Object? date = null,
     Object? is_completed = null,
-    Object? memberId = freezed,
+    Object? member_id = freezed,
   }) {
     return _then(_$TaskImpl(
       id: null == id
@@ -170,9 +170,9 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.is_completed
           : is_completed // ignore: cast_nullable_to_non_nullable
               as bool,
-      memberId: freezed == memberId
-          ? _value.memberId
-          : memberId // ignore: cast_nullable_to_non_nullable
+      member_id: freezed == member_id
+          ? _value.member_id
+          : member_id // ignore: cast_nullable_to_non_nullable
               as String?,
     ));
   }
@@ -188,7 +188,7 @@ class _$TaskImpl implements _Task {
       required this.icon,
       required this.date,
       required this.is_completed,
-      this.memberId});
+      this.member_id});
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskImplFromJson(json);
@@ -206,11 +206,11 @@ class _$TaskImpl implements _Task {
   @override
   final bool is_completed;
   @override
-  final String? memberId;
+  final String? member_id;
 
   @override
   String toString() {
-    return 'Task(id: $id, name: $name, description: $description, icon: $icon, date: $date, is_completed: $is_completed, memberId: $memberId)';
+    return 'Task(id: $id, name: $name, description: $description, icon: $icon, date: $date, is_completed: $is_completed, member_id: $member_id)';
   }
 
   @override
@@ -226,14 +226,14 @@ class _$TaskImpl implements _Task {
             (identical(other.date, date) || other.date == date) &&
             (identical(other.is_completed, is_completed) ||
                 other.is_completed == is_completed) &&
-            (identical(other.memberId, memberId) ||
-                other.memberId == memberId));
+            (identical(other.member_id, member_id) ||
+                other.member_id == member_id));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, description, icon, date, is_completed, memberId);
+      runtimeType, id, name, description, icon, date, is_completed, member_id);
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.
@@ -259,7 +259,7 @@ abstract class _Task implements Task {
       required final String icon,
       required final DateTime date,
       required final bool is_completed,
-      final String? memberId}) = _$TaskImpl;
+      final String? member_id}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
@@ -276,7 +276,7 @@ abstract class _Task implements Task {
   @override
   bool get is_completed;
   @override
-  String? get memberId;
+  String? get member_id;
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.

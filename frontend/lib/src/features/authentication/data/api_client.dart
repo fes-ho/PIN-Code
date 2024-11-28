@@ -107,6 +107,7 @@ class ApiClient {
     try {
       final request = await client.post(_host, _port, '/tasks');
       await authHeader(request.headers);
+      request.headers.contentType = ContentType.json;
       request.write(jsonEncode(task));
       final response = await request.close();
       if (response.statusCode == 201) {

@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'task.freezed.dart';
@@ -13,7 +15,7 @@ class Task with _$Task{
     required String icon,
     required DateTime date,
     required bool is_completed,
-    String? memberId,
+    String? member_id,
   }) = _Task;
 
   factory Task.fromJson(Map<String, Object?> json) => 
