@@ -27,6 +27,8 @@ mixin _$Task {
   DateTime get date => throw _privateConstructorUsedError;
   bool get is_completed => throw _privateConstructorUsedError;
   String? get member_id => throw _privateConstructorUsedError;
+  int? get estimated_duration => throw _privateConstructorUsedError;
+  int? get duration => throw _privateConstructorUsedError;
 
   /// Serializes this Task to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -49,7 +51,9 @@ abstract class $TaskCopyWith<$Res> {
       String icon,
       DateTime date,
       bool is_completed,
-      String? member_id});
+      String? member_id,
+      int? estimated_duration,
+      int? duration});
 }
 
 /// @nodoc
@@ -74,6 +78,8 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
     Object? date = null,
     Object? is_completed = null,
     Object? member_id = freezed,
+    Object? estimated_duration = freezed,
+    Object? duration = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -104,6 +110,14 @@ class _$TaskCopyWithImpl<$Res, $Val extends Task>
           ? _value.member_id
           : member_id // ignore: cast_nullable_to_non_nullable
               as String?,
+      estimated_duration: freezed == estimated_duration
+          ? _value.estimated_duration
+          : estimated_duration // ignore: cast_nullable_to_non_nullable
+              as int?,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -122,7 +136,9 @@ abstract class _$$TaskImplCopyWith<$Res> implements $TaskCopyWith<$Res> {
       String icon,
       DateTime date,
       bool is_completed,
-      String? member_id});
+      String? member_id,
+      int? estimated_duration,
+      int? duration});
 }
 
 /// @nodoc
@@ -144,6 +160,8 @@ class __$$TaskImplCopyWithImpl<$Res>
     Object? date = null,
     Object? is_completed = null,
     Object? member_id = freezed,
+    Object? estimated_duration = freezed,
+    Object? duration = freezed,
   }) {
     return _then(_$TaskImpl(
       id: null == id
@@ -174,6 +192,14 @@ class __$$TaskImplCopyWithImpl<$Res>
           ? _value.member_id
           : member_id // ignore: cast_nullable_to_non_nullable
               as String?,
+      estimated_duration: freezed == estimated_duration
+          ? _value.estimated_duration
+          : estimated_duration // ignore: cast_nullable_to_non_nullable
+              as int?,
+      duration: freezed == duration
+          ? _value.duration
+          : duration // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
@@ -188,7 +214,9 @@ class _$TaskImpl implements _Task {
       required this.icon,
       required this.date,
       required this.is_completed,
-      this.member_id});
+      this.member_id,
+      this.estimated_duration,
+      this.duration});
 
   factory _$TaskImpl.fromJson(Map<String, dynamic> json) =>
       _$$TaskImplFromJson(json);
@@ -207,10 +235,14 @@ class _$TaskImpl implements _Task {
   final bool is_completed;
   @override
   final String? member_id;
+  @override
+  final int? estimated_duration;
+  @override
+  final int? duration;
 
   @override
   String toString() {
-    return 'Task(id: $id, name: $name, description: $description, icon: $icon, date: $date, is_completed: $is_completed, member_id: $member_id)';
+    return 'Task(id: $id, name: $name, description: $description, icon: $icon, date: $date, is_completed: $is_completed, member_id: $member_id, estimated_duration: $estimated_duration, duration: $duration)';
   }
 
   @override
@@ -227,13 +259,16 @@ class _$TaskImpl implements _Task {
             (identical(other.is_completed, is_completed) ||
                 other.is_completed == is_completed) &&
             (identical(other.member_id, member_id) ||
-                other.member_id == member_id));
+                other.member_id == member_id) &&
+            (identical(other.estimated_duration, estimated_duration) ||
+                other.estimated_duration == estimated_duration) &&
+            (identical(other.duration, duration) || other.duration == duration));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, id, name, description, icon, date, is_completed, member_id);
+      runtimeType, id, name, description, icon, date, is_completed, member_id, estimated_duration, duration);
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.
@@ -259,7 +294,9 @@ abstract class _Task implements Task {
       required final String icon,
       required final DateTime date,
       required final bool is_completed,
-      final String? member_id}) = _$TaskImpl;
+      final String? member_id,
+      final int? estimated_duration,
+      final int? duration}) = _$TaskImpl;
 
   factory _Task.fromJson(Map<String, dynamic> json) = _$TaskImpl.fromJson;
 
@@ -277,6 +314,10 @@ abstract class _Task implements Task {
   bool get is_completed;
   @override
   String? get member_id;
+  @override
+  int? get estimated_duration;
+  @override
+  int? get duration;
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.

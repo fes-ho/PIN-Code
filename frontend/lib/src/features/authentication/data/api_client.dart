@@ -121,4 +121,25 @@ class ApiClient {
       client.close();
     }
   }
+
+  Future<Result<void>> patchTaskDuration(String taskId, Map<String, dynamic> data) async {
+    final client = clientFactory();
+    try {
+      final request = await client.patch(_host, _port, '/tasks/$taskId/duration');
+      await authHeader(request.headers);
+      request.headers.contentType = ContentType.json;
+      request.write(jsonEncode(data));
+      final response = await request.close();
+      
+      if (response.statusCode == 200) {
+        return Result.ok(null);
+      } else {
+        return Result.error(const HttpException("Invalid response"));
+      }
+    } on Exception catch (error) {
+      return Result.error(error);
+    } finally {
+      client.close();
+    }
+  }
 }

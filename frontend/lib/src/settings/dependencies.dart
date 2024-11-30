@@ -13,6 +13,9 @@ import 'package:frontend/src/features/tasks/data/task_repository_remote.dart';
 import 'package:frontend/src/features/today/presentation/today_viewmodel.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:frontend/src/features/time_tracking/data/time_tracking_api_client.dart';
+import 'package:frontend/src/features/time_tracking/data/time_tracking_service.dart';
+import 'package:frontend/src/features/time_tracking/data/time_tracking_repository.dart';
 
 /// Shared providers for all configurations.
 List<SingleChildWidget> _sharedProviders = [];
@@ -62,6 +65,21 @@ List<SingleChildWidget> get providersRemote {
       create: (context) => TodayViewModel(
         taskRepository: context.read(),
         moodRepository: context.read(),
+      ),
+    ),
+    Provider(
+      create: (context) => TimeTrackingApiClient(
+        apiClient: context.read(),
+      ),
+    ),
+    Provider(
+      create: (context) => TimeTrackingService(
+        apiClient: context.read(),
+      ),
+    ),
+    ChangeNotifierProvider(
+      create: (context) => TimeTrackingRepository(
+        service: context.read(),
       ),
     ),
     ..._sharedProviders,

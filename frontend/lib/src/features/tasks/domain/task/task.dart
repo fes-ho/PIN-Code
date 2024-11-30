@@ -16,6 +16,8 @@ class Task with _$Task{
     required DateTime date,
     required bool is_completed,
     String? member_id,
+    int? estimated_duration,
+    int? duration,
   }) = _Task;
 
   factory Task.fromJson(Map<String, Object?> json) => 
