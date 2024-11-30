@@ -13,7 +13,10 @@
             "envFile": "${workspaceFolder}/api/.env",
             "env": {
                 "PYTHONPATH": "${workspaceFolder}/api/src"
-            }
+            },
+            "args": [
+                "--reload"
+            ]
         },
         {
             "name": "Python Debugger: Tests",
