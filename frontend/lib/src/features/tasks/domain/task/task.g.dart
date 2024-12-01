@@ -14,8 +14,8 @@ _$TaskImpl _$$TaskImplFromJson(Map<String, dynamic> json) => _$TaskImpl(
       date: DateTime.parse(json['date'] as String),
       is_completed: json['is_completed'] as bool,
       member_id: json['member_id'] as String?,
-      estimated_duration: json['estimated_duration'] as int?,
-      duration: json['duration'] as int?,
+      estimated_duration: (json['estimated_duration'] as num?)?.toInt(),
+      duration: (json['duration'] as num?)?.toInt(),
     );
 
 Map<String, dynamic> _$$TaskImplToJson(_$TaskImpl instance) =>

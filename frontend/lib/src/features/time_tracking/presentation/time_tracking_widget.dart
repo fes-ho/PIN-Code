@@ -60,33 +60,43 @@ class TimeTrackingWidget extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          ElevatedButton.icon(
-                            onPressed: (!viewModel.isTracking || viewModel.isPaused) ? viewModel.startTracking : null,
-                            icon: const Icon(Icons.play_arrow),
-                            label: const Text('Start'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: colorScheme.primary,
-                              foregroundColor: colorScheme.onPrimary,
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: (!viewModel.isTracking || viewModel.isPaused) ? viewModel.startTracking : null,
+                              icon: const Icon(Icons.play_arrow),
+                              label: const Text('Start'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colorScheme.primary,
+                                foregroundColor: colorScheme.onPrimary,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          ElevatedButton.icon(
-                            onPressed: viewModel.isTracking ? () => viewModel.pauseTracking.execute() : null,
-                            icon: const Icon(Icons.pause),
-                            label: const Text('Pause'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: colorScheme.secondary,
-                              foregroundColor: colorScheme.onSecondary,
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: viewModel.isTracking ? () => viewModel.pauseTracking.execute() : null,
+                              icon: const Icon(Icons.pause),
+                              label: Text('Pause',
+                                style: GoogleFonts.quicksand(
+                                  color: colorScheme.onSecondary,
+                                  fontWeight: FontWeight.w600,
+                                )),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colorScheme.secondary,
+                                foregroundColor: colorScheme.onSecondary,
+                              ),
                             ),
                           ),
                           const SizedBox(width: 8),
-                          ElevatedButton.icon(
-                            onPressed: (snapshot.data ?? 0) > 0 ? () => viewModel.stopTracking.execute() : null,
-                            icon: const Icon(Icons.stop),
-                            label: const Text('Stop'),
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: colorScheme.error,
-                              foregroundColor: colorScheme.onError,
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: (snapshot.data ?? 0) > 0 ? () => viewModel.stopTracking.execute() : null,
+                              icon: const Icon(Icons.stop),
+                              label: const Text('Stop'),
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: colorScheme.error,
+                                foregroundColor: colorScheme.onError,
+                              ),
                             ),
                           ),
                         ],
@@ -101,4 +111,4 @@ class TimeTrackingWidget extends StatelessWidget {
       },
     );
   }
-} 
+}

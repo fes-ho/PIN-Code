@@ -19,7 +19,7 @@ class TaskDialog extends StatelessWidget {
 
     return Dialog(
       insetPadding: EdgeInsets.only(
-        top: screenHeight * 0.5,
+        top: screenHeight * 0.42,
         right: MediaQuery.of(context).size.width * 0.03,
         left: MediaQuery.of(context).size.width * 0.03,
         bottom: 16,

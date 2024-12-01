@@ -262,13 +262,14 @@ class _$TaskImpl implements _Task {
                 other.member_id == member_id) &&
             (identical(other.estimated_duration, estimated_duration) ||
                 other.estimated_duration == estimated_duration) &&
-            (identical(other.duration, duration) || other.duration == duration));
+            (identical(other.duration, duration) ||
+                other.duration == duration));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, name, description, icon, date, is_completed, member_id, estimated_duration, duration);
+  int get hashCode => Object.hash(runtimeType, id, name, description, icon,
+      date, is_completed, member_id, estimated_duration, duration);
 
   /// Create a copy of Task
   /// with the given fields replaced by the non-null parameter values.

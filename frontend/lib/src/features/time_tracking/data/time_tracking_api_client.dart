@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:frontend/src/features/authentication/data/api_client.dart';
+import 'package:frontend/src/features/time_tracking/domain/task_duration.dart';
 import 'package:frontend/src/utils/result.dart';
 
 class TimeTrackingApiClient {
@@ -22,12 +23,12 @@ class TimeTrackingApiClient {
       await _apiClient.authHeader(request.headers);
       request.headers.contentType = ContentType.json;
       
-      final data = {
-        'duration': duration,
-        if (estimatedDuration != null) 'estimated_duration': estimatedDuration,
-      };
+      TaskDuration taskDuration = TaskDuration(
+        duration: duration,
+        estimated_duration: estimatedDuration,
+      );
       
-      request.write(jsonEncode(data));
+      request.write(jsonEncode(taskDuration));
       final response = await request.close();
       
       if (response.statusCode == 200) {
