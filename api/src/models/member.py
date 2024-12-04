@@ -14,3 +14,11 @@ class Member(MemberBase, table=True):
     streaks: Optional[List["Streak"]] = Relationship(back_populates="member")
     habits: Optional[List["Habit"]] = Relationship(back_populates="member")
     tasks: Optional[List["Task"]] = Relationship(back_populates="member")
+    friends: Optional[List["Member"]] = Relationship(
+        sa_relationship_kwargs = {
+            "secondary": "friendship",
+            "primaryjoin": "Member.id==Friendship.member_id",
+            "secondaryjoin": "Member.id==Friendship.friend_id",
+            "back_populates": "friends",
+        }
+    )
