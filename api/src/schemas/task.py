@@ -12,6 +12,9 @@ class TaskBase(Activity):
 class TaskCreate(TaskBase):
     pass
 
+class TaskUpdate(TaskBase):
+    pass
+
 class TaskDurationUpdate(BaseModel):
     duration: int
     estimated_duration: int | None = None

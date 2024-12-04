@@ -13,7 +13,13 @@ import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CreateTaskScreen extends StatefulWidget {
-  const CreateTaskScreen({super.key});
+
+  final Task? task;
+
+  const CreateTaskScreen({
+    super.key,
+    this.task,
+  });
 
   @override
   CreateTaskScreenState createState() => CreateTaskScreenState();
@@ -24,14 +30,29 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
   final TextEditingController _nameFieldController = TextEditingController();
   final TextEditingController _descriptionFieldController = TextEditingController();
 
-  String _taskName = '';
-  String _taskDescription = '';
-  DateTime _selectedDate = DateTime.now();
-  int _selectedHour = DateTime.now().hour;
-  int _selectedMinute = DateTime.now().minute;
-  IconData _selectedIcon = Icons.edit;
+  late String _taskName;
+  late String _taskDescription;
+  late IconData _selectedIcon;
+  late DateTime _selectedDate;
+  late int _selectedHour;
+  late int _selectedMinute;
   
   bool _showMoreOptions = false;
+
+  @override
+  @override
+  void initState() {
+    super.initState();
+    _selectedDate = widget.task?.date ?? DateTime.now();
+    _selectedHour = widget.task?.date.hour ?? DateTime.now().hour;
+    _selectedMinute = widget.task?.date.minute ?? DateTime.now().minute;
+    _selectedIcon = 
+      widget.task?.icon != null ? IconData(int.parse(widget.task!.icon,), fontFamily: 'MaterialIcons') : Icons.edit;
+    _nameFieldController.text = widget.task?.name ?? '';
+    _descriptionFieldController.text = widget.task?.description ?? '';
+    _taskDescription = widget.task?.description ?? '';
+    _taskName = widget.task?.name ?? '';
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -274,6 +295,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
                         Task task = Task(
+                          id: widget.task?.id ?? '',
                           name: _taskName,
                           description: _taskDescription,
                           isCompleted: false,
@@ -289,7 +311,12 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         );
 
                         try {
-                          final createdTask = await GetIt.I<TaskService>().createTask(task);
+                          final createdTask;
+                          if (widget.task != null) {
+                            createdTask = await GetIt.I<TaskService>().updateTask(task);
+                          } else {
+                            createdTask = await GetIt.I<TaskService>().createTask(task);
+                          }
                           
                           if (context.mounted) {
                             var taskList = context.read<TaskListState>();

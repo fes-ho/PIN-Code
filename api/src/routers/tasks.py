@@ -1,9 +1,10 @@
 from uuid import UUID
 from fastapi import APIRouter, Depends
-from schemas import TaskCreate, TaskDurationUpdate
+from cruds.task import update_complete_task
+from schemas import TaskCreate, TaskDurationUpdate, TaskUpdate
 from services import get_session
 from dependencies import verify_member_id
-from cruds import read_task_by_member, create_task, update_task_duration_in_db
+from cruds import read_task_by_member, create_task, update_task_duration_in_db, delete_task_in_db, update_task
 
 router = APIRouter(
     tags=["tasks"],
@@ -23,6 +24,28 @@ def post_task(
 ):
     verify_member_id(taskCreate.member_id, db)
     return create_task(taskCreate, db)
+
+@router.put("/tasks/{task_id}")
+def put_task(
+    task_id: UUID,
+    taskUpdate: TaskUpdate,
+    db=Depends(get_session)
+):
+    return update_task(task_id, taskUpdate, db)
+
+@router.patch("/tasks/{task_id}/complete")
+def patch_complete_task(
+    task_id: UUID,
+    db=Depends(get_session)
+):
+    return update_complete_task(task_id, db)
+
+@router.delete("/tasks/{task_id}", status_code=204)
+def delete_task(
+    task_id: UUID,
+    db=Depends(get_session)
+):
+    return delete_task_in_db(task_id, db)
 
 @router.patch("/tasks/{task_id}/duration")
 def update_task_duration(

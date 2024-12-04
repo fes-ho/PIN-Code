@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
+import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/common_widgets/action_button.dart';
@@ -109,7 +110,10 @@ class _TaskDialogState extends State<TaskDialog> {
                           color: colorScheme.onSecondaryContainer,
                           fontWeight: FontWeight.w600,
                         )),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<TaskListState>().removeTask(_currentTask);
+                      Navigator.of(context).pop();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorScheme.secondaryContainer,
                       shape: RoundedRectangleBorder(
@@ -126,7 +130,10 @@ class _TaskDialogState extends State<TaskDialog> {
                           color: colorScheme.onSecondaryContainer,
                           fontWeight: FontWeight.w600,
                         )),
-                    onPressed: () {},
+                    onPressed: () {
+                      context.read<TaskListState>().completeTask(_currentTask);
+                      Navigator.of(context).pop();
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: colorScheme.secondaryContainer,
                       shape: RoundedRectangleBorder(
@@ -143,7 +150,17 @@ class _TaskDialogState extends State<TaskDialog> {
               onPressed: () => _showEstimatedTimeDialog(context),
             ),
             const SizedBox(height: 8),
-            const ActionButton(icon: Icons.edit, label: 'Edit'),
+            ActionButton(
+              icon: Icons.edit, 
+              label: 
+                  'Edit',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CreateTaskScreen(task: _currentTask)),
+                );
+              },
+              ),
           ],
         ),
       ),

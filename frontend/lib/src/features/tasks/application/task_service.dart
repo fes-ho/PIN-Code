@@ -31,6 +31,42 @@ class TaskService {
     }
   }
 
+  Future<Task> updateTask(Task task) async {
+    final response = await _client.put(
+      Uri.parse('${Config.apiUrl}/tasks/${task.id}'),
+      headers: await _headersFactory.getDefaultHeaders(),
+      body: jsonEncode(task.toJson()),
+    );
+
+    if (response.statusCode == 200) {
+      return Task.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+    } else {
+      throw Exception('Failed to update task');
+    }
+  }
+
+  Future<void> completeTask(Task task) async {
+    final response = await _client.patch(
+      Uri.parse('${Config.apiUrl}/tasks/${task.id}/complete'),
+      headers: await _headersFactory.getDefaultHeaders(),
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Failed to complete task');
+    }
+  }
+
+  Future<void> deleteTask(Task task) async {
+    final response = await _client.delete(
+      Uri.parse('${Config.apiUrl}/tasks/${task.id}'),
+      headers: await _headersFactory.getDefaultHeaders(),
+    );
+
+    if (response.statusCode != 204) {
+      throw Exception('Failed to delete task');
+    }
+  }
+
   Future<List<Task>> getTasks() async {
     var memberId = await _memberService.getMember().then((member) => member.id);
     final response = await get(

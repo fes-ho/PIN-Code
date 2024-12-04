@@ -79,7 +79,7 @@ class _TaskListViewState extends State<TaskListView> {
                   color: isCompleted ? colorScheme.primary : colorScheme.outline,
                   onPressed: () {
                     setState(() {
-                      task.isCompleted = !task.isCompleted;
+                      taskListState.completeTask(task);
                     });
                   },
                 ),

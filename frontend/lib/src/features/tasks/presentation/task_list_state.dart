@@ -30,11 +30,31 @@ class TaskListState extends ChangeNotifier
     notifyListeners();
   }
 
+  void completeTask(Task task) {
+    try {
+      _taskService.completeTask(task);
+    } catch (e) {
+      debugPrint('Failed to complete task: $e');
+      return;
+    }
+    task.isCompleted = !task.isCompleted;
+    notifyListeners();
+  }
+
   void add(Task task) {
     if (task.id != null) {
-      _tasks.add(task);
-      if (task.date.day == _selectedDate.day) {
-        _visibleTasks.add(task);
+      final taskIndex = _tasks.indexWhere((t) => t.id == task.id);
+      if (taskIndex != -1) {
+        _tasks[taskIndex] = task;
+        final visibleIndex = _visibleTasks.indexWhere((t) => t.id == task.id);
+        if (visibleIndex != -1) {
+          _visibleTasks[visibleIndex] = task;
+        }
+      } else {
+        _tasks.add(task);
+        if (task.date.day == _selectedDate.day) {
+          _visibleTasks.add(task);
+        }
       }
       notifyListeners();
     } else {
@@ -60,6 +80,16 @@ class TaskListState extends ChangeNotifier
     // Assume that the task is in the visible list
     _visibleTasks.remove(task);
     notifyListeners();
+  }
+  
+  void removeTask(Task task) {
+    try {
+      _taskService.deleteTask(task);
+    } catch (e) {
+      debugPrint('Failed to delete task: $e');
+      return;
+    }
+    remove(task);
   }
 
   void updateTask(Task updatedTask) {
