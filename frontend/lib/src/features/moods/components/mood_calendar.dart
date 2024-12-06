@@ -13,48 +13,45 @@ class MoodCalendar extends StatefulWidget {
 }
 
 class _MoodCalendarState extends State<MoodCalendar> {
-  List<Mood> _moods = [];
   CalendarFormat _calendarFormat = CalendarFormat.month;
-
-  @override
-  void initState() {
-    super.initState();
-    GetIt.I<MoodService>().getMemberMoods().then((result) => setState(() {
-          _moods = result;
-        }));
-  }
+  final _moodService = GetIt.I<MoodService>();
 
   @override
   Widget build(BuildContext context) {
-    return TableCalendar<Mood>(
-      focusedDay: DateTime.now(),
-      firstDay: DateTime(2024, 9, 1),
-      lastDay: DateTime(2025, 12, 21),
-      eventLoader: (day) {
-        return _moods
-            .where((mood) =>
-                mood.day.day == day.day &&
-                mood.day.month == day.month &&
-                mood.day.year == day.year)
-            .toList();
-      },
-      calendarBuilders: CalendarBuilders(
-        markerBuilder: (context, day, events) {
-          if (events.isEmpty) {
-            return const SizedBox();
-          }
-          Mood mood = events.first;
+    return ListenableBuilder(
+      listenable: _moodService,
+      builder: (context, child) {
+        return TableCalendar<Mood>(
+          focusedDay: DateTime.now(),
+          firstDay: DateTime(2024, 9, 1),
+          lastDay: DateTime(2025, 12, 21),
+          eventLoader: (day) {
+            return (_moodService.moods)
+              .where((mood) =>
+                  mood.day.day == day.day &&
+                  mood.day.month == day.month &&
+                  mood.day.year == day.year)
+              .toList();
+          },
+        calendarBuilders: CalendarBuilders(
+          markerBuilder: (context, day, events) {
+            if (events.isEmpty) {
+              return const SizedBox();
+            }
+            Mood mood = events.first;
 
-          return MoodEmoji(mood: mood.typeOfMood);
+            return MoodEmoji(mood: mood.typeOfMood);
+          },
+        ),
+        availableCalendarFormats: const {
+          CalendarFormat.month: 'Month',
         },
-      ),
-      availableCalendarFormats: const {
-        CalendarFormat.month: 'Month',
-      },
-      onFormatChanged: (format) => setState(() {
-        _calendarFormat = format;
-      }),
-      calendarFormat: _calendarFormat,
-    );
+        onFormatChanged: (format) => setState(() {
+          _calendarFormat = format;
+        }),
+        calendarFormat: _calendarFormat,
+      );
+        },
+      );
   }
 }
