@@ -1,5 +1,6 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/features/friendship/application/friendship_service.dart';
 import 'package:frontend/src/features/moods/services/mood_service.dart';
 import 'package:frontend/src/features/profile/application/profile_service.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
@@ -36,5 +37,6 @@ class Config {
     GetIt.I.registerSingleton(TaskService());
     GetIt.I.registerSingleton(MoodService());
     GetIt.I.registerSingleton(ProfileService());
+    GetIt.I.registerSingleton(FriendshipService());
   }
 }

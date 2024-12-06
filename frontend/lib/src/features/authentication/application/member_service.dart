@@ -70,7 +70,7 @@ class MemberService {
 
     if (currentSession.isExpired) {
       await _goTrueClient.refreshSession();
-      await Future.delayed(const Duration(microseconds: 33));
+      await Future.delayed(const Duration(microseconds: 100));
     }
 
     return currentSession.accessToken;
