@@ -9,23 +9,21 @@ router = APIRouter(
     tags=["friendship"],
 )
 
-@router.get("/{id}/friends/{friend_name}")
+@router.post("/{id}/friends/{friend_id}", status_code=201)
 def add_friend(
     id: UUID,
-    friend_name: str,
+    friend_id: UUID,
     db=Depends(get_session)
 ):
-    # TODO return value
-    return add_friend_crud(id, friend_name, db)
+    return add_friend_crud(id, friend_id, db)
 
-@router.delete("/{id}/friends/{friend_name}")
+@router.delete("/{id}/friends/{friend_id}")
 def delete_friend(
     id: UUID,
-    friend_name: str,
+    friend_id: UUID,
     db=Depends(get_session)
 ):
-    # TODO return value
-    return delete_friend_crud(id, friend_name, db)
+    return delete_friend_crud(id, friend_id, db)
 
 @router.get("/{id}/friends")
 def get_friends(

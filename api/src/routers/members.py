@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import PlainTextResponse
 from pydantic import BaseModel
-from cruds import read_members, get_member_username_by_id, get_member_by_id, update_member
+from cruds import read_members, get_member_username_by_id, get_member_by_id, update_member, get_members_by_name
 from services import get_session
 from uuid import UUID
 
@@ -47,3 +47,10 @@ def update_member_image(
 ):
     image = image_update.image
     return update_member(id, image, db)
+
+@router.get("/username/{username}")
+def get_members_by_username(
+    username: str,
+    db = Depends(get_session)
+):
+    return get_members_by_name(username, db)
