@@ -11,7 +11,6 @@ class Member(MemberBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
 
     moods: Optional[List["Mood"]] = Relationship(back_populates="member")
-    streaks: Optional[List["Streak"]] = Relationship(back_populates="member")
     habits: Optional[List["Habit"]] = Relationship(back_populates="member")
     tasks: Optional[List["Task"]] = Relationship(back_populates="member")
     friends: Optional[List["Member"]] = Relationship(

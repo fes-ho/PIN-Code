@@ -26,7 +26,7 @@ class TaskListState extends ChangeNotifier
   void changeDay(DateTime date) {
     _selectedDate = date;
     _visibleTasks.clear();
-    _visibleTasks.addAll(UnmodifiableListView(_tasks.where((task) => task.date.day == date.day)));
+    _visibleTasks.addAll(UnmodifiableListView(_tasks.where((task) => task.date.day == date.day && task.date.month == date.month && task.date.year == date.year)));
     notifyListeners();
   }
 

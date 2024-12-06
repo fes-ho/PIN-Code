@@ -7,10 +7,12 @@ from .quests import router as quests_router
 from .tasks import router as tasks_router
 from .health import router as health_router
 from .friendship import router as friendship_router
+from .streaks import router as streaks_router
 
 router = APIRouter()
 router.include_router(health_router)
 router.include_router(tasks_router)
+router.include_router(streaks_router)
 
 member_router = APIRouter(
     prefix="/members",
