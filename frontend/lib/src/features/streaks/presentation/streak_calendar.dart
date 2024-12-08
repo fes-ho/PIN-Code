@@ -37,7 +37,11 @@ class _StreakCalendarState extends State<StreakCalendar> {
               if (events.isEmpty) {
                 return const SizedBox();
               }
-              return const Icon(Icons.star, color: Colors.yellow);
+              return Icon(
+                Icons.local_fire_department, 
+                color: Colors.orange[900],
+                size: 35
+              );
             },
           ),
           availableCalendarFormats: const {

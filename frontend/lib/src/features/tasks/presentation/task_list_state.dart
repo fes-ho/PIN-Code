@@ -1,6 +1,7 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/streaks/services/streak_service.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:get_it/get_it.dart';

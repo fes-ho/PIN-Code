@@ -23,8 +23,48 @@ class StreakService extends ChangeNotifier {
   late HeadersFactory _headersFactory;
 
   List<Streak> _streaks = [];
+  int _currentStreak = 0;
+  int _bestStreak = 0;
   
   List<Streak> get streaks => _streaks;
+
+  int get currentStreak => _currentStreak;
+  int get bestStreak => _bestStreak;
+
+  void calculateBestStreak() {
+    _bestStreak = 0;
+    int streak = 0;
+    for (int i = 0; i < _streaks.length; i++){
+      if (i == 0){
+        streak = 1;
+      } else {
+        if (_streaks[i].date.difference(_streaks[i - 1].date).inDays == 1){
+          streak++;
+          if (streak > _bestStreak){
+            _bestStreak = streak;
+          }
+        } else {
+          streak = 1;
+        }
+      }
+    }
+  }
+
+  void calculateCurrentStreak() {
+    _currentStreak = 0;
+    _streaks.sort((a, b) => b.date.compareTo(a.date));
+    for (int i = 0; i < _streaks.length; i++){
+      if (i == 0 && _streaks[i].date.day != DateTime.now().day){
+        break;
+      }
+      var difference = _streaks[i].date.difference(DateTime.now()).inDays;
+      if (difference == -i){
+        _currentStreak++;
+      } else {
+        break;
+      }
+    }
+  }
 
   Future<void> getStreaks() async {
     String userId = _memberService.getCurrentUserId();
@@ -38,6 +78,10 @@ class StreakService extends ChangeNotifier {
       _streaks = (jsonDecode(response.body) as List)
           .map((e) => Streak.fromJson(e))
           .toList();
+
+      _streaks.sort((a, b) => a.date.compareTo(b.date));
+      calculateBestStreak();
+      calculateCurrentStreak();
     }
   }
 }

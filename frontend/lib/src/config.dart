@@ -35,10 +35,10 @@ class Config {
     GetIt.I.registerSingleton(HeadersFactory());
     GetIt.I.registerSingleton(Client());
     GetIt.I.registerSingleton(MemberService());
+    GetIt.I.registerSingleton(StreakService());
     GetIt.I.registerSingleton(TaskService());
     GetIt.I.registerSingleton(MoodService());
     GetIt.I.registerSingleton(ProfileService());
     GetIt.I.registerSingleton(FriendshipService());
-    GetIt.I.registerSingleton(StreakService());
   }
 }

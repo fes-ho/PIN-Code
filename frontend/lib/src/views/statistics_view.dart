@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/moods/components/mood_calendar.dart';
 import 'package:frontend/src/features/streaks/presentation/streak_calendar.dart';
+import 'package:frontend/src/features/streaks/services/streak_service.dart';
+import 'package:get_it/get_it.dart';
 
 class StatisticsView extends StatefulWidget {
   const StatisticsView({super.key});
@@ -49,7 +51,7 @@ class _StatisticsViewState extends State<StatisticsView> with SingleTickerProvid
                 ],
               ),
             ),
-            const Expanded(child: StreakInfo()),
+            Expanded(child: StreakInfo()),
           ],
         ),
       ),
@@ -59,15 +61,21 @@ class _StatisticsViewState extends State<StatisticsView> with SingleTickerProvid
 
 // Define the StreakInfo widget
 class StreakInfo extends StatelessWidget {
-  const StreakInfo({super.key});
+  StreakInfo({super.key});
 
+  final _streakService = GetIt.I<StreakService>();
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: const [
-        Text("Current streak: 0"),
-        Text("Global streak: 0"),
-      ],
-    );
+    return ListenableBuilder(
+      listenable: _streakService,
+      builder: (context, child) {
+        return Row (
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text('Current Streak: ${_streakService.currentStreak}'),
+          Text('Longest Streak: ${_streakService.bestStreak}'),
+        ],
+      );
+      }     );
   }
 }

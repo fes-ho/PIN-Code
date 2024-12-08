@@ -24,7 +24,6 @@ class TodayView extends StatefulWidget {
 class TodayViewState extends State<TodayView> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
-  DateTime _selectedDay = DateTime.now();
   TypeOfMood _typeOfMood = TypeOfMood.great;
 
   @override
@@ -130,12 +129,11 @@ class TodayViewState extends State<TodayView> {
         startingDayOfWeek: StartingDayOfWeek.monday,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
-          return isSameDay(_selectedDay, day);
+          return isSameDay(Provider.of<TaskListState>(context, listen: false).selectedDate, day);
         },
         onDaySelected: (selectedDay, focusedDay) {
           Provider.of<TaskListState>(context, listen: false).changeDay(selectedDay);
           setState(() {
-            _selectedDay = selectedDay;
           });
         },
         onFormatChanged: (format) {

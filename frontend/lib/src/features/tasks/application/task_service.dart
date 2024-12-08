@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:frontend/src/config.dart';
+import 'package:frontend/src/features/streaks/services/streak_service.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/utils/headers_factory.dart';
 import 'package:get_it/get_it.dart';
@@ -10,11 +11,13 @@ class TaskService {
   late Client _client;
   late HeadersFactory _headersFactory;
   late MemberService _memberService;
+  late StreakService _streakService;
 
   TaskService() {
     _client = GetIt.I<Client>();
     _headersFactory = GetIt.I<HeadersFactory>();
     _memberService = GetIt.I<MemberService>();
+    _streakService = GetIt.I<StreakService>();
   }
 
   Future<Task> createTask(Task task) async {
@@ -54,6 +57,7 @@ class TaskService {
     if (response.statusCode != 200) {
       throw Exception('Failed to complete task');
     }
+    await _streakService.getStreaks();
   }
 
   Future<void> deleteTask(Task task) async {
