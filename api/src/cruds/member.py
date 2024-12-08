@@ -29,3 +29,10 @@ def update_member(member_id: UUID, image: str, db : Session = Depends(get_sessio
         return member
     else:
         raise HTTPException(status_code=404, detail="Member not found")
+
+def get_member_by_username_statement(username: str):
+    return select(Member).where(Member.username == username)
+
+def get_members_by_name(username:str , db: Session = Depends(get_session)):
+    statement = get_member_by_username_statement(username)
+    return db.exec(statement).all()

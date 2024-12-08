@@ -124,9 +124,9 @@ class MoodService extends ChangeNotifier{
       return [];
     }
 
-    final List<dynamic> taskListJson = jsonDecode(response.body) as List<dynamic>;
+    final List<dynamic> moodListJson = jsonDecode(response.body) as List<dynamic>;
 
-    _memberMoods = taskListJson.map((json) => Mood.fromJson(json)).toList();
+    _memberMoods = moodListJson.map((json) => Mood.fromJson(json)).toList();
 
     return _memberMoods;
   }

@@ -7,6 +7,7 @@ from .task import Task
 from .frequency import Frequency
 from .quest import Quest
 from .days_of_the_week import DaysOfTheWeek
+from .friendship import Friendship
 
 __all__ = [
     "Member", 
@@ -17,4 +18,5 @@ __all__ = [
     "Task",
     "Frequency",
     "Quest",
-    "DaysOfTheWeek"]
+    "DaysOfTheWeek",
+    "Friendship"]
