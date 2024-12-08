@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/friendship/presentation/friends_view.dart';
 import 'package:frontend/src/views/profile_view.dart';
 import 'package:frontend/src/views/statistics_view.dart';
 import 'package:frontend/src/views/today_view.dart';
@@ -24,7 +25,7 @@ class MainNavigationViewState extends State<MainNavigationView> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     TodayView(),
-    Text('Social Page'),
+    FriendsView(), 
     StatisticsView(),
     ProfileView(),
   ];

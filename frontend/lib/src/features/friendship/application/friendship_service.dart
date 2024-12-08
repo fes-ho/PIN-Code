@@ -24,7 +24,7 @@ class FriendshipService {
     String memberId = _memberService.getCurrentUserId();
 
     final response = await _client.post(
-      Uri.parse('${Config.apiUrl}/members/$memberId/friend/$friendId'),
+      Uri.parse('${Config.apiUrl}/members/$memberId/friends/$friendId'),
       headers: await _headersFactory.getDefaultHeaders()
     );
 
@@ -42,7 +42,7 @@ class FriendshipService {
     String memberId = _memberService.getCurrentUserId();
 
     final response = await _client.delete(
-      Uri.parse('${Config.apiUrl}/members/$memberId/friend/$friendId'),
+      Uri.parse('${Config.apiUrl}/members/$memberId/friends/$friendId'),
       headers: await _headersFactory.getDefaultHeaders()
     );
 
@@ -81,6 +81,10 @@ class FriendshipService {
     }
 
     return [];
+  }
+
+  bool isMemberFriend(Member member) {
+    return _friends.any((m) => m.id == member.id);
   }
 
   List<Member> _convertJsonToMemberList(Response response) {

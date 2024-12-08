@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:frontend/src/features/friendship/presentation/search_friend_view.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 import 'package:frontend/src/theme.dart';
 import 'package:frontend/src/features/authentication/presentation/log_in_view.dart';
@@ -75,6 +76,8 @@ class MyApp extends StatelessWidget {
                     return const LogIn();
                   case MainNavigationView.routeName:
                     return const MainNavigationView();
+                  case SearchFriendView.routeName:
+                    return const SearchFriendView();
                   case SplashLoading.routeName:
                   default:
                     return const SplashLoading();

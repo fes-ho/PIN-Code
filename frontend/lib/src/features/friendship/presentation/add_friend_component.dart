@@ -4,26 +4,25 @@ import 'package:frontend/src/features/friendship/application/friendship_service.
 import 'package:frontend/src/features/friendship/presentation/friend_component_base.dart';
 import 'package:get_it/get_it.dart';
 
-class Friend extends StatelessWidget {
-  const Friend({
+class AddFriend extends StatelessWidget {
+  const AddFriend({
     super.key,
     required this.member,
-    required this.updateFriendsState
+    required this.updateState
   });
 
   final Member member;
-  final void Function() updateFriendsState;  
+  final void Function() updateState;
 
   @override
   Widget build(BuildContext context) {
     return FriendBase(
       member: member,
-      action: () {
-        GetIt.I<FriendshipService>()
-          .deleteFriend(member.id)
-          .then((value) => updateFriendsState());
+      action: () async {
+        await GetIt.I<FriendshipService>().addFriend(member.id);
+        updateState();
       },
-      icon: Icons.delete
-    ) ;
+      icon: Icons.add
+    );
   }
 }
