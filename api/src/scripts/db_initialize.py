@@ -12,7 +12,21 @@ def populate_initial_data():
         member = Member(
             id= uuid.UUID ("9993a0cb-7b79-48f1-9a03-3843b2ffa642"),
             username="test",
-        ) 
+        )
+        member2 = Member(
+            id = uuid.uuid4(),
+            username="User2",
+        )
+        member.friends = [member2]
+
+        member3 = Member(
+            username="Ash",
+        )
+
+        member4 = Member(
+            username="Pepe",
+        )
+
         habit = Habit(
             name="Test Habit",
             description="Test Description",
@@ -49,6 +63,8 @@ def populate_initial_data():
         session.add(member)
         session.add(habit)
         session.add(quest)
+        session.add(member3)
+        session.add(member4)
         session.commit()
     finally:
         session.close()

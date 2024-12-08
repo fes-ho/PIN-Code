@@ -1,3 +1,4 @@
+from typing import Optional
 from sqlmodel import SQLModel
 
 class MemberBase(SQLModel):
