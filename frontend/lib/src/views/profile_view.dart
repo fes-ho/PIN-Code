@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/profile/application/profile_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:frontend/src/common_widgets/notification.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -58,29 +59,35 @@ class ProfileViewState extends State<ProfileView> {
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
-                    );
+                    ); 
                   }
                 },
               ),
               const SizedBox(height: 40),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.grey[100],
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: ListTile(
-                  leading: const CircleAvatar(
-                    backgroundColor: Colors.deepPurple,
-                    child: Text(
-                      'A',
-                      style: TextStyle(color: Colors.white),
-                    ),
+              GestureDetector(
+                onTap: () => showDialog(
+                  context: context,
+                  builder: (context) => const NotificationDialog(
+                    title: 'Coming Soon',
+                    message: 'This feature is not yet available',
                   ),
-                  title: const Text('Customize'),
-                  trailing: const Icon(Icons.arrow_forward),
-                  onTap: () {
-                    // Handle customize tap
-                  },
+                ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[100],
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: Colors.deepPurple,
+                      child: Text(
+                        'A',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                    title: Text('Customize'),
+                    trailing: Icon(Icons.arrow_forward),
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
