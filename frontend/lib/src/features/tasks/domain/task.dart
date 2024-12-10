@@ -4,6 +4,7 @@ class Task {
   final String description;
   final String icon;
   final DateTime date;
+  final int priority;
   bool isCompleted;
   String? memberId;
   int? duration;
@@ -16,6 +17,7 @@ class Task {
     required this.icon,
     required this.date,
     required this.isCompleted,
+    this.priority = 3,
     this.memberId,
     this.duration,
     this.estimatedDuration,
@@ -28,6 +30,7 @@ class Task {
         icon = json['icon'],
         isCompleted = json['is_completed'],
         date = DateTime.parse(json['date']),
+        priority = json['priority'] ?? 3,
         duration = json['duration'],
         estimatedDuration = json['estimated_duration'];
 
@@ -40,6 +43,7 @@ class Task {
       'date': date.toIso8601String(),
       'member_id': memberId,
       'is_completed': isCompleted,
+      'priority': priority,
       'duration': duration,
       'estimated_duration': estimatedDuration,
     };

@@ -12,6 +12,7 @@ import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
+import 'package:frontend/src/common_widgets/priority_selector.dart';
 
 class CreateTaskScreen extends StatefulWidget {
 
@@ -38,6 +39,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
   late int _selectedHour;
   late int _selectedMinute;
   late int? _estimatedDuration;
+  late int _selectedPriority;
   
   bool _showMoreOptions = false;
 
@@ -55,6 +57,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
     _taskDescription = widget.task?.description ?? '';
     _taskName = widget.task?.name ?? '';
     _estimatedDuration = widget.task?.estimatedDuration;
+    _selectedPriority = widget.task?.priority ?? 3;
   }
 
   @override
@@ -97,6 +100,34 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                   ),
                   child: Column(
                     children: [
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Title(
+                          color: colorScheme.onTertiary,
+                          child: Text(
+                            'PRIORITY',
+                            style: GoogleFonts.quicksand(
+                              color: colorScheme.onTertiary,
+                              fontWeight: FontWeight.bold,
+                            )
+                          )
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      PrioritySelector(
+                        selectedPriority: _selectedPriority,
+                        onPriorityChanged: (priority) {
+                          setState(() {
+                            _selectedPriority = priority;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
                       Container(
                         width: double.infinity,
                         alignment: Alignment.center,
@@ -345,6 +376,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                           ),
                           memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
                           estimatedDuration: _estimatedDuration,
+                          priority: _selectedPriority,
                         );
 
                         try {
