@@ -11,6 +11,7 @@ import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
 
 class CreateTaskScreen extends StatefulWidget {
 
@@ -36,6 +37,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
   late DateTime _selectedDate;
   late int _selectedHour;
   late int _selectedMinute;
+  late int? _estimatedDuration;
   
   bool _showMoreOptions = false;
 
@@ -52,6 +54,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
     _descriptionFieldController.text = widget.task?.description ?? '';
     _taskDescription = widget.task?.description ?? '';
     _taskName = widget.task?.name ?? '';
+    _estimatedDuration = widget.task?.estimatedDuration;
   }
 
   @override
@@ -258,25 +261,58 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                 ),
                 const SizedBox(height: 15),
                 if (_showMoreOptions)
-                  TextFormField(
-                    style: GoogleFonts.quicksand(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    controller: _descriptionFieldController,
-                    maxLines: 2,
-                    decoration: TextFieldDecorator.getTextFieldDecoration(
-                      hintText: "Enter the task's description", 
-                      controller: _descriptionFieldController,
-                      colorScheme: colorScheme,
-                      onClear: () => setState(() {}),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _taskDescription = value;
-                      });
-                    },
-                ),
+                  Column(
+                    children: [
+                      TextFormField(
+                        style: GoogleFonts.quicksand(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        controller: _descriptionFieldController,
+                        maxLines: 2,
+                        decoration: TextFieldDecorator.getTextFieldDecoration(
+                          hintText: "Enter the task's description", 
+                          controller: _descriptionFieldController,
+                          colorScheme: colorScheme,
+                          onClear: () => setState(() {}),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _taskDescription = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      FilledButton.icon(
+                        icon: Icon(Icons.timer, color: colorScheme.onSurfaceVariant),
+                        label: Text(
+                          _estimatedDuration != null 
+                              ? 'Estimated: ${(_estimatedDuration! ~/ 3600).toString().padLeft(2, '0')}:${((_estimatedDuration! % 3600) ~/ 60).toString().padLeft(2, '0')}'
+                              : 'Set estimated duration',
+                          style: GoogleFonts.quicksand(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(colorScheme.surfaceContainerHighest),
+                        ),
+                        onPressed: () async {
+                          final duration = await showDialog<int>(
+                            context: context,
+                            builder: (context) => EstimatedTimeDialog(
+                              initialEstimatedDuration: _estimatedDuration,
+                            ),
+                          );
+                          if (duration != null) {
+                            setState(() {
+                              _estimatedDuration = duration;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
@@ -308,6 +344,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                             _selectedMinute,
                           ),
                           memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
+                          estimatedDuration: _estimatedDuration,
                         );
 
                         try {
