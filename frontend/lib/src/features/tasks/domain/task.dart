@@ -31,6 +31,7 @@ class Task {
         isCompleted = json['is_completed'],
         date = DateTime.parse(json['date']),
         priority = json['priority'] ?? 3,
+        memberId = json['member_id'],
         duration = json['duration'],
         estimatedDuration = json['estimated_duration'];
 

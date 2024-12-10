@@ -4,6 +4,7 @@ import 'package:frontend/src/common_decorators/text_field_decorator.dart';
 import 'package:frontend/src/common_widgets/hour_and_minute_picker.dart';
 import 'package:frontend/src/common_widgets/icon_picker.dart';
 import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/src/constants/icons.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
@@ -361,6 +362,9 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        final memberService = GetIt.I<MemberService>();
+                        final memberId = await memberService.getMember().then((member) => member.id);
+                        
                         Task task = Task(
                           id: widget.task?.id ?? '',
                           name: _taskName,
@@ -374,7 +378,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                             _selectedHour,
                             _selectedMinute,
                           ),
-                          memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
+                          memberId: memberId,
                           estimatedDuration: _estimatedDuration,
                           priority: _selectedPriority,
                         );
