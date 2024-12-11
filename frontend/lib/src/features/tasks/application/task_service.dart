@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/cupertino.dart';
 import 'package:frontend/src/config.dart';
 import 'package:frontend/src/features/streaks/services/streak_service.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
@@ -21,14 +22,19 @@ class TaskService {
   }
 
   Future<Task> createTask(Task task) async {
+    final taskJson = task.toJson();
+    debugPrint('Creating task with data: $taskJson');
+    
     final response = await _client.post(
       Uri.parse('${Config.apiUrl}/tasks'),
       headers: await _headersFactory.getDefaultHeaders(),
-      body: jsonEncode(task.toJson()),
+      body: jsonEncode(taskJson),
     );
 
     if (response.statusCode == 201) {
-      return Task.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
+      final responseJson = jsonDecode(response.body) as Map<String, dynamic>;
+      debugPrint('Received response: $responseJson');
+      return Task.fromJson(responseJson);
     } else {
       throw Exception('Failed to create task');
     }

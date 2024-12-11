@@ -9,6 +9,7 @@ import 'package:get_it/get_it.dart';
 import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:frontend/src/common_widgets/priority_selector.dart';
 
 class TaskDialog extends StatefulWidget {
   final Task task;
@@ -64,6 +65,64 @@ class _TaskDialogState extends State<TaskDialog> {
         }
       }
     }
+  }
+
+  Future<void> _showPriorityDialog(BuildContext context) async {
+    final TaskService taskService = GetIt.I<TaskService>();
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Set Priority',
+            style: GoogleFonts.quicksand(
+              color: colorScheme.onSurface,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: PrioritySelector(
+            selectedPriority: _currentTask.priority,
+            onPriorityChanged: (priority) async {
+              try {
+                final taskToUpdate = Task(
+                  id: _currentTask.id,
+                  name: _currentTask.name,
+                  description: _currentTask.description,
+                  icon: _currentTask.icon,
+                  date: _currentTask.date,
+                  isCompleted: _currentTask.isCompleted,
+                  priority: priority,
+                  memberId: _currentTask.memberId,
+                  duration: _currentTask.duration,
+                  estimatedDuration: _currentTask.estimatedDuration,
+                );
+                
+                final updatedTask = await taskService.updateTask(taskToUpdate);
+                
+                setState(() {
+                  _currentTask = updatedTask;
+                });
+                
+                if (context.mounted) {
+                  context.read<TaskListState>().updateTask(updatedTask);
+                  Navigator.of(context).pop();
+                }
+              } catch (e) {
+                if (context.mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: const Text('Error updating priority'),
+                      backgroundColor: colorScheme.error,
+                    ),
+                  );
+                }
+              }
+            },
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -152,15 +211,21 @@ class _TaskDialogState extends State<TaskDialog> {
             const SizedBox(height: 8),
             ActionButton(
               icon: Icons.edit, 
-              label: 
-                  'Edit',
+              label: 'Edit',
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => CreateTaskScreen(task: _currentTask)),
                 );
               },
-              ),
+            ),
+            const SizedBox(height: 8),
+            ActionButton(
+              icon: Icons.star,
+              label: 'Priority',
+              onPressed: () => _showPriorityDialog(context),
+            ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

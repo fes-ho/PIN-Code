@@ -42,7 +42,9 @@ class _TaskListViewState extends State<TaskListView> {
           shrinkWrap: true,
           itemCount: taskListState.visibleTasks.length,
           itemBuilder: (context, index) {
-            final task = taskListState.visibleTasks[index];
+            final tasks = List.from(taskListState.visibleTasks)
+              ..sort((a, b) => b.priority.compareTo(a.priority));
+            final task = tasks[index];
             final taskIcon =
                 IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
             final isCompleted = task.isCompleted;
@@ -57,13 +59,28 @@ class _TaskListViewState extends State<TaskListView> {
               shadowColor: colorScheme.outline,
               child: ListTile(
                 leading: Icon(taskIcon, color: colorScheme.secondary),
-                title: Text(
-                  task.name,
-                  style: GoogleFonts.quicksand(
-                    color: colorScheme.onSurface,
-                    fontWeight: FontWeight.w600,
-                    decoration: isCompleted ? TextDecoration.lineThrough : null,
-                  ),
+                title: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        task.name,
+                        style: GoogleFonts.quicksand(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.w600,
+                          decoration: isCompleted ? TextDecoration.lineThrough : null,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: List.generate(5, (index) {
+                        return Icon(
+                          index < task.priority ? Icons.star : Icons.star_border,
+                          size: 14,
+                          color: index < task.priority ? Colors.amber : colorScheme.outline,
+                        );
+                      }),
+                    ),
+                  ],
                 ),
                 subtitle: Text(
                   task.description,

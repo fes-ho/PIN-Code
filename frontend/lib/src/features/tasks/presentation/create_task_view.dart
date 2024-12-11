@@ -4,6 +4,7 @@ import 'package:frontend/src/common_decorators/text_field_decorator.dart';
 import 'package:frontend/src/common_widgets/hour_and_minute_picker.dart';
 import 'package:frontend/src/common_widgets/icon_picker.dart';
 import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/src/constants/icons.dart';
 import 'package:frontend/src/features/tasks/domain/task.dart';
@@ -11,6 +12,8 @@ import 'package:frontend/src/features/tasks/application/task_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
+import 'package:frontend/src/common_widgets/priority_selector.dart';
 
 class CreateTaskScreen extends StatefulWidget {
 
@@ -36,6 +39,8 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
   late DateTime _selectedDate;
   late int _selectedHour;
   late int _selectedMinute;
+  late int? _estimatedDuration;
+  late int _selectedPriority;
   
   bool _showMoreOptions = false;
 
@@ -52,6 +57,8 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
     _descriptionFieldController.text = widget.task?.description ?? '';
     _taskDescription = widget.task?.description ?? '';
     _taskName = widget.task?.name ?? '';
+    _estimatedDuration = widget.task?.estimatedDuration;
+    _selectedPriority = widget.task?.priority ?? 3;
   }
 
   @override
@@ -94,6 +101,34 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                   ),
                   child: Column(
                     children: [
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Title(
+                          color: colorScheme.onTertiary,
+                          child: Text(
+                            'PRIORITY',
+                            style: GoogleFonts.quicksand(
+                              color: colorScheme.onTertiary,
+                              fontWeight: FontWeight.bold,
+                            )
+                          )
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      PrioritySelector(
+                        selectedPriority: _selectedPriority,
+                        onPriorityChanged: (priority) {
+                          setState(() {
+                            _selectedPriority = priority;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
                       Container(
                         width: double.infinity,
                         alignment: Alignment.center,
@@ -258,25 +293,58 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                 ),
                 const SizedBox(height: 15),
                 if (_showMoreOptions)
-                  TextFormField(
-                    style: GoogleFonts.quicksand(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    controller: _descriptionFieldController,
-                    maxLines: 2,
-                    decoration: TextFieldDecorator.getTextFieldDecoration(
-                      hintText: "Enter the task's description", 
-                      controller: _descriptionFieldController,
-                      colorScheme: colorScheme,
-                      onClear: () => setState(() {}),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _taskDescription = value;
-                      });
-                    },
-                ),
+                  Column(
+                    children: [
+                      TextFormField(
+                        style: GoogleFonts.quicksand(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        controller: _descriptionFieldController,
+                        maxLines: 2,
+                        decoration: TextFieldDecorator.getTextFieldDecoration(
+                          hintText: "Enter the task's description", 
+                          controller: _descriptionFieldController,
+                          colorScheme: colorScheme,
+                          onClear: () => setState(() {}),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _taskDescription = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      FilledButton.icon(
+                        icon: Icon(Icons.timer, color: colorScheme.onSurfaceVariant),
+                        label: Text(
+                          _estimatedDuration != null 
+                              ? 'Estimated: ${(_estimatedDuration! ~/ 3600).toString().padLeft(2, '0')}:${((_estimatedDuration! % 3600) ~/ 60).toString().padLeft(2, '0')}'
+                              : 'Set estimated duration',
+                          style: GoogleFonts.quicksand(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(colorScheme.surfaceContainerHighest),
+                        ),
+                        onPressed: () async {
+                          final duration = await showDialog<int>(
+                            context: context,
+                            builder: (context) => EstimatedTimeDialog(
+                              initialEstimatedDuration: _estimatedDuration,
+                            ),
+                          );
+                          if (duration != null) {
+                            setState(() {
+                              _estimatedDuration = duration;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
@@ -294,6 +362,9 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        final memberService = GetIt.I<MemberService>();
+                        final memberId = await memberService.getMember().then((member) => member.id);
+                        
                         Task task = Task(
                           id: widget.task?.id ?? '',
                           name: _taskName,
@@ -307,7 +378,9 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                             _selectedHour,
                             _selectedMinute,
                           ),
-                          memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
+                          memberId: memberId,
+                          estimatedDuration: _estimatedDuration,
+                          priority: _selectedPriority,
                         );
 
                         try {

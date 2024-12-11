@@ -93,25 +93,17 @@ class TaskListState extends ChangeNotifier
     remove(task);
   }
 
-  void updateTask(Task updatedTask) {
-    if (updatedTask.id == null) {
-      debugPrint('Cannot update task without UUID');
-      return;
-    }
-
-    final taskIndex = _tasks.indexWhere((t) => t.id == updatedTask.id);
-    if (taskIndex != -1) {
-      _tasks[taskIndex] = updatedTask;
-      
-      // Update visible tasks if the task is visible
-      final visibleIndex = _visibleTasks.indexWhere((t) => t.id == updatedTask.id);
-      if (visibleIndex != -1) {
-        _visibleTasks[visibleIndex] = updatedTask;
+  void updateTask(Task task) {
+    if (task.id != null) {
+      final taskIndex = _tasks.indexWhere((t) => t.id == task.id);
+      if (taskIndex != -1) {
+        _tasks[taskIndex] = task;
+        final visibleIndex = _visibleTasks.indexWhere((t) => t.id == task.id);
+        if (visibleIndex != -1) {
+          _visibleTasks[visibleIndex] = task;
+        }
+        notifyListeners();
       }
-      
-      notifyListeners();
-    } else {
-      debugPrint('Task not found for update: ${updatedTask.id}');
     }
   }
 }
