@@ -5,6 +5,7 @@ from .task import read_task_by_member, create_task, update_task_duration_in_db, 
 from .mood import create_mood, get_mood, update_mood, get_member_moods, delete_mood
 from .streak import read_streaks
 from .friendship import add_friend, delete_friend, get_member_friends
+from .habit import read_habits_by_member, create_habit, update_habit_duration_in_db, delete_habit_in_db, update_habit, update_complete_habit, update_habit_time_in_db
 __all__ = [
     "read_members",
     "get_member_by_id",
@@ -27,6 +28,13 @@ __all__ = [
     "add_friend",
     "delete_friend",
     "get_member_friends",
-    "get_members_by_name"
+    "get_members_by_name",
     "read_streaks",
+    "read_habits_by_member",
+    "create_habit",
+    "update_habit_duration_in_db",
+    "delete_habit_in_db",
+    "update_habit",
+    "update_complete_habit",
+    "update_habit_time_in_db",
 ]

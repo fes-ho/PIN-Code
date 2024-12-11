@@ -83,6 +83,13 @@ class FriendshipService {
     return [];
   }
 
+  Future<List<Member>> getFriendsAndActualMember() async{
+    await getFriends();
+    Member member = await GetIt.I<MemberService>().getMember();
+
+    return [..._friends,member];
+  }
+
   bool isMemberFriend(Member member) {
     return _friends.any((m) => m.id == member.id);
   }

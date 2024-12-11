@@ -3,6 +3,7 @@ import 'package:frontend/src/features/authentication/domain/member.dart';
 import 'package:frontend/src/features/friendship/application/friendship_service.dart';
 import 'package:frontend/src/features/friendship/presentation/friend_component.dart';
 import 'package:frontend/src/features/friendship/presentation/search_friend_view.dart';
+import 'package:frontend/src/features/friendship/presentation/leaderboard_view.dart';
 import 'package:get_it/get_it.dart';
 
 class FriendsView extends StatefulWidget {
@@ -34,12 +35,29 @@ class _FriendsViewState extends State<FriendsView> {
         centerTitle: true,
         title: const Text("Friends"),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () async {
-           await Navigator.of(context).pushNamed(SearchFriendView.routeName);
-           updateFriendsState();
-          }
+      floatingActionButton: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: () async {
+              await Navigator.of(context).pushNamed(SearchFriendView.routeName);
+              updateFriendsState();
+            },
+            heroTag: null,
+            child: const Icon(Icons.add),
+          ),
+          FloatingActionButton(
+            onPressed: () async {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const LeaderboardView()),
+              );
+            },
+            heroTag: null,
+            child: const Icon(Icons.leaderboard),
+          ),
+        ],
       ),
       body: ListView.separated(
         itemBuilder: (context, index) => Friend(member: _friends[index], updateFriendsState: updateFriendsState,),
