@@ -84,16 +84,18 @@ class StreakService extends ChangeNotifier {
     }
   }
 
-Future<List<Streak>> getStreaksByUserId(String userId) async {
+Future<int> getCurrentStreaksByUserId(String userId) async {
     final response = await _client.get(
       Uri.parse('${Config.apiUrl}/members/$userId/streaks'),
       headers: await _headersFactory.getDefaultHeaders()
     );
 
     if (response.statusCode == 200) {
-      return (jsonDecode(response.body) as List)
+      _streaks = (jsonDecode(response.body) as List)
           .map((e) => Streak.fromJson(e))
           .toList();
+      calculateCurrentStreak();
+      return _currentStreak;
     }else {
       throw Exception('Failed to get Streaks');
     }

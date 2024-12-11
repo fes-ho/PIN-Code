@@ -35,23 +35,27 @@ class _FriendsViewState extends State<FriendsView> {
         centerTitle: true,
         title: const Text("Friends"),
       ),
-      floatingActionButton: Stack(
+      floatingActionButton: Row(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
-            child: const Icon(Icons.add),
             onPressed: () async {
               await Navigator.of(context).pushNamed(SearchFriendView.routeName);
               updateFriendsState();
-            }
+            },
+            heroTag: null,
+            child: const Icon(Icons.add),
           ),
           FloatingActionButton(
-            child: const Icon(Icons.leaderboard),
             onPressed: () async {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => const LeaderboardView()),
               );
-            }
+            },
+            heroTag: null,
+            child: const Icon(Icons.leaderboard),
           ),
         ],
       ),
