@@ -2,7 +2,6 @@ from uuid import UUID, uuid4
 from sqlmodel import Field, Relationship
 from .frequency import Frequency
 from schemas import HabitBase
-from .day_time import DayTime
 from .quest import Quest
 from typing import TYPE_CHECKING, List
 
@@ -11,7 +10,6 @@ if TYPE_CHECKING:
 
 class Habit(HabitBase, table=True):
     id: UUID = Field(default_factory=uuid4, primary_key=True)
-    time: DayTime
     count: int
 
     member_id: UUID = Field(foreign_key="member.id")

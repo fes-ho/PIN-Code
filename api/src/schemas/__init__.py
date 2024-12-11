@@ -5,8 +5,10 @@ from .habit import HabitBase, HabitCreate, HabitUpdate, HabitDurationUpdate, Hab
 from .quest import QuestDurationUpdate
 from .mood import MoodBase
 from .type_of_mood import TypeOfMood
+from .day_time import DayTime
 
 __all__ = [
+    "DayTime",
     "TypeOfMood",
     "MemberBase",
     "Activity",

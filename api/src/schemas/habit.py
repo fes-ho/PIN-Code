@@ -2,11 +2,12 @@ from uuid import UUID
 from sqlmodel import Field
 from schemas import Activity
 from pydantic import BaseModel
-from models import DayTime
+from .day_time import DayTime
 
 class HabitBase(Activity):
     is_completed: bool = Field(default=False)
     member_id: UUID
+    time : DayTime
 
 class HabitCreate(HabitBase):
     pass

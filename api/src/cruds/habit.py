@@ -1,9 +1,9 @@
 from uuid import UUID
 from fastapi import Depends, HTTPException
 from sqlmodel import Session, select
-from models import Habit, DayTime
+from models import Habit
 from services import get_session
-from schemas import HabitCreate, HabitUpdate
+from schemas import HabitCreate, HabitUpdate, DayTime
 
 def read_habits(db: Session = Depends(get_session)):
     habits = db.exec(select(Habit)).all()

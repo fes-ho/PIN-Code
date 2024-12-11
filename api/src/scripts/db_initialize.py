@@ -3,6 +3,7 @@ from sqlite3 import Date
 import uuid
 from services import get_session
 from models import *
+from schemas import DayTime
 
 def populate_initial_data():
     session_generator = get_session()
