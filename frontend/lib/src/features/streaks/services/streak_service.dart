@@ -1,6 +1,5 @@
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend/src/config.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
@@ -82,6 +81,21 @@ class StreakService extends ChangeNotifier {
       _streaks.sort((a, b) => a.date.compareTo(b.date));
       calculateBestStreak();
       calculateCurrentStreak();
+    }
+  }
+
+Future<List<Streak>> getStreaksByUserId(String userId) async {
+    final response = await _client.get(
+      Uri.parse('${Config.apiUrl}/members/$userId/streaks'),
+      headers: await _headersFactory.getDefaultHeaders()
+    );
+
+    if (response.statusCode == 200) {
+      return (jsonDecode(response.body) as List)
+          .map((e) => Streak.fromJson(e))
+          .toList();
+    }else {
+      throw Exception('Failed to get Streaks');
     }
   }
 }
