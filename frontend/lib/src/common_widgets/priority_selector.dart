@@ -20,8 +20,8 @@ class PrioritySelector extends StatelessWidget {
         final priority = index + 1;
         return IconButton(
           icon: Icon(
-            priority <= selectedPriority ? Icons.star : Icons.star_border,
-            color: priority <= selectedPriority ? Colors.amber : colorScheme.outline,
+            Icons.star, 
+            color: priority <= selectedPriority ? colorScheme.secondary : colorScheme.secondary.withOpacity(0.6),
           ),
           onPressed: () => onPriorityChanged(priority),
         );

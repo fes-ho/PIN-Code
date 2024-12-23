@@ -16,7 +16,7 @@ class RoundedIconButton extends StatelessWidget {
 
     return Container(
       decoration: ShapeDecoration(
-        color: colorScheme.secondary,
+        color: colorScheme.tertiary,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
@@ -25,7 +25,7 @@ class RoundedIconButton extends StatelessWidget {
         onPressed: onPressed, 
         icon: Icon(
           icon,
-          color: colorScheme.onSecondary,
+          color: colorScheme.surface,
         ),
       ),
     );

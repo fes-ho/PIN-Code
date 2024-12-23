@@ -76,9 +76,9 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: colorScheme.surfaceBright,
+        backgroundColor: colorScheme.surfaceContainer,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
+          icon: Icon(Icons.arrow_back_ios_rounded, color: colorScheme.onSurface),
           onPressed: () => Navigator.of(context).pop(),
         ),
         elevation: 1,
@@ -94,66 +94,50 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
               children: <Widget> [
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainer,
+                    color: colorScheme.surface,
+                    border: Border.all(
+                      color: colorScheme.secondary,
+                      width: 1.5,
+                    ),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
+                        margin: const EdgeInsets.only(bottom: 8),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: colorScheme.tertiary,
-                          borderRadius: BorderRadius.circular(12.0),
-                        ),
-                        child: Title(
-                          color: colorScheme.onTertiary,
-                          child: Text(
-                            'PRIORITY',
-                            style: GoogleFonts.quicksand(
-                              color: colorScheme.onTertiary,
-                              fontWeight: FontWeight.bold,
-                            )
-                          )
-                        ),
-                      ),
-                      const SizedBox(height: 15),
-                      PrioritySelector(
-                        selectedPriority: _selectedPriority,
-                        onPriorityChanged: (priority) {
-                          setState(() {
-                            _selectedPriority = priority;
-                          });
-                        },
-                      ),
-                      const SizedBox(height: 15),
-                      Container(
-                        width: double.infinity,
-                        alignment: Alignment.center,
-                        decoration: BoxDecoration(
-                          color: colorScheme.tertiary,
-                          borderRadius: BorderRadius.circular(12.0),
+                          color: colorScheme.primary,
+                          border: Border(
+                            bottom: BorderSide(
+                              color: colorScheme.secondary,
+                              width: 1.5,
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0),
+                          ),
                         ),
                         child: Title(
                           color: Colors.white, 
                           child: Text(
                             'NAME', 
                             style: GoogleFonts.quicksand(
-                              color: colorScheme.onTertiary, 
+                              color: colorScheme.onPrimary, 
                               fontWeight: FontWeight.bold,
                             )
                           )
                         ),
                       ),
-                      const SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(top: 5), 
+                            padding: const EdgeInsets.only(top: 5, left: 5), 
                             child: RoundedIconButton(
                               icon: _selectedIcon,
                               onPressed: () async {
@@ -200,9 +184,42 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                           ),
                         ]
                       ),
-                    ],
-                  ),
-                ),
+            const SizedBox(height: 15),
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary,
+                          border: Border.all(
+                            color: colorScheme.secondary,
+                            width: 1.5,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12.0),
+                            topRight: Radius.circular(12.0),
+                          ),
+                        ),
+                        child: Title(
+                          color: colorScheme.onPrimary,
+                          child: Text(
+                            'PRIORITY',
+                            style: GoogleFonts.quicksand(
+                              color: colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            )
+                          )
+                        ),
+                      ),
+                      const SizedBox(height: 15),
+                      PrioritySelector(
+                        selectedPriority: _selectedPriority,
+                        onPriorityChanged: (priority) {
+                          setState(() {
+                            _selectedPriority = priority;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
                 const SizedBox(height: 15),
                 Container (
                   width: double.infinity,
@@ -254,6 +271,9 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                     ])
                 ),
                 const SizedBox(height: 15),
+    ],
+                  ),
+                ),
                 Row(
                   children: [
                     Expanded(
