@@ -32,7 +32,13 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameFieldController = TextEditingController();
   final TextEditingController _descriptionFieldController = TextEditingController();
+  final newTaskTitle = "New task";
+  final createTaskButton = "CREATE TASK";
+  final editTaskTitle = "Edit task";
+  final updateTaskButton = "UPDATE TASK";
 
+  late String _title;
+  late String _titleButton;
   late String _taskName;
   late String _taskDescription;
   late IconData _selectedIcon;
@@ -59,6 +65,8 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
     _taskName = widget.task?.name ?? '';
     _estimatedDuration = widget.task?.estimatedDuration;
     _selectedPriority = widget.task?.priority ?? 3;
+    _title = widget.task != null ? editTaskTitle : newTaskTitle;
+    _titleButton = widget.task != null ? updateTaskButton : createTaskButton;
   }
 
   @override
@@ -69,7 +77,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          'New task',
+          _title,
           style: GoogleFonts.lexendDeca(
             color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
@@ -156,7 +164,9 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                           ),
                           const SizedBox(width: 15),
                           Expanded(
-                            child: TextFormField(
+                            child: Padding (
+                              padding: const EdgeInsets.only(right: 8),
+                              child: TextFormField(
                               style: GoogleFonts.quicksand(
                                 color: colorScheme.onSurface,
                                 fontWeight: FontWeight.bold,
@@ -181,6 +191,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                                 _taskName = value!;
                               },
                             ),
+                          ),
                           ),
                         ]
                       ),
@@ -220,10 +231,8 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         },
                       ),
                       const SizedBox(height: 15),
-                const SizedBox(height: 15),
                 Container (
                   width: double.infinity,
-                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(12.0),
@@ -234,15 +243,22 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                         width: double.infinity,
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: colorScheme.tertiary,
-                          borderRadius: BorderRadius.circular(12.0),
+                          color: colorScheme.primary,
+                          border: Border.all(
+                            color: colorScheme.secondary,
+                            width: 1.5,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12.0),
+                            topRight: Radius.circular(12.0),
+                          ),
                         ),
                         child: Title(
                           color: colorScheme.onTertiary, 
                           child: Text(
                             'TIME', 
                             style: GoogleFonts.quicksand(
-                              color: colorScheme.onTertiary, 
+                              color: colorScheme.onPrimary, 
                               fontWeight: FontWeight.bold,
                             )
                           )
@@ -271,7 +287,7 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                     ])
                 ),
                 const SizedBox(height: 15),
-    ],
+                    ],
                   ),
                 ),
                 Row(
@@ -371,11 +387,15 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      fixedSize: const WidgetStatePropertyAll<Size>(Size(280, 29)),
-                      backgroundColor: WidgetStatePropertyAll<Color>(colorScheme.primary),
+                      fixedSize: const WidgetStatePropertyAll<Size>(Size(180, 29)),
+                      backgroundColor: WidgetStatePropertyAll<Color>(colorScheme.surface),
                       shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
+                          side: BorderSide(
+                            color: colorScheme.secondary,
+                            width: 1.0,
+                        ),
                         ),
                       ),
                     ),
@@ -442,10 +462,10 @@ class CreateTaskScreenState extends State<CreateTaskScreen> {
                       }
                     },
                     child: Text(
-                      'Create task',
-                      style: TextStyle(
+                      _titleButton,
+                      style: GoogleFonts.quicksand(
                         color: colorScheme.onPrimary,
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w600,
                       ),
                     )

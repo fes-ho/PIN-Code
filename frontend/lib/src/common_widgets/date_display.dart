@@ -39,6 +39,7 @@ class _DateDisplayWidgetState extends State<DateDisplayWidget> {
         }
       },
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 8.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(12.0),
           border: Border.all(
