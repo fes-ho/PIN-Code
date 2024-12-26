@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/src/features/friendship/presentation/friends_view.dart';
 import 'package:frontend/src/views/profile_view.dart';
 import 'package:frontend/src/views/statistics_view.dart';
-import 'package:frontend/src/views/today_view.dart';
+import 'package:frontend/src/views/today_view/today_view.dart';
 
 class MainNavigationView extends StatefulWidget {
   const MainNavigationView({super.key});

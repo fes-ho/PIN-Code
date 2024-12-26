@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/features/habits/presentation/create_habit_view.dart';
 import 'package:frontend/src/features/moods/components/mood_button.dart';
 import 'package:frontend/src/features/moods/components/mood_dialog.dart';
-import 'package:frontend/src/features/moods/domain/mood.dart';
 import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
 import 'package:frontend/src/features/moods/services/mood_service.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_view.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
+import 'package:frontend/src/views/today_view/activity_button.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -13,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
 
+enum ActivityInTodayView { habits, tasks }
 
 class TodayView extends StatefulWidget {
   const TodayView({super.key});
@@ -25,6 +27,7 @@ class TodayViewState extends State<TodayView> {
   CalendarFormat _calendarFormat = CalendarFormat.week;
   DateTime _focusedDay = DateTime.now();
   TypeOfMood _typeOfMood = TypeOfMood.great;
+  ActivityInTodayView _activityInTodayView = ActivityInTodayView.tasks;
 
   @override
   void initState() {
@@ -53,26 +56,23 @@ class TodayViewState extends State<TodayView> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-
             MoodButton(
-              typeOfMood: _typeOfMood, 
-              onAction: () async {
-                await showMoodDialog(context);
+                typeOfMood: _typeOfMood,
+                onAction: () async {
+                  await showMoodDialog(context);
 
-                _typeOfMood = await GetIt.I<MoodService>().getMood() ?? TypeOfMood.great;
+                  _typeOfMood = await GetIt.I<MoodService>().getMood() ??
+                      TypeOfMood.great;
 
-                setState(() {
-                  
-                });
-              } 
-            )
+                  setState(() {});
+                })
           ],
         ),
         backgroundColor: colorScheme.surfaceBright,
       ),
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.only( left: 15, right: 15, top: 4),
+          padding: const EdgeInsets.only(left: 15, right: 15, top: 4),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -80,9 +80,21 @@ class TodayViewState extends State<TodayView> {
               const SizedBox(height: 8),
               Divider(color: colorScheme.outlineVariant),
               const SizedBox(height: 8),
-              //_buildProgressBar(),
+              Row(
+                children: [
+                  ActivityButton(
+                      text: "Habits",
+                      isSelected: true,
+                      onPressed: () => print("1")
+                  ),
+                  ActivityButton(
+                    text: "To do",
+                    isSelected: false,
+                    onPressed: () => print(2)),
+                  TextButton(onPressed: () => print("2"), child: Text("To do"))
+                ],
+              ),
               const Expanded(child: TaskListView()),
-              // _buildTaskDetails(),
             ],
           ),
         ),
@@ -106,7 +118,7 @@ class TodayViewState extends State<TodayView> {
     return Container(
       padding: const EdgeInsets.only(left: 5, right: 5, top: 12, bottom: 3),
       decoration: BoxDecoration(
-        color: colorScheme.secondaryContainer,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(12),
       ),
       child: TableCalendar(
@@ -116,12 +128,12 @@ class TodayViewState extends State<TodayView> {
         focusedDay: _focusedDay,
         daysOfWeekStyle: DaysOfWeekStyle(
           weekdayStyle: GoogleFonts.quicksand(
-            color: colorScheme.onSecondaryContainer,
+            color: colorScheme.onPrimary,
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
           weekendStyle: GoogleFonts.quicksand(
-            color: colorScheme.onSecondaryContainer,
+            color: colorScheme.onPrimary,
             fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
@@ -129,12 +141,14 @@ class TodayViewState extends State<TodayView> {
         startingDayOfWeek: StartingDayOfWeek.monday,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {
-          return isSameDay(Provider.of<TaskListState>(context, listen: false).selectedDate, day);
+          return isSameDay(
+              Provider.of<TaskListState>(context, listen: false).selectedDate,
+              day);
         },
         onDaySelected: (selectedDay, focusedDay) {
-          Provider.of<TaskListState>(context, listen: false).changeDay(selectedDay);
-          setState(() {
-          });
+          Provider.of<TaskListState>(context, listen: false)
+              .changeDay(selectedDay);
+          setState(() {});
         },
         onFormatChanged: (format) {
           if (_calendarFormat != format) {
@@ -146,20 +160,25 @@ class TodayViewState extends State<TodayView> {
         onPageChanged: (focusedDay) {
           _focusedDay = focusedDay;
         },
-	  calendarStyle: CalendarStyle(
+        calendarStyle: CalendarStyle(
           todayDecoration: BoxDecoration(
-            shape: BoxShape.circle,
-            border: Border.fromBorderSide(
-                BorderSide(
-                  width: 1.5,
-                  color: colorScheme.primary,
-                )
-            ), 
-          ),
+              shape: BoxShape.rectangle,
+              border: Border.fromBorderSide(BorderSide(
+                width: 1.5,
+                color: colorScheme.primary,
+              )),
+              borderRadius: BorderRadius.circular(5)),
           selectedDecoration: BoxDecoration(
-            color: colorScheme.primary,
-            shape: BoxShape.circle,
-          ),
+              color: colorScheme.primary,
+              shape: BoxShape.rectangle,
+              border: Border.all(color: colorScheme.primary),
+              borderRadius: BorderRadius.circular(5)),
+          defaultDecoration: BoxDecoration(
+              color: colorScheme.surface,
+              border: Border.all(color: colorScheme.surface)),
+          weekendDecoration: BoxDecoration(
+              color: colorScheme.surface,
+              border: Border.all(color: colorScheme.surface)),
           selectedTextStyle: GoogleFonts.quicksand(
             color: colorScheme.onPrimary,
             fontSize: 16,
@@ -171,28 +190,55 @@ class TodayViewState extends State<TodayView> {
             fontWeight: FontWeight.w600,
           ),
           defaultTextStyle: GoogleFonts.quicksand(
-            color: colorScheme.onSecondaryContainer,
+            color: colorScheme.onPrimary,
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
           weekendTextStyle: GoogleFonts.quicksand(
-            color: colorScheme.onSecondaryContainer,
+            color: colorScheme.onPrimary,
             fontSize: 14,
             fontWeight: FontWeight.w600,
           ),
           outsideTextStyle: const TextStyle(color: Colors.grey),
         ),
         headerStyle: HeaderStyle(
-          titleTextStyle: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          titleTextStyle:
+              const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
           formatButtonTextStyle: const TextStyle(color: Colors.white),
           formatButtonDecoration: BoxDecoration(
             color: Colors.blue,
             borderRadius: BorderRadius.circular(12.0),
           ),
           leftChevronIcon: const Icon(Icons.chevron_left, color: Colors.white),
-          rightChevronIcon: const Icon(Icons.chevron_right, color: Colors.white),
+          rightChevronIcon:
+              const Icon(Icons.chevron_right, color: Colors.white),
         ),
       ),
     );
+  }
+
+  Widget buildActivityContent() {
+    Map<ActivityInTodayView, Widget> contentInTodayView = {
+      // TODO change habit view
+      ActivityInTodayView.habits: const Text("Habit today view"),
+      ActivityInTodayView.tasks: const TaskListView()
+    };
+
+    return contentInTodayView[_activityInTodayView] ??
+        const Text("Error building view");
+  }
+
+  Widget createActivityWidget() {
+    Map<ActivityInTodayView, Widget> createActivityInTodayView = {
+      ActivityInTodayView.habits: const CreateHabitScreen(),
+      ActivityInTodayView.tasks: const CreateTaskScreen()
+    };
+
+    return createActivityInTodayView[_activityInTodayView] ??
+        const Text("Error in creating activity");
+  }
+
+  bool _isActivitySelected(ActivityInTodayView activity) {
+    return _activityInTodayView == activity;
   }
 }
