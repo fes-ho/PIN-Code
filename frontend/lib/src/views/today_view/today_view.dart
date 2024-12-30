@@ -52,7 +52,7 @@ class TodayViewState extends State<TodayView> {
             Text(
               DateFormat('MMMM, d').format(_focusedDay),
               style: GoogleFonts.lexendDeca(
-                color: colorScheme.primary,
+                color: colorScheme.secondary,
                 fontWeight: FontWeight.w500,
               ),
             ),
@@ -77,9 +77,7 @@ class TodayViewState extends State<TodayView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               _buildCalendar(),
-              const SizedBox(height: 8),
-              Divider(color: colorScheme.outlineVariant),
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Row(
                 children: [
                   ActivityButton(
@@ -109,6 +107,7 @@ class TodayViewState extends State<TodayView> {
                   )
                 ],
               ),
+              const SizedBox(height: 15,),
               const Expanded(child: TaskListView()),
             ],
           ),
