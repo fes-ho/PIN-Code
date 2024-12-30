@@ -108,7 +108,7 @@ class TodayViewState extends State<TodayView> {
                 ],
               ),
               const SizedBox(height: 15,),
-              const Expanded(child: TaskListView()),
+              Expanded(child: buildActivityContent()),
             ],
           ),
         ),
