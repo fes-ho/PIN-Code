@@ -84,30 +84,35 @@ class TodayViewState extends State<TodayView> {
                 children: [
                   ActivityButton(
                       text: "Habits",
-                      isSelected: true,
-                      onPressed: () => print("1")
-                  ),
+                      isSelected:
+                          _isActivitySelected(ActivityInTodayView.habits),
+                      onPressed: () => setState(() {
+                            _activityInTodayView = ActivityInTodayView.habits;
+                          })),
                   ActivityButton(
-                    text: "To do",
-                    isSelected: false,
-                    onPressed: () => print(2)),
-                  TextButton(onPressed: () => print("2"), child: Text("To do"))
+                      text: "To do",
+                      isSelected:
+                          _isActivitySelected(ActivityInTodayView.tasks),
+                      onPressed: () => setState(() {
+                            _activityInTodayView = ActivityInTodayView.tasks;
+                          })),
+                  IconButton.outlined(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => createActivityWidget()),
+                      );
+                    },
+                    icon: const Icon(Icons.add),
+                    color: colorScheme.secondary,
+                  )
                 ],
               ),
               const Expanded(child: TaskListView()),
             ],
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const CreateTaskScreen()),
-          );
-        },
-        backgroundColor: colorScheme.tertiary,
-        child: Icon(Icons.add, color: colorScheme.onTertiary),
       ),
     );
   }
