@@ -36,78 +36,93 @@ class _TaskListViewState extends State<TaskListView> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Consumer<TaskListState>(
-      builder: (context, taskListState, child) {
-        return ListView.builder(
-          shrinkWrap: true,
-          itemCount: taskListState.visibleTasks.length,
-          itemBuilder: (context, index) {
-            final tasks = List.from(taskListState.visibleTasks)
-              ..sort((a, b) => b.priority.compareTo(a.priority));
-            final task = tasks[index];
-            final taskIcon =
-                IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
-            final isCompleted = task.isCompleted;
-            return Card(
-              margin: const EdgeInsets.only(bottom: 15.0),
-              shape: RoundedRectangleBorder(
-                side: BorderSide(color: colorScheme.outlineVariant, width: 1.0),
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              elevation: 1.5,
-              color: colorScheme.surface,
-              shadowColor: colorScheme.outline,
-              child: ListTile(
-                leading: Icon(taskIcon, color: colorScheme.secondary),
-                title: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        task.name,
-                        style: GoogleFonts.quicksand(
-                          color: colorScheme.onSurface,
-                          fontWeight: FontWeight.w600,
-                          decoration: isCompleted ? TextDecoration.lineThrough : null,
-                        ),
+    return Consumer<TaskListState>(builder: (context, taskListState, child) {
+      return ListView.builder(
+        shrinkWrap: true,
+        itemCount: taskListState.visibleTasks.length,
+        itemBuilder: (context, index) {
+          List<Task> tasks = List.from(taskListState.visibleTasks)
+            ..sort((a, b) => b.priority.compareTo(a.priority));
+          final task = tasks[index];
+          final taskIcon =
+              IconData(int.parse(task.icon), fontFamily: 'MaterialIcons');
+          final isCompleted = task.isCompleted;
+          return Card(
+            margin: const EdgeInsets.only(bottom: 15.0),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            elevation: 1.5,
+            color: colorScheme.primary,
+            child: ListTile(
+              leading: Icon(taskIcon, color: colorScheme.secondary),
+              title: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      task.name,
+                      style: GoogleFonts.quicksand(
+                        color: colorScheme.onSurface,
+                        fontWeight: FontWeight.w600,
+                        decoration:
+                            isCompleted ? TextDecoration.lineThrough : null,
                       ),
                     ),
-                    Row(
-                      children: List.generate(5, (index) {
-                        return Icon(
-                          index < task.priority ? Icons.star : Icons.star_border,
-                          size: 14,
-                          color: index < task.priority ? Colors.amber : colorScheme.outline,
-                        );
-                      }),
-                    ),
-                  ],
-                ),
-                subtitle: Text(
-                  task.description,
-                  style: GoogleFonts.quicksand(
-                    color: colorScheme.onSurface,
-                    decoration: isCompleted ? TextDecoration.lineThrough : null,
                   ),
-                ),
-                trailing: IconButton(
-                  icon: Icon(isCompleted
-                      ? Icons.check_circle
-                      : Icons.radio_button_unchecked),
-                  color: isCompleted ? colorScheme.primary : colorScheme.outline,
-                  onPressed: () {
-                    setState(() {
-                      taskListState.completeTask(task);
-                    });
-                  },
-                ),
-                onTap: () {
-                  _showBottomSheet(context, task);
-                },
+                  Column(
+                    children: [
+                      Row(
+                        children: List.generate(5, (index) {
+                          return Icon(
+                            index < task.priority ? Icons.star : Icons.star_border,
+                            size: 14,
+                            color: index < task.priority
+                                ? colorScheme.secondary
+                                : colorScheme.outline,
+                          );
+                        }),
+                      ),
+                      const SizedBox(height: 8,),
+                      Row(
+                        children: [
+                          Icon(
+                            task.estimatedDuration != null
+                            ? Icons.restore
+                            : null
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
-            );
-          },
-        );
-      }
-    );
+              subtitle: Text(
+                task.description,
+                style: GoogleFonts.quicksand(
+                  color: colorScheme.onSurface,
+                  decoration: isCompleted ? TextDecoration.lineThrough : null,
+                ),
+              ),
+              trailing: Transform.scale(scale: 1.5, child: Checkbox(
+                value: isCompleted,
+                checkColor: colorScheme.secondary,
+                side: const BorderSide(
+                  color: Colors.transparent
+                ),
+                fillColor: WidgetStatePropertyAll(colorScheme.surface),
+                onChanged: (_) {
+                  setState(() {
+                    taskListState.completeTask(task);
+                  });
+                },
+              ),),
+              onTap: () {
+                _showBottomSheet(context, task);
+              },
+            ),
+          );
+        },
+      );
+    });
   }
 }
