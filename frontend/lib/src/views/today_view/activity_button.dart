@@ -16,13 +16,16 @@ class ActivityButton extends StatelessWidget {
     return TextButton(
       onPressed: onPressed,
       style: ButtonStyle(
+          shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
+              RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: const BorderSide(color: Colors.transparent))),
           backgroundColor:
               WidgetStatePropertyAll(_getBackgroundColor(context))),
       child: Text(
         text,
-        style: TextStyle(
-          color: _getTextColor(context)
-        ),),
+        style: TextStyle(color: _getTextColor(context)),
+      ),
     );
   }
 
