@@ -44,30 +44,51 @@ class MainNavigationViewState extends State<MainNavigationView> {
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.only(left: 12.0, right: 12, bottom: 12),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(
+            top: Radius.circular(18),
+            bottom : Radius.circular(18)),
+          child: BottomNavigationBar(
+        items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.today),
+            icon: const Icon(Icons.home_outlined),
             label: 'Today',
+            activeIcon: const Icon(Icons.home_rounded),
+            backgroundColor: colorScheme.secondary,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
+            icon: const Icon(Icons.people_outline_rounded),
             label: 'Social',
+            activeIcon: const Icon(Icons.people),
+            backgroundColor: colorScheme.secondary,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.bar_chart),
+            icon: const Icon(Icons.calendar_today_outlined),
             label: 'Stats',
+            activeIcon: const Icon(Icons.calendar_today),
+            backgroundColor: colorScheme.secondary,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person),
+            icon: const Icon(Icons.person_outline),
             label: 'Profile',
+            activeIcon: const Icon(Icons.person),
+            backgroundColor: colorScheme.secondary,
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: colorScheme.primary,
-        unselectedItemColor: Colors.grey,
+        iconSize: 27,
+        selectedFontSize: 0.0, 
+        unselectedFontSize: 0.0,
+        showSelectedLabels: false,
+        showUnselectedLabels: false,
+        selectedItemColor: colorScheme.onSecondary,
+        unselectedItemColor: colorScheme.onSecondary,
         onTap: _onItemTapped,
       ),
+        )
+      )
     );
   }
 }

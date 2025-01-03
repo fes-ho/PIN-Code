@@ -176,7 +176,7 @@ class TodayViewState extends State<TodayView> {
               color: colorScheme.primary,
               shape: BoxShape.rectangle,
               border: Border.all(color: colorScheme.primary),
-              borderRadius: BorderRadius.circular(5)),
+              ),
           defaultDecoration: BoxDecoration(
               color: colorScheme.surface,
               border: Border.all(color: colorScheme.surface)),
