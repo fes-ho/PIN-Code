@@ -131,7 +131,7 @@ class _TaskDialogState extends State<TaskDialog> {
 
     return Dialog(
       insetPadding: EdgeInsets.only(
-        top: MediaQuery.of(context).size.height * 0.5,
+        top: MediaQuery.of(context).size.height * 0.45,
         right: MediaQuery.of(context).size.width * 0.03,
         left: MediaQuery.of(context).size.width * 0.03,
       ),

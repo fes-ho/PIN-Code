@@ -63,7 +63,7 @@ class _EstimatedTimeDialogState extends State<EstimatedTimeDialog> {
                   onPressed: () => Navigator.pop(context),
                   child: Text('Cancel',
                     style: GoogleFonts.quicksand(
-                      color: colorScheme.primary,
+                      color: colorScheme.secondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -75,7 +75,7 @@ class _EstimatedTimeDialogState extends State<EstimatedTimeDialog> {
                   },
                   child: Text('Save',
                     style: GoogleFonts.quicksand(
-                      color: colorScheme.primary,
+                      color: colorScheme.secondary,
                       fontWeight: FontWeight.w600,
                     ),
                   ),

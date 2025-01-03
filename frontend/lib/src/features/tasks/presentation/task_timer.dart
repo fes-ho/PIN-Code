@@ -151,7 +151,7 @@ class _TaskTimerState extends State<TaskTimer> {
               ? _formatTime(_remainingSeconds)
               : _formatTime(_elapsedSeconds),
           style: TextStyle(
-            color: colorScheme.onSurface,
+            color: colorScheme.primary,
             fontSize: 24,
             fontWeight: FontWeight.bold,
           ),
