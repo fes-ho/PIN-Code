@@ -5,6 +5,7 @@ import 'package:frontend/src/features/friendship/presentation/friend_component.d
 import 'package:frontend/src/features/friendship/presentation/search_friend_view.dart';
 import 'package:frontend/src/features/friendship/presentation/leaderboard_view.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class FriendsView extends StatefulWidget {
   const FriendsView({super.key});
@@ -30,10 +31,18 @@ class _FriendsViewState extends State<FriendsView> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Friends"),
+        title: Text(
+          'Friends', 
+          style: GoogleFonts.quicksand(
+            fontWeight: FontWeight.w600,
+            color: colorScheme.secondary,
+          )
+        ),
       ),
       floatingActionButton: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -62,7 +71,7 @@ class _FriendsViewState extends State<FriendsView> {
       ),
       body: ListView.separated(
         itemBuilder: (context, index) => Friend(member: _friends[index], updateFriendsState: updateFriendsState,),
-        separatorBuilder: (context, index) => const SizedBox(height: 10,),
+        separatorBuilder: (context, index) => const SizedBox(height: 2,),
         itemCount: _friends.length),
     );
   }
