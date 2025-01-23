@@ -4,6 +4,7 @@ import 'package:frontend/src/features/friendship/application/friendship_service.
 import 'package:frontend/src/features/friendship/presentation/leaderboard_component.dart';
 import 'package:frontend/src/features/streaks/services/streak_service.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LeaderboardView extends StatefulWidget {
   const LeaderboardView({super.key});
@@ -51,10 +52,18 @@ class _LeaderboardViewState extends State<LeaderboardView> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Leaderboard"),
+        title: Text(
+          'Leaderboard', 
+          style: GoogleFonts.quicksand(
+            fontWeight: FontWeight.w600,
+            color: colorScheme.secondary,
+          )
+        ),
       ),
       body: ListView.separated(
         itemBuilder: (context, index) => LeaderboardComponent(
