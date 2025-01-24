@@ -46,7 +46,6 @@ class _FriendsViewState extends State<FriendsView> {
       ),
       floatingActionButton: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
-        spacing: 10.0,
         mainAxisAlignment: MainAxisAlignment.end,
         children: [
           FloatingActionButton(
