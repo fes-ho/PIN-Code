@@ -56,6 +56,7 @@ class _FriendsViewState extends State<FriendsView> {
             heroTag: null,
             child: const Icon(Icons.add),
           ),
+          const SizedBox(width: 10),
           FloatingActionButton(
             onPressed: () async {
               Navigator.push(
