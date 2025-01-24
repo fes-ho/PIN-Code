@@ -13,6 +13,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:frontend/src/features/tasks/presentation/create_task_view.dart';
+import 'package:frontend/src/features/chatbot/presentation/chatbot_widget.dart';
 
 enum ActivityInTodayView { habits, tasks }
 
@@ -76,6 +77,7 @@ class TodayViewState extends State<TodayView> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const ChatbotWidget(),
               _buildCalendar(),
               const SizedBox(height: 16),
               Row(
