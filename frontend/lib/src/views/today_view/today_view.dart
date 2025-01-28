@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/src/features/habits/presentation/create_habit_view.dart';
+import 'package:frontend/src/features/habits/presentation/habit_list_state.dart';
+import 'package:frontend/src/features/habits/presentation/habit_list_view.dart';
 import 'package:frontend/src/features/moods/components/mood_button.dart';
 import 'package:frontend/src/features/moods/components/mood_dialog.dart';
 import 'package:frontend/src/features/moods/domain/type_of_mood.dart';
@@ -154,6 +156,9 @@ class TodayViewState extends State<TodayView> {
         onDaySelected: (selectedDay, focusedDay) {
           Provider.of<TaskListState>(context, listen: false)
               .changeDay(selectedDay);
+
+          Provider.of<HabitListState>(context, listen: false)
+              .changeDay(selectedDay);
           setState(() {});
         },
         onFormatChanged: (format) {
@@ -225,8 +230,7 @@ class TodayViewState extends State<TodayView> {
 
   Widget buildActivityContent() {
     Map<ActivityInTodayView, Widget> contentInTodayView = {
-      // TODO change habit view
-      ActivityInTodayView.habits: const Text("Habit today view"),
+      ActivityInTodayView.habits: const HabitListView(),
       ActivityInTodayView.tasks: const TaskListView()
     };
 

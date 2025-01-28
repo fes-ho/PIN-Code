@@ -17,226 +17,228 @@ class ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          children: [
-            // Header
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      const SizedBox(height: 20),
-                      GestureDetector(
-                        onTap: () => _showAvatarSelectionDialog(context),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // Header
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const SizedBox(height: 20),
+                        GestureDetector(
+                          onTap: () => _showAvatarSelectionDialog(context),
+                          child: Container(
+                            width: 80,
+                            height: 80,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.deepPurple,
+                                width: 3,
+                              ),
+                            ),
+                            child: ClipOval(
+                              child: Image.asset(
+                                _avatarPath,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                        FutureBuilder<String>(
+                          future: GetIt.I<ProfileService>().getUsername(),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const CircularProgressIndicator();
+                            } else if (snapshot.hasError) {
+                              return const Text('Failed to load username');
+                            } else {
+                              return Text(
+                                snapshot.data ?? 'USER',
+                                style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ); 
+                            }
+                          },
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () => showDialog(
+                        context: context,
+                        builder: (context) => const NotificationDialog(
+                          title: 'Coming Soon',
+                          message: 'This feature is not yet available',
+                        ),
+                      ),
+                      child: const Icon(
+                        size: 32,
+                        Icons.settings,
+                        color: Color(0xFF2D4B4D),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+          
+              // Achievements Section
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Your achievements this week',
+                      style: TextStyle(
+                        color: Color(0xFF2D4B4D),
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    ...[
+                      "You've gone to the gym three times!",
+                      "You've drunk water everyday!",
+                      "You've eaten healthy five times!"
+                    ].map(
+                      (achievement) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
                         child: Container(
-                          width: 80,
-                          height: 80,
+                          padding: EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.deepPurple,
-                              width: 3,
-                            ),
+                            color: Color(0xFFE8F7F0),
+                            borderRadius: BorderRadius.circular(8),
                           ),
-                          child: ClipOval(
-                            child: Image.asset(
-                              _avatarPath,
-                              fit: BoxFit.cover,
-                            ),
+                          child: Row(
+                            children: [
+                              Text('🏆'),
+                              SizedBox(width: 12),
+                              Text(
+                                achievement,
+                                style: TextStyle(
+                                  color: Color(0xFF2D4B4D),
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),
-                      const SizedBox(width: 12),
-                      FutureBuilder<String>(
-                        future: GetIt.I<ProfileService>().getUsername(),
+                    ),
+                  ],
+                ),
+              ),
+          
+              // Stats Grid
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Row(
+                  children: [
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: FutureBuilder<int>(
+                        future: ProfileService().getNumberHabits(), // Call the method from profile service
                         builder: (context, snapshot) {
                           if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const CircularProgressIndicator();
+                            return const CircularProgressIndicator(); // Show a loading indicator while waiting
                           } else if (snapshot.hasError) {
-                            return const Text('Failed to load username');
+                            return Text('Error: ${snapshot.error}'); // Show error message if any
                           } else {
-                            return Text(
-                              snapshot.data ?? 'USER',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ); 
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => showDialog(
-                      context: context,
-                      builder: (context) => const NotificationDialog(
-                        title: 'Coming Soon',
-                        message: 'This feature is not yet available',
-                      ),
-                    ),
-                    child: const Icon(
-                      size: 32,
-                      Icons.settings,
-                      color: Color(0xFF2D4B4D),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Achievements Section
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Your achievements this week',
-                    style: TextStyle(
-                      color: Color(0xFF2D4B4D),
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  ...[
-                    "You've gone to the gym three times!",
-                    "You've drunk water everyday!",
-                    "You've eaten healthy five times!"
-                  ].map(
-                    (achievement) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Container(
-                        padding: EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: Color(0xFFE8F7F0),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Row(
-                          children: [
-                            Text('🏆'),
-                            SizedBox(width: 12),
-                            Text(
-                              achievement,
-                              style: TextStyle(
-                                color: Color(0xFF2D4B4D),
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Stats Grid
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                children: [
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: FutureBuilder<int>(
-                      future: ProfileService().getNumberHabits(), // Call the method from profile service
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}'); // Show error message if any
-                        } else {
-                          return _StatCard(
-                            value: snapshot.data.toString(), // Use the fetched value
-                            label: 'completed habits',
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: FutureBuilder<int>(
-                      future: ProfileService().getNumberTasks(), // Call the method from profile service
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState == ConnectionState.waiting) {
-                          return const CircularProgressIndicator(); // Show a loading indicator while waiting
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}'); // Show error message if any
-                        } else {
-                          return _StatCard(
-                            value: snapshot.data.toString(), // Use the fetched value
-                            label: 'completed tasks',
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            // Weekly Chart
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Weekly productivity',
-                    style: TextStyle(
-                      color: Color(0xFF2D4B4D),
-                      fontSize: 18,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                    SizedBox(
-                      height: 150,
-                      child: FutureBuilder<List<double>>(
-                        future: ProfileService().getWeeklyProgress(), // Llama al método del servicio
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState == ConnectionState.waiting) {
-                            return const CircularProgressIndicator(); // Muestra un indicador de carga mientras esperas
-                          } else if (snapshot.hasError) {
-                            return Text('Error: ${snapshot.error}'); // Muestra un mensaje de error si hay algún problema
-                          } else if (!snapshot.hasData) {
-                            return const Text('No data available'); // Muestra un mensaje si no hay datos
-                          } else {
-                            return FutureBuilder<List<String>>(
-                              future: ProfileService().getWeeklyProgressDays(), // Llama al método para obtener los días
-                              builder: (context, daySnapshot) {
-                                if (daySnapshot.connectionState == ConnectionState.waiting) {
-                                  return const CircularProgressIndicator(); // Muestra un indicador de carga mientras esperas
-                                } else if (daySnapshot.hasError) {
-                                  return Text('Error: ${daySnapshot.error}'); // Muestra un mensaje de error si hay algún problema
-                                } else if (!daySnapshot.hasData) {
-                                  return const Text('No data available'); // Muestra un mensaje si no hay datos
-                                } else {
-                                  return Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: [
-                                      for (var i = 0; i < 7; i++)
-                                        _ChartBar(
-                                          day: daySnapshot.data![i], // Usa los días obtenidos
-                                          percentage: snapshot.data![i], // Usa los datos obtenidos
-                                        ),
-                                    ],
-                                  );
-                                }
-                              },
+                            return _StatCard(
+                              value: snapshot.data.toString(), // Use the fetched value
+                              label: 'completed habits',
                             );
                           }
                         },
                       ),
                     ),
-                ],
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: FutureBuilder<int>(
+                        future: ProfileService().getNumberTasks(), // Call the method from profile service
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return const CircularProgressIndicator(); // Show a loading indicator while waiting
+                          } else if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}'); // Show error message if any
+                          } else {
+                            return _StatCard(
+                              value: snapshot.data.toString(), // Use the fetched value
+                              label: 'completed tasks',
+                            );
+                          }
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+          
+              // Weekly Chart
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Weekly productivity',
+                      style: TextStyle(
+                        color: Color(0xFF2D4B4D),
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                      SizedBox(
+                        height: 150,
+                        child: FutureBuilder<List<double>>(
+                          future: ProfileService().getWeeklyProgress(), // Llama al método del servicio
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return const CircularProgressIndicator(); // Muestra un indicador de carga mientras esperas
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}'); // Muestra un mensaje de error si hay algún problema
+                            } else if (!snapshot.hasData) {
+                              return const Text('No data available'); // Muestra un mensaje si no hay datos
+                            } else {
+                              return FutureBuilder<List<String>>(
+                                future: ProfileService().getWeeklyProgressDays(), // Llama al método para obtener los días
+                                builder: (context, daySnapshot) {
+                                  if (daySnapshot.connectionState == ConnectionState.waiting) {
+                                    return const CircularProgressIndicator(); // Muestra un indicador de carga mientras esperas
+                                  } else if (daySnapshot.hasError) {
+                                    return Text('Error: ${daySnapshot.error}'); // Muestra un mensaje de error si hay algún problema
+                                  } else if (!daySnapshot.hasData) {
+                                    return const Text('No data available'); // Muestra un mensaje si no hay datos
+                                  } else {
+                                    return Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        for (var i = 0; i < 7; i++)
+                                          _ChartBar(
+                                            day: daySnapshot.data![i], // Usa los días obtenidos
+                                            percentage: snapshot.data![i], // Usa los datos obtenidos
+                                          ),
+                                      ],
+                                    );
+                                  }
+                                },
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -23,11 +23,11 @@ class HabitListState extends ChangeNotifier
   UnmodifiableListView<Habit> get habits => UnmodifiableListView(_habits);
   UnmodifiableListView<Habit> get visibleHabits => UnmodifiableListView(_visibleHabits);
   DateTime get selectedDate => _selectedDate;
-  
+
   void changeDay(DateTime date) {
     _selectedDate = date;
     _visibleHabits.clear();
-    _visibleHabits.addAll(UnmodifiableListView(_habits));
+    _visibleHabits.addAll(UnmodifiableListView(_habits.where((habit) => habit.date.day == date.day && habit.date.month == date.month && habit.date.year == date.year)));
     notifyListeners();
   }
 
@@ -44,7 +44,7 @@ class HabitListState extends ChangeNotifier
 
   void add(Habit habit) {
     if (habit.id != null) {
-      final habitIndex = _habits.indexWhere((t) => t.id == habit.id);
+      final habitIndex = _habits.indexWhere((h) => h.id == habit.id);
       if (habitIndex != -1) {
         _habits[habitIndex] = habit;
         final visibleIndex = _visibleHabits.indexWhere((t) => t.id == habit.id);
@@ -53,7 +53,9 @@ class HabitListState extends ChangeNotifier
         }
       } else {
         _habits.add(habit);
-        _visibleHabits.add(habit);
+        if (habit.date.day == _selectedDate.day) {
+          _visibleHabits.add(habit);
+        }
       }
       notifyListeners();
     } else {
@@ -70,7 +72,7 @@ class HabitListState extends ChangeNotifier
     _habits.clear();
     _habits.addAll(habits);
     _visibleHabits.clear();
-    _visibleHabits.addAll(UnmodifiableListView(_habits));
+    _visibleHabits.addAll(UnmodifiableListView(_habits.where((habit) => habit.date.day == _selectedDate.day)));
     notifyListeners();
   }
 

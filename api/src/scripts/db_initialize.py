@@ -3,7 +3,7 @@ from sqlite3 import Date
 import uuid
 from services import get_session
 from models import *
-from schemas import DayTime
+from schemas import DayTime, Category, Frequency
 
 def populate_initial_data():
     session_generator = get_session()
@@ -34,9 +34,12 @@ def populate_initial_data():
             description="Test Description",
             member_id=member.id,
             icon="default_icon.png",
+            date = datetime.fromisoformat("2025-01-25 08:00:00"),
             duration=30,
             estimated_duration=30,
-            time=DayTime.MORNING,
+            dayTime=DayTime.MORNING,
+            category= Category.SLEEP,
+            frequency= Frequency.DAILY,
             count=1
         )
         task = Task(
@@ -78,20 +81,12 @@ def populate_initial_data():
             member_id=member.id,
             is_completed=True
         )
-        frequency = Frequency(
-            daily=False,
-            days_of_the_week=[],
-            days_of_the_month=[1,14,31],
-            habit_id=habit.id
-        )
         quest = Quest(
             habit_id=habit.id,
             date=Date(2024, 3, 3),
             currentCount=0
         )
-        Frequency.model_validate(frequency)
         session.add(task)
-        session.add(frequency)
         session.add(member)
         session.add(habit)
         session.add(quest)

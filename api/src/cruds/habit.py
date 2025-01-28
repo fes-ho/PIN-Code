@@ -9,7 +9,7 @@ def read_habits(db: Session = Depends(get_session)):
     habits = db.exec(select(Habit)).all()
     return habits
 
-def read_habits_by_member(member_id: int, db: Session = Depends(get_session)):
+def read_habits_by_member(member_id: UUID, db: Session = Depends(get_session)):
     habits = db.exec(select(Habit).where(Habit.member_id == member_id)).all()
     return habits
 

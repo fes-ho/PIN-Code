@@ -1,9 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/src/common_widgets/category_selector.dart';
 import 'package:frontend/src/common_widgets/date_display.dart';
 import 'package:frontend/src/common_decorators/text_field_decorator.dart';
+import 'package:frontend/src/common_widgets/day_time_selector.dart';
+import 'package:frontend/src/common_widgets/frequency_selector.dart';
 import 'package:frontend/src/common_widgets/hour_and_minute_picker.dart';
 import 'package:frontend/src/common_widgets/icon_picker.dart';
 import 'package:frontend/src/common_widgets/rounded_icon_button.dart';
+import 'package:frontend/src/features/authentication/application/member_service.dart';
+import 'package:frontend/src/features/habits/domain/frequency.dart';
+import 'package:frontend/src/features/habits/domain/category.dart';
+import 'package:frontend/src/features/tasks/presentation/estimated_time_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:frontend/src/constants/icons.dart';
 import 'package:frontend/src/features/habits/domain/habit.dart';
@@ -30,26 +37,45 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _nameFieldController = TextEditingController();
   final TextEditingController _descriptionFieldController = TextEditingController();
+  final newHabitTitle = "New habit";
+  final createHabitButton = "CREATE HABIT";
+  final editHabitTitle = "Edit habit";
+  final updateHabitButton = "UPDATE HABIT";
 
+  late String _title;
+  late String _titleButton; 
   late String _habitName;
   late String _habitDescription;
   late IconData _selectedIcon;
   late DayTime _selectedDayTime;
+  late Frequency _selectedFrequency;
+  late Category _selectedCategory;
+  late int? _estimatedDuration;
+  late DateTime _selectedDate;
+  late int _selectedHour;
+  late int _selectedMinute;
 
-  
   bool _showMoreOptions = false;
 
   @override
   @override
   void initState() {
     super.initState();
+    _selectedDate = widget.habit?.date ?? DateTime.now();
+    _selectedHour = widget.habit?.date.hour ?? DateTime.now().hour;
+    _selectedMinute = widget.habit?.date.minute ?? DateTime.now().minute;
     _selectedDayTime = widget.habit?.dayTime ?? DayTime.morning;
+    _selectedFrequency = widget.habit?.frequency ?? Frequency.daily;
+    _selectedCategory = widget.habit?.category ?? Category.sleep;
     _selectedIcon = 
       widget.habit?.icon != null ? IconData(int.parse(widget.habit!.icon,), fontFamily: 'MaterialIcons') : Icons.edit;
     _nameFieldController.text = widget.habit?.name ?? '';
     _descriptionFieldController.text = widget.habit?.description ?? '';
     _habitDescription = widget.habit?.description ?? '';
     _habitName = widget.habit?.name ?? '';
+    _estimatedDuration = widget.habit?.estimatedDuration;
+    _title = widget.habit != null ? editHabitTitle : newHabitTitle;
+    _titleButton = widget.habit != null ? updateHabitButton : createHabitButton;
   }
 
   @override
@@ -60,14 +86,14 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
       backgroundColor: colorScheme.surface,
       appBar: AppBar(
         title: Text(
-          'New Habit',
+          _title,
           style: GoogleFonts.lexendDeca(
             color: colorScheme.onSurface,
             fontWeight: FontWeight.w500,
           ),
         ),
         centerTitle: true,
-        backgroundColor: colorScheme.surfaceBright,
+        backgroundColor: colorScheme.surfaceContainer,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: colorScheme.onSurface),
           onPressed: () => Navigator.of(context).pop(),
@@ -85,38 +111,50 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
               children: <Widget> [
                 Container(
                   width: double.infinity,
-                  padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: colorScheme.surfaceContainer,
+                    color: colorScheme.surface,
+                    border: Border.all(
+                      color: colorScheme.secondary,
+                      width: 1.5,
+                    ),
                     borderRadius: BorderRadius.circular(12.0),
                   ),
                   child: Column(
                     children: [
                       Container(
                         width: double.infinity,
+                        margin: const EdgeInsets.only(bottom: 8),
                         alignment: Alignment.center,
                         decoration: BoxDecoration(
-                          color: colorScheme.tertiary,
-                          borderRadius: BorderRadius.circular(12.0),
+                          color: colorScheme.primary,
+                          border: Border(
+                            bottom: BorderSide(
+                              color: colorScheme.secondary,
+                              width: 1.5,
+                            ),
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(10.0),
+                            topRight: Radius.circular(10.0),
+                          ),
                         ),
                         child: Title(
-                          color: Colors.white, 
+                          color: colorScheme.onPrimary, 
                           child: Text(
                             'NAME', 
                             style: GoogleFonts.quicksand(
-                              color: colorScheme.onTertiary, 
+                              color: colorScheme.onPrimary, 
                               fontWeight: FontWeight.bold,
                             )
                           )
                         ),
                       ),
-                      const SizedBox(height: 15),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Padding(
-                            padding: const EdgeInsets.only(top: 5), 
+                            padding: const EdgeInsets.only(top: 5, left: 5), 
                             child: RoundedIconButton(
                               icon: _selectedIcon,
                               onPressed: () async {
@@ -135,72 +173,186 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
                           ),
                           const SizedBox(width: 15),
                           Expanded(
-                            child: TextFormField(
-                              style: GoogleFonts.quicksand(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 8),
+                              child: TextFormField(
+                                style: GoogleFonts.quicksand(
                                 color: colorScheme.onSurface,
                                 fontWeight: FontWeight.bold,
-                              ),
-                              controller: _nameFieldController,
-                              decoration: TextFieldDecorator.getTextFieldDecoration(
-                                hintText: 'Your habit name',
+                                ),
                                 controller: _nameFieldController,
-                                colorScheme: colorScheme,
-                                onClear: () => setState(() {})
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter the habit name';
-                                }
-                                return null;
-                              },
-                              onChanged: (value) {
-                                setState(() {});
-                              },
-                              onSaved: (value) {
-                                _habitName = value!;
-                              },
+                                decoration: TextFieldDecorator.getTextFieldDecoration(
+                                  hintText: 'Your habit name',
+                                  controller: _nameFieldController,
+                                  colorScheme: colorScheme,
+                                  onClear: () => setState(() {})
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'Please enter the habit name';
+                                  }
+                                  return null;
+                                },
+                                onChanged: (value) {
+                                  setState(() {});
+                                },
+                                onSaved: (value) {
+                                  _habitName = value!;
+                                },
+                              )   
                             ),
                           ),
                         ]
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8.0),
-                  decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surfaceContainer,
-                  borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Select Day Time',
-                        style: GoogleFonts.quicksand(
-                        color: Theme.of(context).colorScheme.onSurface,
-                        fontWeight: FontWeight.bold,
+                      const SizedBox(height: 15),
+                      Container(
+                        width: double.infinity,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: colorScheme.primary,
+                          border: Border.all(
+                            color: colorScheme.secondary,
+                            width: 1.5,
+                          ),
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(12.0),
+                            topRight: Radius.circular(12.0),
+                          ),
+                        ),
+                        child: Title(
+                          color: colorScheme.onPrimary,
+                          child: Text(
+                            'CATEGORY',
+                            style: GoogleFonts.quicksand(
+                              color: colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold,
+                            )
+                          )
                         ),
                       ),
-                      const SizedBox(height: 8),
-                      Column(
-                        children: DayTime.values.map((dayTime) {
-                           return RadioListTile<DayTime>(
-                            title: Text(dayTime.name),
-                            value: dayTime,
-                            groupValue: _selectedDayTime,
-                            onChanged: (value) {
-                              setState(() {
-                               _selectedDayTime = value!;
-                              });
-                            },
-                          );
-                        }).toList(),
+                      const SizedBox(height: 15),
+                      CategorySelector(
+                        selectedCategory: _selectedCategory,
+                        onCategoryChanged: (category){
+                          setState(() {
+                            _selectedCategory = category;
+                          });
+                        }
                       ),
+                      const SizedBox(height: 15),
+                      Container (
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
+                                border: Border.all(
+                                  color: colorScheme.secondary,
+                                  width: 1.5,
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(12.0),
+                                  topRight: Radius.circular(12.0),
+                                ),
+                              ),
+                              child: Title(
+                                color: colorScheme.onTertiary, 
+                                child: Text(
+                                  'TIME', 
+                                  style: GoogleFonts.quicksand(
+                                    color: colorScheme.onPrimary, 
+                                    fontWeight: FontWeight.bold,
+                                  )
+                                )
+                              ),
+                            ),
+                            const SizedBox(height: 5),
+                            HourAndMinutePickerWidget(
+                              initialHour: _selectedHour, 
+                              initialMinute: _selectedMinute, 
+                              onHourChanged: (hour) {
+                                _selectedHour = hour;
+                              }, 
+                              onMinuteChanged: (minute) {
+                                _selectedMinute = minute;
+                              }, 
+                            ),
+                            const SizedBox(height: 8),
+                            DateDisplayWidget(
+                              initialDate: DateTime.now(),
+                              onDateChanged: (date) {
+                                setState(() {
+                                  _selectedDate = date;
+                                });
+                              },
+                            ),
+                          ])
+                      ),
+                      Container (
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          color: colorScheme.surfaceContainer,
+                          borderRadius: BorderRadius.circular(12.0),
+                        ),
+                        child: Column(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                color: colorScheme.primary,
+                                border: Border.all(
+                                  color: colorScheme.secondary,
+                                  width: 1.5,
+                                ),
+                                borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(12.0),
+                                  topRight: Radius.circular(12.0),
+                                ),
+                              ),
+                              child: Title(
+                                color: colorScheme.onTertiary, 
+                                child: Text(
+                                  'FREQUENCY', 
+                                  style: GoogleFonts.quicksand(
+                                    color: colorScheme.onPrimary, 
+                                    fontWeight: FontWeight.bold,
+                                  )
+                                )
+                              ),
+                            ),                            
+                          ],
+                        )
+                      ),
+                      const SizedBox(height: 15),
+                      FrequencySelector(
+                        selectedFrequency: _selectedFrequency,
+                        onFrequencyChanged: (frequency){
+                          setState(() {
+                            _selectedFrequency = frequency;
+                          });
+                        }
+                      ),
+                      const SizedBox(height: 15),
+                      DayTimeSelector(
+                        selectedDayTime: _selectedDayTime,
+                        onDayTimeChanged: (dayTime){
+                          setState(() {
+                            _selectedDayTime = dayTime;
+                          });
+                        }
+                      ),
+                      const SizedBox(height: 15),
                     ],
                   ),
                 ),
-                const SizedBox(height: 15),
                 Row(
                   children: [
                     Expanded(
@@ -240,50 +392,100 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
                 ),
                 const SizedBox(height: 15),
                 if (_showMoreOptions)
-                  TextFormField(
-                    style: GoogleFonts.quicksand(
-                      color: colorScheme.onSurface,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    controller: _descriptionFieldController,
-                    maxLines: 2,
-                    decoration: TextFieldDecorator.getTextFieldDecoration(
-                      hintText: "Enter the habit's description", 
-                      controller: _descriptionFieldController,
-                      colorScheme: colorScheme,
-                      onClear: () => setState(() {}),
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        _habitDescription = value;
-                      });
-                    },
-                ),
+                  Column(
+                    children: [
+                      TextFormField(
+                        style: GoogleFonts.quicksand(
+                          color: colorScheme.onSurface,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        controller: _descriptionFieldController,
+                        maxLines: 2,
+                        decoration: TextFieldDecorator.getTextFieldDecoration(
+                          hintText: "Enter the habit's description", 
+                          controller: _descriptionFieldController,
+                          colorScheme: colorScheme,
+                          onClear: () => setState(() {}),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            _habitDescription = value;
+                          });
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      FilledButton.icon(
+                        icon: Icon(Icons.timer, color: colorScheme.onSurfaceVariant),
+                        label: Text(
+                          _estimatedDuration != null 
+                              ? 'Estimated: ${(_estimatedDuration! ~/ 3600).toString().padLeft(2, '0')}:${((_estimatedDuration! % 3600) ~/ 60).toString().padLeft(2, '0')}'
+                              : 'Set estimated duration',
+                          style: GoogleFonts.quicksand(
+                            color: colorScheme.onSurfaceVariant,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        style: ButtonStyle(
+                          backgroundColor: WidgetStatePropertyAll(colorScheme.surfaceContainerHighest),
+                        ),
+                        onPressed: () async {
+                          final duration = await showDialog<int>(
+                            context: context,
+                            builder: (context) => EstimatedTimeDialog(
+                              initialEstimatedDuration: _estimatedDuration,
+                            ),
+                          );
+                          if (duration != null) {
+                            setState(() {
+                              _estimatedDuration = duration;
+                            });
+                          }
+                        },
+                      ),
+                    ],
+                  ),
                 const SizedBox(height: 20),
                 Container(
                   width: double.infinity,
                   alignment: Alignment.center,
                   child: ElevatedButton(
                     style: ButtonStyle(
-                      fixedSize: const WidgetStatePropertyAll<Size>(Size(280, 29)),
-                      backgroundColor: WidgetStatePropertyAll<Color>(colorScheme.primary),
+                      fixedSize: const WidgetStatePropertyAll<Size>(Size(180, 29)),
+                      backgroundColor: WidgetStatePropertyAll<Color>(colorScheme.surface),
                       shape: WidgetStatePropertyAll<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
+                          side: BorderSide(
+                            color: colorScheme.secondary,
+                            width: 1.0,
+                          ),
                         ),
                       ),
                     ),
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
+                        final memberService = GetIt.I<MemberService>();
+                        final memberId = await memberService.getMember().then((member) => member.id);
+                        
                         Habit habit = Habit(
                           id: widget.habit?.id ?? '',
                           name: _habitName,
                           description: _habitDescription,
                           isCompleted: false,
                           icon: _selectedIcon.codePoint.toString(),
+                          date: DateTime(
+                            _selectedDate.year,
+                            _selectedDate.month,
+                            _selectedDate.day,
+                            _selectedHour,
+                            _selectedMinute,
+                          ),
                           dayTime: _selectedDayTime,
-                          memberId: '9993a0cb-7b79-48f1-9a03-3843b2ffa642',
+                          frequency: _selectedFrequency,
+                          category: _selectedCategory,
+                          memberId: memberId,
+                          estimatedDuration: _estimatedDuration,
                         );
 
                         try {
@@ -295,15 +497,15 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
                           }
                           
                           if (context.mounted) {
-                            var taskList = context.read<HabitListState>();
-                            taskList.add(createdHabit);
+                            var habitList = context.read<HabitListState>();
+                            habitList.add(createdHabit);
 
                             showDialog(
                               context: context,
                               barrierDismissible: false,
                               builder: (BuildContext context) {
                                 return const AlertDialog(
-                                  content: Text('Task created successfully!'),
+                                  content: Text('Habit created successfully!'),
                                 );
                               },
                             );
@@ -325,10 +527,10 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
                       }
                     },
                     child: Text(
-                      'Create habit',
-                      style: TextStyle(
+                      _titleButton,
+                      style: GoogleFonts.quicksand(
                         color: colorScheme.onPrimary,
-                        fontSize: 18,
+                        fontSize: 17,
                         fontWeight: FontWeight.w600,
                       ),
                     )

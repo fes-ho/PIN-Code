@@ -17,7 +17,6 @@ class Frequency (SQLModel, table=True):
     days_of_the_month: Optional[List[int]] =  Field(default_factory=list, sa_column=Column(JSON))
 
     habit_id: UUID = Field(foreign_key="habit.id")
-    habit: "Habit" = Relationship(back_populates="frequency")
     
     @model_validator(mode="after")
     def check_daily_and_days_of_the_week(self) -> Self:

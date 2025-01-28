@@ -72,7 +72,7 @@ class ProfileService extends ChangeNotifier {
   Future<int> getNumberHabits() async {
     final userId = _memberService.getCurrentUserId();
     final response = await _client.get(
-      Uri.parse('${Config.apiUrl}/members/members/$userId/habits'),
+      Uri.parse('${Config.apiUrl}/members/$userId/habits'),
       headers: await _memberService.getJWT().then((jwt) => {'Authorization': 'Bearer $jwt'}),
     );
 

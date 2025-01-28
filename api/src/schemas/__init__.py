@@ -6,9 +6,13 @@ from .quest import QuestDurationUpdate
 from .mood import MoodBase
 from .type_of_mood import TypeOfMood
 from .day_time import DayTime
+from .category import Category
+from .frequency import Frequency
 
 __all__ = [
     "DayTime",
+    "Category",
+    "Frequency",
     "TypeOfMood",
     "MemberBase",
     "Activity",

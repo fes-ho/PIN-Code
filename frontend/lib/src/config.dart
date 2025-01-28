@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/features/authentication/application/member_service.dart';
 import 'package:frontend/src/features/friendship/application/friendship_service.dart';
+import 'package:frontend/src/features/habits/application/habit_service.dart';
+import 'package:frontend/src/features/habits/application/habit_timer_service.dart';
 import 'package:frontend/src/features/moods/services/mood_service.dart';
 import 'package:frontend/src/features/profile/application/profile_service.dart';
 import 'package:frontend/src/features/streaks/services/streak_service.dart';
@@ -40,9 +42,11 @@ class Config {
     GetIt.I.registerSingleton(MemberService());
     GetIt.I.registerSingleton(StreakService());
     GetIt.I.registerSingleton(TaskService());
+    GetIt.I.registerSingleton(HabitService());
     GetIt.I.registerSingleton(MoodService());
     GetIt.I.registerSingleton(ProfileService());
     GetIt.I.registerSingleton(FriendshipService());
+    GetIt.I.registerSingleton(HabitTimerService());
   }
 }
 

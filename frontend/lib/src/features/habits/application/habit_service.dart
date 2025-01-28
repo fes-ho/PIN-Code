@@ -3,7 +3,6 @@ import 'package:frontend/src/config.dart';
 import 'package:frontend/src/features/habits/domain/day_time.dart';
 import 'package:frontend/src/features/habits/domain/habit.dart';
 import 'package:frontend/src/features/streaks/services/streak_service.dart';
-import 'package:frontend/src/features/tasks/domain/task.dart';
 import 'package:frontend/src/utils/headers_factory.dart';
 import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';

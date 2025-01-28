@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:frontend/src/config.dart';
+import 'package:frontend/src/features/habits/presentation/habit_list_state.dart';
 import 'package:frontend/src/features/tasks/presentation/task_list_state.dart';
 import 'package:provider/provider.dart';
 import 'src/app.dart';
@@ -26,8 +27,11 @@ void main() async {
   GetIt.I.registerLazySingleton<TimerService>(() => TimerService());
 
   runApp(
-    ChangeNotifierProvider( 
-      create: (context) => TaskListState(),
+    MultiProvider( 
+      providers: [
+      ChangeNotifierProvider(create: (context) => TaskListState()),
+      ChangeNotifierProvider(create: (context) => HabitListState()),
+    ],
       child: MyApp(settingsController: settingsController)));
 }
 
