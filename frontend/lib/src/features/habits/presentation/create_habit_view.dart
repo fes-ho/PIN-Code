@@ -468,27 +468,93 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
                         final memberService = GetIt.I<MemberService>();
                         final memberId = await memberService.getMember().then((member) => member.id);
                         
-                        Habit habit = Habit(
-                          id: widget.habit?.id ?? '',
-                          name: _habitName,
-                          description: _habitDescription,
-                          isCompleted: false,
-                          icon: _selectedIcon.codePoint.toString(),
-                          date: DateTime(
-                            _selectedDate.year,
-                            _selectedDate.month,
-                            _selectedDate.day,
-                            _selectedHour,
-                            _selectedMinute,
-                          ),
-                          dayTime: _selectedDayTime,
-                          frequency: _selectedFrequency,
-                          category: _selectedCategory,
-                          memberId: memberId,
-                          estimatedDuration: _estimatedDuration,
-                        );
+                        List<Habit> habits = [];
 
-                        try {
+                        if (_selectedFrequency == Frequency.daily){
+                          for(int i = 0; i < 30; i++){
+                            DateTime habitDate = _selectedDate.add(Duration(days: i));
+
+                            Habit habit = Habit(
+                              id: widget.habit?.id ?? '',
+                              name: _habitName,
+                              description: _habitDescription,
+                              isCompleted: false,
+                              icon: _selectedIcon.codePoint.toString(),
+                              date: DateTime(
+                                habitDate.year,
+                                habitDate.month,
+                                habitDate.day,
+                                _selectedHour,
+                                _selectedMinute,
+                              ),
+                              dayTime: _selectedDayTime,
+                              frequency: _selectedFrequency,
+                              category: _selectedCategory,
+                              memberId: memberId,
+                              estimatedDuration: _estimatedDuration,
+                            );
+
+                            habits.add(habit);
+                          }
+                        } else if(_selectedFrequency == Frequency.weekly){
+                          DateTime habitDate = _selectedDate;
+
+                          for(int i = 0; i < 4; i++){
+                            Habit habit = Habit(
+                              id: widget.habit?.id ?? '',
+                              name: _habitName,
+                              description: _habitDescription,
+                              isCompleted: false,
+                              icon: _selectedIcon.codePoint.toString(),
+                              date: DateTime(
+                                habitDate.year,
+                                habitDate.month,
+                                habitDate.day,
+                                _selectedHour,
+                                _selectedMinute,
+                              ),
+                              dayTime: _selectedDayTime,
+                              frequency: _selectedFrequency,
+                              category: _selectedCategory,
+                              memberId: memberId,
+                              estimatedDuration: _estimatedDuration,
+                            );
+
+                            habits.add(habit);
+                            habitDate = habitDate.add(const Duration(days: 7));
+                          }  
+                        } else{
+                          int daysMonth = DateTime(_selectedDate.year, _selectedDate.month + 1, 0).day;
+                          DateTime habitDate = _selectedDate;
+
+                          for(int i = 0; i < 6; i++){
+                            Habit habit = Habit(
+                              id: widget.habit?.id ?? '',
+                              name: _habitName,
+                              description: _habitDescription,
+                              isCompleted: false,
+                              icon: _selectedIcon.codePoint.toString(),
+                              date: DateTime(
+                                habitDate.year,
+                                habitDate.month,
+                                habitDate.day,
+                                _selectedHour,
+                                _selectedMinute,
+                              ),
+                              dayTime: _selectedDayTime,
+                              frequency: _selectedFrequency,
+                              category: _selectedCategory,
+                              memberId: memberId,
+                              estimatedDuration: _estimatedDuration,
+                            );
+
+                            habits.add(habit);
+                            daysMonth = DateTime(habitDate.year, habitDate.month + 1, 0).day;
+                            habitDate = habitDate.add(Duration(days: daysMonth));
+                          }
+                        }
+                        
+                        for (Habit habit in habits){
                           final createdHabit;
                           if (widget.habit != null) {
                             createdHabit = await GetIt.I<HabitService>().updateHabit(habit);
@@ -499,6 +565,10 @@ class CreateHabitScreenState extends State<CreateHabitScreen> {
                           if (context.mounted) {
                             var habitList = context.read<HabitListState>();
                             habitList.add(createdHabit);
+                          }
+                        }
+                        try {                
+                          if (context.mounted) {
 
                             showDialog(
                               context: context,
