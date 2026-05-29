@@ -1,12 +1,13 @@
 # PIN-Code
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f9fadd0ecfe543599de30a3a62cf341e)](https://app.codacy.com?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f9fadd0ecfe543599de30a3a62cf341e)](<img width="40" height="10" alt="codacy" src="https://github.com/user-attachments/assets/d4a3fa5a-85a9-44d6-92cc-5f0e52fa698b" />
+)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
 ![Flutter](https://img.shields.io/badge/Flutter-Dart-blue?logo=flutter)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)
 ![License](https://img.shields.io/github/license/fes-ho/PIN-Code)
 
-A full-stack mobile application developed for the **PIN (Programação e Integração de Novo Software / Programming and Integration of New Software)** university subject. The project consists of a **Flutter** mobile frontend and a **Python** REST API backend, containerised with Docker.
+A full-stack mobile application that consists of a **Flutter** mobile frontend and a **Python** REST API backend, containerised with Docker.
 
 ---
 
@@ -28,7 +29,7 @@ A full-stack mobile application developed for the **PIN (Programação e Integra
 
 ## About
 
-This repository contains all code produced during the PIN subject. It is structured as a monorepo with two main components:
+It is structured as a monorepo with two main components:
 
 - **`api/`** — A Python REST API (managed with [Poetry](https://python-poetry.org/)) that serves as the application backend, including a `/health` endpoint for container health checks.
 - **`frontend/`** — A cross-platform Flutter application targeting iOS, Android (and optionally desktop/web) that consumes the API.
