@@ -1,7 +1,5 @@
 # PIN-Code
 
-[![Codacy Badge](https://app.codacy.com/project/badge/Grade/f9fadd0ecfe543599de30a3a62cf341e)](<img width="40" height="10" alt="codacy" src="https://github.com/user-attachments/assets/d4a3fa5a-85a9-44d6-92cc-5f0e52fa698b" />
-)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
 ![Flutter](https://img.shields.io/badge/Flutter-Dart-blue?logo=flutter)
 ![Docker](https://img.shields.io/badge/Docker-Compose-2496ED?logo=docker)
